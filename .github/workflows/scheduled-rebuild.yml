@@ -1,0 +1,25 @@
+name: Scheduled Rebuild
+
+# Rebuilds the site on a schedule so time-sensitive content (e.g. latest YouTube
+# videos fetched via RSS at build time) stays fresh without a manual push.
+#
+# ── FORK CONFIGURATION ────────────────────────────────────────────────────────
+# Change the cron expression to your preferred rebuild frequency.
+# Standard intervals:
+#   '0 */6 * * *'   — every 6 hours
+#   '0 8 * * *'     — once daily at 8am UTC       ← default
+#   '0 8 * * 1'     — once weekly, Monday 8am UTC
+#
+# To disable scheduled rebuilds entirely, delete this file.
+#
+# NOTE: GitHub automatically disables scheduled workflows in repos that have had
+# no activity (pushes, PRs, etc.) for 60 days. Re-enable via Actions → Enable.
+# ──────────────────────────────────────────────────────────────────────────────
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # daily at 8am UTC
+
+jobs:
+  rebuild:
+    uses: ./.github/workflows/deploy.yml

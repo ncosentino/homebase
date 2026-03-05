@@ -43,7 +43,8 @@ homebase/
 ├── .eleventy.js           ← 11ty configuration
 ├── package.json
 └── .github/workflows/
-    └── deploy.yml         ← CI/CD (builds + pushes to Pages repo)
+    ├── deploy.yml              ← CI/CD (builds + pushes to Pages repo)
+    └── scheduled-rebuild.yml  ← periodic rebuild (keeps YouTube feed fresh)
 ```
 
 ## ⚙️ Configuration (`_data/site.yaml`)
@@ -70,22 +71,34 @@ seo:
 ```
 
 ### Analytics
-```yaml
-analytics:
-  google_analytics_id: "G-XXXXXXXXXX"   # leave blank to disable
-```
+
+GA4 is injected at build time via a CI secret — it's never stored in the repo.
+Add `GOOGLE_ANALYTICS_ID` as a GitHub Actions secret (see [docs/cicd.md](docs/cicd.md)).
+Leave the secret unset to disable analytics entirely.
 
 ### Theme
 ```yaml
 theme: devleader   # devleader | minimal | neon | <custom folder name>
 ```
 
-### Featured Video
+### Featured Videos
+
+**Option A — Live YouTube channel feed** (fetches latest video at build time, no API key needed):
 ```yaml
-featured_video:
-  youtube_id: "dQw4w9WgXcQ"   # leave blank to hide
-  title: "Video title"
+youtube_channels:
+  - channel_id: "UCxxxxxxxxxxxxxxxxxxxxx"   # find at youtube.com/@handle/about
+    name: "My Channel"
+    max_videos: 1
 ```
+
+**Option B — Hard-coded specific videos** (fallback if `youtube_channels` is empty):
+```yaml
+featured_videos:
+  - youtube_id: "dQw4w9WgXcQ"
+    title: "Video title"
+```
+
+Leave both empty to hide the video section entirely.
 
 ### Link Sections
 ```yaml

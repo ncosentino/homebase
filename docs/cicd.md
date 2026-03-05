@@ -27,10 +27,11 @@ The deploy workflow builds the site and pushes the output to your GitHub Pages r
 
 ### 3. Update the Workflow
 
-Edit `.github/workflows/deploy.yml` and change the push target to your own Pages repo:
+Edit `.github/workflows/deploy.yml` and change `DEPLOY_REPO` at the top to your own Pages repo:
 
 ```yaml
-git push --force "https://x-access-token:${GH_DEPLOY_TOKEN}@github.com/YOUR_USERNAME/YOUR_PAGES_REPO.git" HEAD:main
+env:
+  DEPLOY_REPO: youruser/youruser.github.io
 ```
 
 ### 4. Configure GitHub Pages
@@ -41,14 +42,43 @@ In your Pages repo (e.g. `yourname.github.io`):
 
 ### 5. Custom Domain (Optional)
 
-Edit `src/CNAME` in homebase to contain your custom domain:
+Set `seo.cname` in `_data/site.yaml` to your custom domain:
 
-```
-yourdomain.com
+```yaml
+seo:
+  cname: "links.yourdomain.com"
 ```
 
+Leave it blank (or remove the field) to use the default `yourname.github.io` URL.
 Also configure your DNS to point to GitHub Pages (CNAME to `yourname.github.io`).
+
+### 6. Analytics (Optional)
+
+To enable Google Analytics 4:
+1. In your `homebase` fork, go to Settings → Secrets and variables → Actions
+2. Add a secret named `GOOGLE_ANALYTICS_ID` with your `G-XXXXXXXXXX` measurement ID
+
+Leave the secret unset to disable analytics entirely. The ID is never stored in the repo.
 
 ## Triggering Manually
 
-You can trigger a deploy without pushing by going to Actions → Build and Deploy → Run workflow.
+You can trigger a deploy without pushing by going to **Actions → Build and Deploy → Run workflow**.
+
+## Scheduled Rebuilds
+
+`scheduled-rebuild.yml` automatically rebuilds the site daily at 8am UTC. This keeps
+time-sensitive content fresh — notably the YouTube channel feed, which fetches the latest
+video at build time.
+
+**To change the frequency**, edit the `cron` expression in `.github/workflows/scheduled-rebuild.yml`:
+
+| Cron expression  | Frequency                  |
+|------------------|----------------------------|
+| `0 */6 * * *`    | Every 6 hours              |
+| `0 8 * * *`      | Once daily at 8am UTC      |
+| `0 8 * * 1`      | Once weekly, Monday 8am UTC|
+
+**To disable scheduled rebuilds**, delete `.github/workflows/scheduled-rebuild.yml`.
+
+> ⚠️ **Note:** GitHub automatically disables scheduled workflows in repos with no activity
+> (pushes, PRs, etc.) for 60 days. If this happens, re-enable it via the Actions tab.

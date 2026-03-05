@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  workflow_call:   # allows scheduled-rebuild.yml to invoke this
 
 # ── FORK CONFIGURATION ────────────────────────────────────────────────────────
 # Set DEPLOY_REPO to your GitHub Pages repo (e.g. "youruser/youruser.github.io")
