@@ -1,0 +1,175 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# homebase — site configuration
+# Fork this repo and edit THIS file to personalize your landing page.
+# No code changes needed.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Profile ──────────────────────────────────────────────────────────────────
+profile:
+  name: "Dev Leader"
+  username: "@devleader"
+  bio: "Principal Software Engineering Manager at Microsoft. Views are my own."
+  avatar: "https://github.com/ncosentino.png"
+  banner: "/assets/thumbnails/banner.png"
+
+# ── SEO ──────────────────────────────────────────────────────────────────────
+seo:
+  title: "Dev Leader | @devleader"
+  description: "Principal Software Engineering Manager at Microsoft. Content creator, educator, and software engineering enthusiast."
+  canonical: "https://github.devleader.ca"
+  og_image: "https://github.com/ncosentino.png"
+  # Custom domain for GitHub Pages CNAME. Set to your domain (e.g. "links.yoursite.com").
+  # Leave blank if using the default youruser.github.io URL (no custom domain).
+  cname: "github.devleader.ca"
+  keywords:
+    - software engineering
+    - dotnet
+    - csharp
+    - microsoft
+    - dev leader
+    - nick cosentino
+  # Used in llms.txt "About" section. Falls back to seo.description if omitted.
+  llms_about: "Dev Leader (Nick Cosentino) is a Principal Software Engineering Manager at Microsoft, content creator, and software engineering educator sharing knowledge about software development, C#, .NET, and technology."
+
+# ── UTM Tracking ─────────────────────────────────────────────────────────────
+# Page-wide UTM defaults appended to every outbound link.
+# Leave utm_source blank to disable UTM tracking entirely.
+# Per-link overrides: add a `utm` block on any link to override these defaults.
+#
+# Example per-link override:
+#   - title: "My Course"
+#     url: "https://example.com/course"
+#     utm:
+#       source: "linktree"
+#       medium: "referral"
+#       campaign: "course-launch"
+#       content: "banner"          # optional
+#       term: ""                   # optional
+utm:
+  source: "homebase"
+  medium: "link"
+  campaign: "devleader"
+  content: ""
+  term: ""
+
+# ── Theme ────────────────────────────────────────────────────────────────────
+theme: devleader
+
+# ── Featured Videos ──────────────────────────────────────────────────────────
+# Array of YouTube videos to embed. Leave empty to hide video block.
+featured_videos:
+  - youtube_id: "uiuEe8ZFrPQ"
+    title: "Dev Leader"
+  - youtube_id: "Z7gTXvwPc_g"
+    title: "Code Commute"
+
+# ── Social Icons Strip ────────────────────────────────────────────────────────
+social_icons:
+  - icon: "youtube"
+    url: "https://www.youtube.com/@devleader?sub_confirmation=1"
+  - icon: "substack"
+    url: "https://devleaderweekly.substack.com"
+  - icon: "applepodcast"
+    url: "https://podcasts.apple.com/us/podcast/dev-leader-podcast/id1764207822"
+  - icon: "tiktok"
+    url: "https://tiktok.com/@devleader"
+  - icon: "linkedin"
+    url: "https://linkedin.com/in/nickcosentino"
+  - icon: "twitter"
+    url: "https://x.com/devleaderca"
+  - icon: "instagram"
+    url: "https://instagram.com/dev.leader"
+  - icon: "threads"
+    url: "https://www.threads.com/@dev.leader"
+  - icon: "twitch"
+    url: "https://www.twitch.tv/devleaderca"
+  - icon: "kick"
+    url: "https://kick.com/devleader"
+  - icon: "github"
+    url: "https://www.github.com/ncosentino"
+  - icon: "bluesky"
+    url: "https://bsky.app/profile/devleader.ca"
+  - icon: "mastodon"
+    url: "https://hachyderm.io/@devleader"
+  - icon: "facebook"
+    url: "https://facebook.com/devleaderca"
+  - icon: "pinterest"
+    url: "https://pinterest.com/ncosentino"
+
+# ── Link Sections ─────────────────────────────────────────────────────────────
+sections:
+  - links:
+      - title: "FREE weekly newsletter!"
+        url: "https://devleaderweekly.substack.com"
+      - title: "Website"
+        url: "https://www.devleader.ca"
+        thumbnail: "/assets/thumbnails/website.png"
+      - title: "BrandGhost – The better way to engage on social media"
+        url: "https://www.brandghost.ai"
+        thumbnail: "/assets/thumbnails/brandghost.png"
+
+  - title: "Podcast Links"
+    links:
+      - title: "The Dev Leader Podcast"
+        url: "https://podcasts.apple.com/us/podcast/dev-leader-podcast/id1764207822"
+        thumbnail: "/assets/thumbnails/podcast-dev.jpeg"
+      - title: "Code Commute Podcast"
+        url: "https://open.spotify.com/show/3wud5lM4SaSY8nkKj1KW29"
+        thumbnail: "/assets/thumbnails/podcast-commute.jpeg"
+
+  - title: "Products & Services"
+    links:
+      - title: "All of my Courses"
+        url: "https://www.devleader.ca/courses"
+        thumbnail: "/assets/thumbnails/courses.webp"
+      - title: "Digital Products"
+        url: "https://products.devleader.ca"
+        thumbnail: "/assets/thumbnails/digital-products.png"
+      - title: "Management & Leadership Consult - 30 mins"
+        url: "https://tidycal.com/nbcosentino/management-and-leadership-consult-30-mins"
+        thumbnail: "/assets/thumbnails/consult-30.jpeg"
+      - title: "Management & Leadership Consult - 60 mins"
+        url: "https://tidycal.com/nbcosentino/management-and-leadership-consult-60-mins"
+        thumbnail: "/assets/thumbnails/consult-60.jpeg"
+
+  - title: "Subscribe"
+    links:
+      - title: "Newsletter + Private Discord Access!"
+        url: "https://weekly.devleader.ca/subscribe"
+        icon: "discord"
+      - title: "Join the Private Discord Server!"
+        url: "https://sidestack.io/devleader"
+        icon: "discord"
+
+  - title: "Read More Articles"
+    links:
+      - title: "Substack"
+        url: "https://devleaderweekly.substack.com"
+        thumbnail: "/assets/thumbnails/substack.png"
+      - title: "Medium"
+        url: "https://medium.com/@devleaderca"
+        thumbnail: "/assets/thumbnails/medium.png"
+      - title: "Hashnode"
+        url: "https://hashnode.devleader.ca/"
+        thumbnail: "/assets/thumbnails/hashnode.jpg"
+      - title: "HackerNoon"
+        url: "https://hackernoon.com/u/devleader"
+        thumbnail: "/assets/thumbnails/hackernoon.png"
+      - title: "Dev.to"
+        url: "https://dev.to/devleader"
+        thumbnail: "/assets/thumbnails/devto.png"
+      - title: "DZone"
+        url: "https://dzone.com/users/1170995/ncosentino.html"
+        thumbnail: "/assets/thumbnails/dzone.png"
+      - title: "Quora"
+        url: "https://devleader.quora.com/"
+        icon: "quora"
+
+  - title: "Coding Profiles"
+    links:
+      - title: "GitHub"
+        url: "https://github.com/ncosentino"
+        icon: "github"
+      - title: "Stack Overflow"
+        url: "https://stackoverflow.com/users/2704424/dev-leader"
+        thumbnail: "/assets/thumbnails/stackoverflow.png"

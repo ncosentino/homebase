@@ -1,0 +1,65 @@
+<meta charset="UTF-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+
+{# ── Primary SEO ──────────────────────────────────────────────────────────── #}
+<title>{{ site.seo.title }}</title>
+<meta name="description" content="{{ site.seo.description }}" />
+{% if site.seo.keywords %}
+<meta name="keywords" content="{{ site.seo.keywords | join(', ') }}" />
+{% endif %}
+<link rel="canonical" href="{{ site.seo.canonical }}" />
+
+{# ── Open Graph ───────────────────────────────────────────────────────────── #}
+<meta property="og:type" content="profile" />
+<meta property="og:title" content="{{ site.seo.title }}" />
+<meta property="og:description" content="{{ site.seo.description }}" />
+<meta property="og:url" content="{{ site.seo.canonical }}" />
+<meta property="og:image" content="{{ site.seo.og_image }}" />
+<meta property="og:image:width" content="600" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:locale" content="en_US" />
+<meta property="profile:username" content="{{ site.profile.username }}" />
+
+{# ── Twitter Card ─────────────────────────────────────────────────────────── #}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ site.seo.title }}" />
+<meta name="twitter:description" content="{{ site.seo.description }}" />
+<meta name="twitter:image" content="{{ site.seo.og_image }}" />
+
+{# ── Schema.org JSON-LD ───────────────────────────────────────────────────── #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "WebPage",
+  "name": "{{ site.seo.title }}",
+  "url": "{{ site.seo.canonical }}",
+  "description": "{{ site.seo.description }}",
+  "image": "{{ site.seo.og_image }}",
+  "identifier": "{{ site.profile.username }}",
+  "alternateName": "{{ site.profile.name }} Landing Page",
+  "significantLink": "{{ site.seo.canonical }}",
+  "thumbnailUrl": "{{ site.seo.og_image }}"
+}
+</script>
+
+{# ── Theme CSS ────────────────────────────────────────────────────────────── #}
+<link rel="stylesheet" href="/assets/base.css" />
+<link rel="stylesheet" href="/themes/{{ site.theme }}/theme.css" />
+
+{# ── Google Analytics (injected via GOOGLE_ANALYTICS_ID CI secret) ─────────── #}
+{% if env.GOOGLE_ANALYTICS_ID %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ env.GOOGLE_ANALYTICS_ID }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ env.GOOGLE_ANALYTICS_ID }}');
+</script>
+{% endif %}
+
+{# ── Favicons ─────────────────────────────────────────────────────────────── #}
+<link rel="icon" type="image/png" href="/assets/favicon.png" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+<meta name="theme-color" content="#1E2330" />

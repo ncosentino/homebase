@@ -1,0 +1,17 @@
+{
+  "name": "homebase",
+  "version": "1.0.0",
+  "description": "Config-driven, SEO-optimized linktree-style landing page powered by Eleventy.",
+  "scripts": {
+    "build": "eleventy --input=src --output=_site",
+    "start": "eleventy --input=src --output=_site --serve",
+    "clean": "npx rimraf _site"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,28 @@
+<div class="profile">
+  {% if site.profile.banner %}
+  <div class="profile-banner-wrap">
+    <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
+    <div class="avatar-over-banner">
+      <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
+    </div>
+  </div>
+  {% else %}
+  <div class="avatar-wrap">
+    <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="96" height="96" loading="eager" />
+  </div>
+  {% endif %}
+  <h1 class="profile-name">{{ site.profile.name }}</h1>
+  {% if site.profile.username %}
+  <p class="profile-username">{{ site.profile.username }}</p>
+  {% endif %}
+  <p class="profile-bio">{{ site.profile.bio }}</p>
+  {% if site.social_icons and site.social_icons.length %}
+  <div class="social-icons-strip" role="list">
+    {% for item in site.social_icons %}
+    <a class="social-icon-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.icon }}" role="listitem">
+      {% icon item.icon %}
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>

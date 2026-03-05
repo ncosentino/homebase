@@ -1,0 +1,13 @@
+{% if section.title %}
+<div class="section-header">
+  <span class="section-header-text">{{ section.title }}</span>
+</div>
+{% endif %}
+
+<ul class="link-list">
+  {% for link in section.links %}
+  <li>
+    {% include "link-button.njk" %}
+  </li>
+  {% endfor %}
+</ul>

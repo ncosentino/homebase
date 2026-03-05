@@ -1,0 +1,32 @@
+{# ── UTM: merge page-wide defaults with per-link overrides ── #}
+{%- set _utm = site.utm if site.utm else {} -%}
+{%- set _u = link.utm if link.utm else {} -%}
+{%- set utmSource   = _u.source   if _u.source   else _utm.source -%}
+{%- set utmMedium   = _u.medium   if _u.medium   else _utm.medium -%}
+{%- set utmCampaign = _u.campaign if _u.campaign else _utm.campaign -%}
+{%- set utmContent  = _u.content  if _u.content  else _utm.content -%}
+{%- set utmTerm     = _u.term     if _u.term     else _utm.term -%}
+
+{%- set _href = link.url -%}
+{%- if utmSource -%}
+  {%- set _sep = "?" if "?" not in link.url else "&" -%}
+  {%- set _href = link.url + _sep + "utm_source=" + utmSource -%}
+  {%- if utmMedium   %}{%- set _href = _href + "&utm_medium="   + utmMedium -%}{%- endif -%}
+  {%- if utmCampaign %}{%- set _href = _href + "&utm_campaign=" + utmCampaign -%}{%- endif -%}
+  {%- if utmContent  %}{%- set _href = _href + "&utm_content="  + utmContent -%}{%- endif -%}
+  {%- if utmTerm     %}{%- set _href = _href + "&utm_term="     + utmTerm -%}{%- endif -%}
+{%- endif -%}
+
+<a class="link-btn{% if link.thumbnail %} has-thumbnail{% endif %}" href="{{ _href }}" target="_blank" rel="noopener noreferrer">
+  {% if link.thumbnail %}
+  <span class="link-btn-thumb" aria-hidden="true">
+    <img src="{{ link.thumbnail }}" alt="" loading="lazy" />
+  </span>
+  {% elif link.icon %}
+  <span class="link-btn-icon" aria-hidden="true">{% icon link.icon %}</span>
+  {% endif %}
+  <span class="link-btn-label">{{ link.title }}</span>
+  <span class="link-btn-chevron" aria-hidden="true">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </span>
+</a>

@@ -1,0 +1,18 @@
+---
+permalink: /llms.txt
+---
+# {{ site.profile.name }}
+
+> {{ site.profile.bio }}
+
+{{ site.seo.description }}
+
+## Links
+{% for section in site.sections %}{% for link in section.links %}- [{{ link.title }}]({{ link.url }})
+{% endfor %}{% endfor %}
+## About
+{{ site.seo.llms_about if site.seo.llms_about else site.seo.description }}
+
+## Social Profiles
+{% for icon in site.social_icons %}- {{ icon.platform }}: {{ icon.url }}
+{% endfor %}
