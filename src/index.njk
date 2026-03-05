@@ -14,8 +14,10 @@ permalink: /index.html
       {% include "profile.njk" %}
 
       {# ── Featured Videos ─────────────────────────────────────────────── #}
-      {% if site.featured_videos and site.featured_videos.length %}
-      {% for video in site.featured_videos %}
+      {# Prefer live channel feed; fall back to manually configured videos #}
+      {% set _videos = youtubeChannels if youtubeChannels.length else site.featured_videos %}
+      {% if _videos and _videos.length %}
+      {% for video in _videos %}
       {% include "featured-video.njk" %}
       {% endfor %}
       {% endif %}

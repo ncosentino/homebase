@@ -56,12 +56,20 @@ utm:
 theme: devleader
 
 # ── Featured Videos ──────────────────────────────────────────────────────────
-# Array of YouTube videos to embed. Leave empty to hide video block.
-featured_videos:
-  - youtube_id: "uiuEe8ZFrPQ"
-    title: "Dev Leader"
-  - youtube_id: "Z7gTXvwPc_g"
-    title: "Code Commute"
+# Option A — Pull latest video(s) live from YouTube channels at build time.
+# channel_id: the UC... ID from youtube.com/@handle/about (see RSS link)
+# max_videos: how many latest videos to show per channel (default: 1)
+youtube_channels:
+  - channel_id: "UCJ90Is0z9KIyNSufH--IwRg"
+    name: "Dev Leader"
+    max_videos: 1
+  - channel_id: "UC9KQRiF55bj4as3MV00l-CA"
+    name: "Code Commute"
+    max_videos: 1
+
+# Option B — Hard-code specific videos. Used as fallback if youtube_channels
+# is empty or omitted. Leave both empty to hide the video section entirely.
+featured_videos: []
 
 # ── Social Icons Strip ────────────────────────────────────────────────────────
 social_icons:
