@@ -1,14 +1,20 @@
 <div class="profile">
   {% if site.profile.banner %}
   <div class="profile-banner-wrap">
+    {% if site.profile.banner_url %}<a href="{{ site.profile.banner_url }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
     <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
+    {% if site.profile.banner_url %}</a>{% endif %}
     <div class="avatar-over-banner">
+      {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
       <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
+      {% if site.profile.avatar_url %}</a>{% endif %}
     </div>
   </div>
   {% else %}
   <div class="avatar-wrap">
+    {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
     <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="96" height="96" loading="eager" />
+    {% if site.profile.avatar_url %}</a>{% endif %}
   </div>
   {% endif %}
   <h1 class="profile-name">{{ site.profile.name }}</h1>
