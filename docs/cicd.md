@@ -37,6 +37,7 @@ env:
 ### 4. Configure GitHub Pages
 
 In your Pages repo (e.g. `yourname.github.io`):
+
 - Go to Settings → Pages
 - Set Source: **Deploy from a branch** → `main` → `/ (root)`
 
@@ -55,10 +56,12 @@ Also configure your DNS to point to GitHub Pages (CNAME to `yourname.github.io`)
 ### 6. Analytics (Optional)
 
 To enable Google Analytics 4:
+
 1. In your `homebase` fork, go to Settings → Secrets and variables → Actions
 2. Add a secret named `GOOGLE_ANALYTICS_ID` with your `G-XXXXXXXXXX` measurement ID
 
-Leave the secret unset to disable analytics entirely. The ID is never stored in the repo.
+!!! note
+    Leave the secret unset to disable analytics entirely. The ID is never stored in the repo.
 
 ## Triggering Manually
 
@@ -67,18 +70,19 @@ You can trigger a deploy without pushing by going to **Actions → Build and Dep
 ## Scheduled Rebuilds
 
 `scheduled-rebuild.yml` automatically rebuilds the site daily at 8am UTC. This keeps
-time-sensitive content fresh — notably the YouTube channel feed, which fetches the latest
+time-sensitive content fresh -- notably the YouTube channel feed, which fetches the latest
 video at build time.
 
 **To change the frequency**, edit the `cron` expression in `.github/workflows/scheduled-rebuild.yml`:
 
-| Cron expression  | Frequency                  |
-|------------------|----------------------------|
-| `0 */6 * * *`    | Every 6 hours              |
-| `0 8 * * *`      | Once daily at 8am UTC      |
-| `0 8 * * 1`      | Once weekly, Monday 8am UTC|
+| Cron expression | Frequency |
+|-----------------|-----------|
+| `0 */6 * * *` | Every 6 hours |
+| `0 8 * * *` | Once daily at 8am UTC |
+| `0 8 * * 1` | Once weekly, Monday 8am UTC |
 
 **To disable scheduled rebuilds**, delete `.github/workflows/scheduled-rebuild.yml`.
 
-> ⚠️ **Note:** GitHub automatically disables scheduled workflows in repos with no activity
-> (pushes, PRs, etc.) for 60 days. If this happens, re-enable it via the Actions tab.
+!!! warning
+    GitHub automatically disables scheduled workflows in repos with no activity (pushes, PRs, etc.) for 60 days. If this happens, re-enable it via the Actions tab.
+

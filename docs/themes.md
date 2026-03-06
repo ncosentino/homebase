@@ -6,7 +6,7 @@ homebase ships with 3 built-in themes. Set `theme:` in `_data/site.yaml` to swit
 
 | Theme | Description |
 |-------|-------------|
-| `devleader` | Dark gradient (#1E2330 → #7F8B99), white border buttons — the default |
+| `devleader` | Dark gradient (#1E2330 → #7F8B99), white border buttons -- the default |
 | `minimal` | Clean white/light background, dark text |
 | `neon` | Dark background with vibrant purple accent (#b47aff) |
 
@@ -18,7 +18,7 @@ homebase ships with 3 built-in themes. Set `theme:` in `_data/site.yaml` to swit
 
 ### Theme CSS Variables
 
-Override any of these custom properties:
+Override any of these custom properties in your `theme.css`:
 
 ```css
 :root {
@@ -48,3 +48,7 @@ Override any of these custom properties:
 ```
 
 You only need to override the variables you want to change.
+
+!!! tip "Minimal custom theme"
+    Start by overriding just `--bg-from`, `--bg-to`, and `--btn-border` to get a distinct look with very little code.
+
