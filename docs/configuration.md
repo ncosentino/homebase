@@ -15,7 +15,7 @@ profile:
   name: "Dev Leader"
   username: "@devleader"
   bio: "Principal Engineering Manager at Microsoft. Writing about C#, .NET, and software engineering."
-  avatar: "https://www.devleader.ca/assets/profile-picture.webp"
+  avatar: "https://devleader-d2f9ggbjfpdqcka7.z01.azurefd.net/media/profile-picture-350w.webp"
 ```
 
 | Field | Required | Description |
@@ -127,7 +127,7 @@ profile:
   name: "Dev Leader"
   username: "@devleader"
   bio: "Principal Engineering Manager at Microsoft."
-  avatar: "https://www.devleader.ca/assets/profile-picture.webp"
+  avatar: "https://devleader-d2f9ggbjfpdqcka7.z01.azurefd.net/media/profile-picture-350w.webp"
 
 seo:
   title: "Dev Leader | Software Engineering"
