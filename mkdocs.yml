@@ -40,6 +40,7 @@ nav:
   - Themes: themes.md
   - CI/CD: cicd.md
   - SEO & Discoverability: seo.md
+  - Local Development: building.md
   - Articles: articles.md
 
 plugins:
