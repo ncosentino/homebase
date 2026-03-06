@@ -34,7 +34,7 @@ module.exports = async function () {
   for (const section of site.sections || []) {
     if (section.type !== "cards") continue;
     for (const link of section.links || []) {
-      const slug = extractGithubSlug(link.url);
+      const slug = extractGithubSlug(link.github_url || link.url);
       if (slug) slugs.add(slug);
     }
   }

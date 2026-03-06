@@ -6,7 +6,7 @@
 ──────────────────────────────────────────────────────────────────────────── #}
 
 {# Resolve GitHub metadata #}
-{% set _ghSlug = link.url | githubSlug %}
+{% set _ghSlug = (link.github_url or link.url) | githubSlug %}
 {% set _gh = githubRepos[_ghSlug] if _ghSlug and githubRepos else null %}
 
 {# Description: manual wins, then auto-fetched, then nothing #}
