@@ -50,6 +50,8 @@ jobs:
     name: Build and deploy documentation
     runs-on: ubuntu-latest
     needs: [build-and-deploy]
+    # Skip on scheduled/cron triggers only — runs on push to main and manual dispatch.
+    if: github.event_name != 'schedule'
     permissions:
       contents: write
 

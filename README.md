@@ -43,7 +43,7 @@ homebase/
 ├── .eleventy.js           ← 11ty configuration
 ├── package.json
 └── .github/workflows/
-    ├── deploy.yml              ← CI/CD (builds + pushes to Pages repo)
+    ├── deploy.yml              ← CI/CD (builds + pushes to Pages repo; manual trigger also builds docs)
     └── scheduled-rebuild.yml  ← periodic rebuild (keeps YouTube feed fresh)
 ```
 
@@ -134,6 +134,8 @@ npm run build   # production build to _site/
 See [docs/cicd.md](docs/cicd.md) for full setup instructions.
 
 The workflow in `.github/workflows/deploy.yml` builds the site and force-pushes `_site/` to your GitHub Pages repo on every push to `main`.
+
+A second `docs` job in the same workflow builds and publishes the MkDocs documentation site. It runs on **push to main and manual dispatch**, but is skipped on the scheduled cron rebuild to avoid unnecessary doc regeneration.
 
 ## 📖 Documentation
 
