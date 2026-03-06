@@ -183,3 +183,17 @@ sections:
       - title: "Stack Overflow"
         url: "https://stackoverflow.com/users/2704424/dev-leader"
         thumbnail: "/assets/thumbnails/stackoverflow.png"
+
+  - title: "Open Source Projects"
+    type: cards
+    links:
+      - title: "DevLeader"
+        url: "https://github.com/ncosentino/DevLeader"
+        # description and stars auto-fetched from GitHub
+      - title: "needlr"
+        url: "https://github.com/ncosentino/needlr"
+      - title: "NexusLabs.Framework"
+        url: "https://github.com/ncosentino/NexusLabs.Framework"
+      - title: "homebase"
+        url: "https://github.com/ncosentino/homebase"
+        description: "Config-driven, SEO-optimized linktree-style landing page powered by Eleventy."

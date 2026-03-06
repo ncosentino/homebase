@@ -1,0 +1,59 @@
+{# ── Portfolio Card ────────────────────────────────────────────────────────
+   Rendered for each link in a section with type: cards.
+   Auto-fetches GitHub description/stars from githubRepos data if the URL
+   is a github.com/owner/repo URL (and GITHUB_TOKEN is set in CI).
+   Manual fields (description, image) always override auto-fetched values.
+──────────────────────────────────────────────────────────────────────────── #}
+
+{# Resolve GitHub metadata #}
+{% set _ghSlug = link.url | githubSlug %}
+{% set _gh = githubRepos[_ghSlug] if _ghSlug and githubRepos else null %}
+
+{# Description: manual wins, then auto-fetched, then nothing #}
+{% set _desc = link.description if link.description else (_gh.description if _gh else "") %}
+
+{# GitHub badges #}
+{% set _stars = _gh.stars if _gh and _gh.stars else 0 %}
+{% set _lang  = _gh.language if _gh else "" %}
+
+{# UTM: same pattern as link-button.njk #}
+{%- set _utm = site.utm if site.utm else {} -%}
+{%- set _u = link.utm if link.utm else {} -%}
+{%- set utmSource   = _u.source   if _u.source   else _utm.source -%}
+{%- set utmMedium   = _u.medium   if _u.medium   else _utm.medium -%}
+{%- set utmCampaign = _u.campaign if _u.campaign else _utm.campaign -%}
+{%- set utmContent  = _u.content  if _u.content  else _utm.content -%}
+{%- set utmTerm     = _u.term     if _u.term     else _utm.term -%}
+
+{%- set _href = link.url -%}
+{%- if utmSource -%}
+  {%- set _sep = "?" if "?" not in link.url else "&" -%}
+  {%- set _href = link.url + _sep + "utm_source=" + utmSource -%}
+  {%- if utmMedium   %}{%- set _href = _href + "&utm_medium="   + utmMedium -%}{%- endif -%}
+  {%- if utmCampaign %}{%- set _href = _href + "&utm_campaign=" + utmCampaign -%}{%- endif -%}
+  {%- if utmContent  %}{%- set _href = _href + "&utm_content="  + utmContent -%}{%- endif -%}
+  {%- if utmTerm     %}{%- set _href = _href + "&utm_term="     + utmTerm -%}{%- endif -%}
+{%- endif -%}
+
+<a class="portfolio-card" href="{{ _href }}" target="_blank" rel="noopener noreferrer">
+  {% if link.image %}
+  <div class="portfolio-card-img" aria-hidden="true">
+    <img src="{{ link.image }}" alt="{{ link.title }}" loading="lazy" />
+  </div>
+  {% endif %}
+  <div class="portfolio-card-body">
+    <div class="portfolio-card-title">{{ link.title }}</div>
+    {% if _desc %}
+    <div class="portfolio-card-desc">{{ _desc }}</div>
+    {% endif %}
+    {% if _stars or _lang %}
+    <div class="portfolio-card-meta">
+      {% if _stars %}<span class="portfolio-meta-stars">⭐ {{ _stars | compactNumber }}</span>{% endif %}
+      {% if _lang %}<span class="portfolio-meta-lang">{{ _lang }}</span>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+  <div class="portfolio-card-chevron" aria-hidden="true">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </div>
+</a>

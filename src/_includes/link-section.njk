@@ -4,6 +4,15 @@
 </div>
 {% endif %}
 
+{% if section.type == "cards" %}
+<ul class="portfolio-list">
+  {% for link in section.links %}
+  <li>
+    {% include "portfolio-card.njk" %}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
 <ul class="link-list">
   {% for link in section.links %}
   <li>
@@ -11,3 +20,4 @@
   </li>
   {% endfor %}
 </ul>
+{% endif %}

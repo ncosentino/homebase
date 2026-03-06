@@ -23,6 +23,27 @@ module.exports = function (eleventyConfig) {
     return "";
   });
 
+  // githubSlug filter — extracts "owner/repo" slug from a GitHub URL, or null
+  eleventyConfig.addFilter("githubSlug", function (url) {
+    if (!url) return null;
+    try {
+      const u = new URL(url);
+      if (u.hostname !== "github.com") return null;
+      const parts = u.pathname.replace(/^\/|\/$/g, "").split("/");
+      if (parts.length !== 2 || !parts[0] || !parts[1]) return null;
+      return `${parts[0]}/${parts[1]}`;
+    } catch {
+      return null;
+    }
+  });
+
+  // compactNumber filter — formats large numbers as "1.2k" etc.
+  eleventyConfig.addFilter("compactNumber", function (n) {
+    if (!n || isNaN(n)) return n;
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+    return String(n);
+  });
+
   // Inline file shortcode — for inlining CSS into <style> tags if desired
   eleventyConfig.addShortcode("inlineFile", function (filePath) {
     const fullPath = path.join(__dirname, filePath);
