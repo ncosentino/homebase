@@ -7,3 +7,7 @@ Thumbs.db
 screenshot*.png
 screenshot*.jpg
 *.local.yaml
+
+# MkDocs build output
+site/
+__pycache__/
