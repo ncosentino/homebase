@@ -1,3 +1,7 @@
+---
+description: Full reference for _data/site.yaml -- every field for your profile, links, theme, SEO, analytics, YouTube embed, and banner.
+---
+
 # Configuration
 
 All content and behavior is controlled by a single file: `_data/site.yaml`.

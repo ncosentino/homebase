@@ -1,3 +1,7 @@
+---
+description: Blog posts and articles about Homebase, Eleventy, and static site development published on Dev Leader.
+---
+
 # Articles & Blog Posts
 
 Blog posts and articles about Homebase from [Dev Leader](https://www.devleader.ca).

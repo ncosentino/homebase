@@ -1,3 +1,7 @@
+---
+description: Get your Homebase personal landing page live in under 10 minutes. Fork the repo, edit site.yaml, configure your GitHub Pages deploy token, and push.
+---
+
 # Getting Started
 
 Get your personal landing page live in under 10 minutes.

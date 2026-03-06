@@ -1,3 +1,7 @@
+---
+description: Set up GitHub Actions to build and deploy your Homebase landing page automatically. Includes personal access token setup, custom domain, analytics, and scheduled rebuilds.
+---
+
 # CI/CD Setup
 
 The deploy workflow builds the site and pushes the output to your GitHub Pages repository.

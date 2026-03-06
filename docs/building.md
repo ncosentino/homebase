@@ -1,3 +1,7 @@
+---
+description: Run Homebase locally with the Eleventy dev server for live-reload previews. Covers npm install, dev server, production build, and project structure.
+---
+
 # Local Development
 
 Run homebase locally to preview your changes before pushing.

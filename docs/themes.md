@@ -1,3 +1,7 @@
+---
+description: Three built-in themes for your Homebase landing page, plus a guide to creating your own theme with CSS custom properties.
+---
+
 # Themes
 
 homebase ships with 3 built-in themes. Set `theme:` in `_data/site.yaml` to switch.

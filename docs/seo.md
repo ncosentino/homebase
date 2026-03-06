@@ -1,3 +1,7 @@
+---
+description: How Homebase generates title tags, meta descriptions, Open Graph, Twitter Card, JSON-LD, sitemap, robots.txt, and llms.txt from your site.yaml configuration.
+---
+
 # SEO & Discoverability
 
 homebase is optimized for search engines, AI answer engines, and social sharing out of the box.
