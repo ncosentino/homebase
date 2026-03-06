@@ -1,0 +1,15 @@
+# Homebase
+
+> Config-driven Eleventy template for your personal landing page.
+
+It is a fork-and-configure Eleventy (11ty) template -- edit a single YAML file to set your profile, links, theme, and SEO fields, then GitHub Actions deploys automatically.
+Author: Nick Cosentino (https://www.devleader.ca).
+
+- [Home](https://github.devleader.ca/homebase/) -- Config-driven Eleventy template for your personal landing page. Fork it, edit one YAML file to set your profile, links, and theme -- GitHub Actions handles the rest.
+- [Getting Started](https://github.devleader.ca/homebase/getting-started/) -- Get your Homebase personal landing page live in under 10 minutes. Fork the repo, edit site.yaml, configure your GitHub Pages deploy token, and push.
+- [Configuration](https://github.devleader.ca/homebase/configuration/) -- Full reference for _data/site.yaml -- every field for your profile, links, theme, SEO, analytics, YouTube embed, and banner.
+- [Themes](https://github.devleader.ca/homebase/themes/) -- Three built-in themes for your Homebase landing page, plus a guide to creating your own theme with CSS custom properties.
+- [CI/CD](https://github.devleader.ca/homebase/cicd/) -- Set up GitHub Actions to build and deploy your Homebase landing page automatically. Includes personal access token setup, custom domain, analytics, and scheduled rebuilds.
+- [SEO & Discoverability](https://github.devleader.ca/homebase/seo/) -- How Homebase generates title tags, meta descriptions, Open Graph, Twitter Card, JSON-LD, sitemap, robots.txt, and llms.txt from your site.yaml configuration.
+- [Local Development](https://github.devleader.ca/homebase/building/) -- Run Homebase locally with the Eleventy dev server for live-reload previews. Covers npm install, dev server, production build, and project structure.
+- [Articles](https://github.devleader.ca/homebase/articles/) -- Config-driven Eleventy template for your personal landing page. Fork it, edit a single YAML file to set your profile, links, and theme -- GitHub Actions handles the rest.
