@@ -69,6 +69,18 @@
         {%- endfor %}
       ]
       {%- endif %}
+      {%- if site.seo.person and site.seo.person.roles %},
+      "jobTitle": [
+        {%- for role in site.seo.person.roles %}
+        "{{ role.job_title | jsonEscape }}"{% if not loop.last %},{% endif %}
+        {%- endfor %}
+      ],
+      "worksFor": [
+        {%- for role in site.seo.person.roles %}
+        {"@type": "Organization", "name": "{{ role.works_for | jsonEscape }}"{% if role.works_for_url %}, "url": "{{ role.works_for_url }}"{% endif %}}{% if not loop.last %},{% endif %}
+        {%- endfor %}
+      ]
+      {%- endif %}
     }
     {%- if site.sections %},
     {
