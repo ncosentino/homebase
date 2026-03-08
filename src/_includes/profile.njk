@@ -1,18 +1,39 @@
 <div class="profile">
+  {# ── UTM helpers for profile links ── #}
+  {%- set _utm = site.utm if site.utm else {} -%}
+  {%- set _utmSource   = _utm.source -%}
+  {%- set _utmMedium   = _utm.medium -%}
+  {%- set _utmCampaign = _utm.campaign -%}
+  {%- set _utmContent  = _utm.content -%}
+  {%- set _utmTerm     = _utm.term -%}
+
+  {%- macro utmHref(url) -%}
+    {%- if _utmSource and url -%}
+      {%- set _sep = "?" if "?" not in url else "&" -%}
+      {{- url + _sep + "utm_source=" + _utmSource
+        + ("&utm_medium="   + _utmMedium   if _utmMedium)
+        + ("&utm_campaign=" + _utmCampaign if _utmCampaign)
+        + ("&utm_content="  + _utmContent  if _utmContent)
+        + ("&utm_term="     + _utmTerm     if _utmTerm) -}}
+    {%- else -%}
+      {{- url -}}
+    {%- endif -%}
+  {%- endmacro -%}
+
   {% if site.profile.banner %}
   <div class="profile-banner-wrap">
-    {% if site.profile.banner_url %}<a href="{{ site.profile.banner_url }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
+    {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
     <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
     {% if site.profile.banner_url %}</a>{% endif %}
     <div class="avatar-over-banner">
-      {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+      {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
       <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
       {% if site.profile.avatar_url %}</a>{% endif %}
     </div>
   </div>
   {% else %}
   <div class="avatar-wrap">
-    {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+    {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
     <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="96" height="96" loading="eager" />
     {% if site.profile.avatar_url %}</a>{% endif %}
   </div>
