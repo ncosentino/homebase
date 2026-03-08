@@ -81,6 +81,17 @@
         {%- endfor %}
       ]
       {%- endif %}
+      {%- if site.seo.person and site.seo.person.stats %},
+      "interactionStatistic": [
+        {%- set stats = site.seo.person.stats %}
+        {%- if stats.followers %}
+        {"@type": "InteractionCounter", "interactionType": "https://schema.org/FollowAction", "userInteractionCount": {{ stats.followers }}}{% if stats.posts_written %},{% endif %}
+        {%- endif %}
+        {%- if stats.posts_written %}
+        {"@type": "InteractionCounter", "interactionType": "https://schema.org/WriteAction", "userInteractionCount": {{ stats.posts_written }}}
+        {%- endif %}
+      ]
+      {%- endif %}
     }
     {%- if site.sections %},
     {
