@@ -44,6 +44,34 @@ module.exports = function (eleventyConfig) {
     return String(n);
   });
 
+  // flatLinks filter — flattens sections[].links[] into a single array with 1-based positions.
+  // Used to build ItemList JSON-LD without nested loop namespace issues.
+  eleventyConfig.addFilter("flatLinks", function (sections) {
+    if (!sections) return [];
+    const result = [];
+    let pos = 0;
+    for (const section of sections) {
+      for (const link of (section.links || [])) {
+        if (!link || !link.title || !link.url) continue;
+        pos++;
+        result.push({ position: pos, title: link.title, url: link.url });
+      }
+    }
+    return result;
+  });
+
+  // jsonEscape filter — escapes a string for safe embedding inside a JSON string literal.
+  // Does NOT add surrounding quotes.
+  eleventyConfig.addFilter("jsonEscape", function (str) {
+    if (str == null) return "";
+    return String(str)
+      .replace(/\\/g, "\\\\")
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, "\\n")
+      .replace(/\r/g, "\\r")
+      .replace(/\t/g, "\\t");
+  });
+
   // Inline file shortcode — for inlining CSS into <style> tags if desired
   eleventyConfig.addShortcode("inlineFile", function (filePath) {
     const fullPath = path.join(__dirname, filePath);

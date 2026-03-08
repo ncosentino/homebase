@@ -66,6 +66,21 @@
       ]
       {%- endif %}
     }
+    {%- if site.sections %},
+    {
+      "@type": "ItemList",
+      "@id": "{{ site.seo.canonical }}#links",
+      "name": "{{ site.seo.title | jsonEscape }} — Links",
+      "url": "{{ site.seo.canonical }}",
+      "itemListElement": [
+        {%- set allLinks = site.sections | flatLinks %}
+        {%- for link in allLinks %}
+        {%- if not loop.first %},{%- endif %}
+        {"@type": "ListItem", "position": {{ link.position }}, "name": "{{ link.title | jsonEscape }}", "url": "{{ link.url }}"}
+        {%- endfor %}
+      ]
+    }
+    {%- endif %}
   ]
 }
 </script>
