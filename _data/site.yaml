@@ -23,6 +23,10 @@ profile:
     - "Engineering Management"
     - "Open Source"
   show_topics: false
+  location: "United States"
+  language: "English"
+  creator_type: "Content Creator"
+  show_badges: false
 
 # ── SEO ──────────────────────────────────────────────────────────────────────
 seo:

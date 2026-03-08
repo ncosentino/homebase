@@ -125,6 +125,15 @@
         {%- endfor %}
       ]
       {%- endif %}
+      {%- if site.profile.location %},
+      "homeLocation": {"@type": "Place", "name": "{{ site.profile.location | jsonEscape | safe }}"}
+      {%- endif %}
+      {%- if site.profile.language %},
+      "knowsLanguage": "{{ site.profile.language | jsonEscape | safe }}"
+      {%- endif %}
+      {%- if site.profile.creator_type %},
+      "hasOccupation": {"@type": "Occupation", "name": "{{ site.profile.creator_type | jsonEscape | safe }}"}
+      {%- endif %}
     }
     {%- if site.sections %},
     {

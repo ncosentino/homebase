@@ -53,6 +53,13 @@
     {%- endfor %}
   </ul>
   {%- endif %}
+  {%- if site.profile.show_badges != false and (site.profile.location or site.profile.language or site.profile.creator_type) %}
+  <ul class="profile-badges">
+    {%- if site.profile.location %}<li class="profile-badge">{{ site.profile.location }}</li>{%- endif %}
+    {%- if site.profile.language %}<li class="profile-badge">{{ site.profile.language }}</li>{%- endif %}
+    {%- if site.profile.creator_type %}<li class="profile-badge">{{ site.profile.creator_type }}</li>{%- endif %}
+  </ul>
+  {%- endif %}
   {% if site.social_icons and site.social_icons.length %}
   <div class="social-icons-strip" role="list">
     {% for item in site.social_icons %}
