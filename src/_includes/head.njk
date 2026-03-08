@@ -100,7 +100,14 @@
         {%- endfor %}
       ]
       {%- endif %}
-      {%- if site.seo.person and site.seo.person.stats %},
+      {%- if socialStats and socialStats.length %},
+      "interactionStatistic": [
+        {%- for stat in socialStats %}
+        {%- if not loop.first %},{%- endif %}
+        {"@type": "InteractionCounter", "interactionType": "https://schema.org/FollowAction", "interactionService": {"@type": "Website", "name": "{{ stat.serviceName | jsonEscape }}", "url": "{{ stat.serviceUrl }}"}, "userInteractionCount": {{ stat.followersCount }}}
+        {%- endfor %}
+      ]
+      {%- elif site.seo.person and site.seo.person.stats %},
       "interactionStatistic": [
         {%- set stats = site.seo.person.stats %}
         {%- if stats.followers %}

@@ -62,6 +62,11 @@ seo:
       - job_title: "Content Creator"
         works_for: "Dev Leader"
         works_for_url: "https://www.devleader.ca"
+    stats:
+      # Enables auto-fetch of follower counts at build time for GitHub, Bluesky, and Mastodon
+      # (no API key needed for those). YouTube channels use YOUTUBE_API_KEY secret (see CI).
+      # All other platforms use the `followers` field on each social_icons entry.
+      auto_fetch: true
 
   recent_content:
     rss_feed: "https://www.devleader.ca/feed"
@@ -104,9 +109,19 @@ youtube_channels:
   - channel_id: "UCJ90Is0z9KIyNSufH--IwRg"
     name: "Dev Leader"
     max_videos: 1
+    followers: 15000
   - channel_id: "UC9KQRiF55bj4as3MV00l-CA"
     name: "Code Commute"
     max_videos: 1
+    followers: 3000
+  - channel_id: "UCGwW7g70QUMZhSHMyRWnVTQ"
+    name: "Dev Leader: Path to Tech"
+    max_videos: 1
+    followers: 100
+  - channel_id: "UCg5QzmZnkjKzTXlGZTG4NhQ"
+    name: "The Dev Leader Podcast"
+    max_videos: 1
+    followers: 250
 
 # Option B — Hard-code specific videos. Used as fallback if youtube_channels
 # is empty or omitted. Leave both empty to hide the video section entirely.
@@ -116,34 +131,51 @@ featured_videos: []
 social_icons:
   - icon: "youtube"
     url: "https://www.youtube.com/@devleader?sub_confirmation=1"
+    # YouTube subscriber counts are fetched via YOUTUBE_API_KEY (see youtube_channels above)
+    # This entry is for the social icon strip only; followers sourced from youtube_channels
   - icon: "substack"
     url: "https://devleaderweekly.substack.com"
+    followers: 9000
   - icon: "applepodcast"
     url: "https://podcasts.apple.com/us/podcast/dev-leader-podcast/id1764207822"
+    # Apple Podcasts does not expose public follower/subscriber counts
   - icon: "tiktok"
     url: "https://tiktok.com/@devleader"
+    followers: 1819
   - icon: "linkedin"
+    name: "LinkedIn (Nick Cosentino)"
     url: "https://linkedin.com/in/nickcosentino"
+    followers: 34000
   - icon: "twitter"
     url: "https://x.com/devleaderca"
+    followers: 6112
   - icon: "instagram"
     url: "https://instagram.com/dev.leader"
+    followers: 4668
   - icon: "threads"
     url: "https://www.threads.com/@dev.leader"
+    followers: 1947
   - icon: "twitch"
     url: "https://www.twitch.tv/devleaderca"
+    followers: 123
   - icon: "kick"
     url: "https://kick.com/devleader"
+    followers: 38
   - icon: "github"
     url: "https://www.github.com/ncosentino"
+    # followers auto-fetched from api.github.com at build time
   - icon: "bluesky"
     url: "https://bsky.app/profile/devleader.ca"
+    # followers auto-fetched from public.api.bsky.app at build time
   - icon: "mastodon"
     url: "https://hachyderm.io/@devleader"
+    # followers auto-fetched from hachyderm.io API at build time
   - icon: "facebook"
     url: "https://facebook.com/devleaderca"
+    followers: 667
   - icon: "pinterest"
     url: "https://pinterest.com/ncosentino"
+    # Pinterest does not expose public follower counts
 
 # ── Link Sections ─────────────────────────────────────────────────────────────
 sections:
