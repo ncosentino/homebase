@@ -63,12 +63,30 @@
   {%- if site.profile.contact_url and site.profile.show_contact_cta != false %}
   <a class="profile-contact-cta" href="{{ site.profile.contact_url }}" target="_blank" rel="noopener noreferrer">Work with me &rarr;</a>
   {%- endif %}
+  {%- if site.profile.show_total_reach != false and socialStats and socialStats.totalReach %}
+  <p class="profile-total-reach">Total Audience: {{ (socialStats.totalReach / 1000) | round(1) }}k+</p>
+  {%- endif %}
   {% if site.social_icons and site.social_icons.length %}
   <div class="social-icons-strip" role="list">
     {% for item in site.social_icons %}
+    {%- set _badgeParts = [] %}
+    {%- if site.profile.show_follower_badges != false %}
+      {%- if item.followers %}
+        {%- if _badgeParts.push(item.followers) %}{% endif %}
+      {%- elif socialStats and socialStats.stats %}
+        {%- for stat in socialStats.stats %}
+          {%- if not _badgeParts.length and (item.icon | lower) in (stat.serviceName | lower) %}
+            {%- if _badgeParts.push(stat.followersCount) %}{% endif %}
+          {%- endif %}
+        {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    <span class="social-icon-wrap">
     <a class="social-icon-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.icon }}" role="listitem">
       {% icon item.icon %}
     </a>
+    {%- if _badgeParts | length %}<span class="follower-badge">{{ (_badgeParts | first / 1000) | round(1) }}k</span>{%- endif %}
+    </span>
     {% endfor %}
   </div>
   {% endif %}

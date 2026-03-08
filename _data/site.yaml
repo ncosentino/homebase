@@ -29,6 +29,8 @@ profile:
   show_badges: false
   contact_url: "https://tidycal.com/nbcosentino/management-and-leadership-consult-30-mins"
   show_contact_cta: false
+  show_total_reach: true
+  show_follower_badges: false
 
 # ── SEO ──────────────────────────────────────────────────────────────────────
 seo:

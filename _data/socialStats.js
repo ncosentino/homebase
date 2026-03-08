@@ -26,7 +26,7 @@ module.exports = async function () {
   const site = yaml.load(siteYaml);
 
   const stats = site.seo && site.seo.person && site.seo.person.stats;
-  if (!stats || !stats.auto_fetch) return [];
+  if (!stats || !stats.auto_fetch) return { stats: [], totalReach: 0 };
 
   const manualResults = [];
   const apiCalls = [];
@@ -88,7 +88,9 @@ module.exports = async function () {
     }
   }
 
-  return manualResults.concat(apiResults);
+  const allStats = manualResults.concat(apiResults);
+  const totalReach = allStats.reduce((sum, s) => sum + (s.followersCount || 0), 0);
+  return { stats: allStats, totalReach };
 };
 
 function buildAutoFetch(url, serviceName, serviceUrl) {
