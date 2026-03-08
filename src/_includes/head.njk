@@ -134,6 +134,21 @@
       {%- if site.profile.creator_type %},
       "hasOccupation": {"@type": "Occupation", "name": "{{ site.profile.creator_type | jsonEscape | safe }}"}
       {%- endif %}
+      {%- if site.seo.person and site.seo.person.awards %},
+      "award": [
+        {%- for award in site.seo.person.awards %}
+        "{{ award | jsonEscape | safe }}"{% if not loop.last %},{% endif %}
+        {%- endfor %}
+      ]
+      {%- endif %}
+      {%- if site.seo.person and site.seo.person.credentials %},
+      "hasCredential": [
+        {%- for cred in site.seo.person.credentials %}
+        {%- if not loop.first %},{%- endif %}
+        {"@type": "EducationalOccupationalCredential", "name": "{{ cred.name | jsonEscape | safe }}"{% if cred.url %}, "url": "{{ cred.url }}"{% endif %}{% if cred.category %}, "credentialCategory": "{{ cred.category | jsonEscape | safe }}"{% endif %}}
+        {%- endfor %}
+      ]
+      {%- endif %}
     }
     {%- if site.sections %},
     {

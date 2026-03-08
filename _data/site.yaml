@@ -82,6 +82,12 @@ seo:
       # (no API key needed for those). YouTube channels use YOUTUBE_API_KEY secret (see CI).
       # All other platforms use the `followers` field on each social_icons entry.
       auto_fetch: true
+    awards:
+      - "Microsoft MVP Alumni"
+    credentials:
+      - name: "Principal Software Engineering Manager at Microsoft"
+        url: "https://www.microsoft.com"
+        category: "Professional"
 
   recent_content:
     rss_feed: "https://www.devleader.ca/feed"
