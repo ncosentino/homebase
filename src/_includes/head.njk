@@ -78,7 +78,7 @@
       "name": "{{ site.profile.name }}",
       "alternateName": "{{ site.profile.username }}",
       "identifier": "{{ site.profile.username }}",
-      "description": "{{ site.seo.description }}",
+      "description": "{{ site.profile.tagline if site.profile.tagline else site.seo.description }}",
       "image": "{{ site.seo.og_image }}",
       "url": "{{ site.seo.canonical }}"
       {%- if site.social_icons %},

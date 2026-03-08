@@ -43,6 +43,9 @@
   <p class="profile-username">{{ site.profile.username }}</p>
   {% endif %}
   <p class="profile-bio">{{ site.profile.bio }}</p>
+  {%- if site.profile.tagline and site.profile.show_tagline != false %}
+  <p class="profile-tagline">{{ site.profile.tagline }}</p>
+  {%- endif %}
   {% if site.social_icons and site.social_icons.length %}
   <div class="social-icons-strip" role="list">
     {% for item in site.social_icons %}

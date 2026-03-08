@@ -4,6 +4,11 @@ permalink: /llms.txt
 # {{ site.profile.name }}
 
 > {{ site.profile.bio }}
+{%- if site.profile.ai_summary %}
+
+## Who is {{ site.profile.name }}
+{{ site.profile.ai_summary }}
+{%- endif %}
 
 {{ site.seo.description }}
 
