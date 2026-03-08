@@ -83,12 +83,12 @@ function parseRss(xml, max) {
 }
 
 function extractTag(xml, tag) {
-  const m = xml.match(new RegExp(`<${tag}[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/${tag}>`, "i"));
+  const m = xml.match(new RegExp("<" + tag + "[^>]*>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?<\\/" + tag + ">", "i"));
   return m ? m[1].trim() : null;
 }
 
 function extractAttr(xml, tag, attr) {
-  const m = xml.match(new RegExp(`<${tag}[^>]*\\s${attr}="([^"]+)"`, "i"));
+  const m = xml.match(new RegExp("<" + tag + "[^>]*\\s" + attr + '="([^"]+)"', "i"));
   return m ? m[1] : null;
 }
 

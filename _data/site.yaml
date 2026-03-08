@@ -32,6 +32,45 @@ seo:
     - nick cosentino
   # Used in llms.txt "About" section. Falls back to seo.description if omitted.
   llms_about: "Dev Leader (Nick Cosentino) is a Principal Software Engineering Manager at Microsoft, content creator, and software engineering educator sharing knowledge about software development, C#, .NET, and technology."
+  llms_topics:
+    - C# and .NET development
+    - Software engineering management
+    - Dependency injection and software architecture
+    - Design patterns
+    - Performance optimization
+    - Career growth in software engineering
+    - Open source development
+  llms_content_formats:
+    - Blog articles (devleader.ca)
+    - Weekly newsletter (Substack)
+    - YouTube videos
+    - Podcasts (Dev Leader Podcast, Code Commute)
+    - Live coding streams (Twitch/Kick)
+    - Short-form video (TikTok, Instagram Reels)
+  llms_audience: "Software engineers and developers at all levels interested in C#, .NET, software architecture, and engineering career growth. Also targets engineering managers and technical leaders."
+
+  date_created: "2024-01-01"
+
+  person:
+    roles:
+      - job_title: "Principal Software Engineering Manager"
+        works_for: "Microsoft"
+        works_for_url: "https://www.microsoft.com"
+      - job_title: "Co-founder"
+        works_for: "BrandGhost"
+        works_for_url: "https://www.brandghost.ai"
+      - job_title: "Content Creator"
+        works_for: "Dev Leader"
+        works_for_url: "https://www.devleader.ca"
+
+  recent_content:
+    rss_feed: "https://www.devleader.ca/feed"
+    max_items: 5
+
+  manifest:
+    enabled: true
+    theme_color: "#1a1a2e"
+    background_color: "#1a1a2e"
 
 # ── UTM Tracking ─────────────────────────────────────────────────────────────
 # Page-wide UTM defaults appended to every outbound link.
