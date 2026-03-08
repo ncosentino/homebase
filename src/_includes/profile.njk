@@ -66,9 +66,10 @@
   {%- if site.profile.show_total_reach != false and socialStats and socialStats.totalReach %}
   <p class="profile-total-reach">Total Audience: {{ (socialStats.totalReach / 1000) | round(1) }}k+</p>
   {%- endif %}
-  {% if site.social_icons and site.social_icons.length %}
+  {% if site.socials and site.socials.length %}
   <div class="social-icons-strip" role="list">
-    {% for item in site.social_icons %}
+    {% for item in site.socials %}
+    {%- if item.show_icon != false %}
     {%- set _badgeParts = [] %}
     {%- if site.profile.show_follower_badges != false %}
       {%- if item.followers %}
@@ -87,6 +88,7 @@
     </a>
     {%- if _badgeParts | length %}<span class="follower-badge">{{ (_badgeParts | first / 1000) | round(1) }}k</span>{%- endif %}
     </span>
+    {%- endif %}
     {% endfor %}
   </div>
   {% endif %}

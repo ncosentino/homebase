@@ -81,9 +81,9 @@
       "description": "{{ site.profile.tagline if site.profile.tagline else site.seo.description }}",
       "image": "{{ site.seo.og_image }}",
       "url": "{{ site.seo.canonical }}"
-      {%- if site.social_icons %},
+      {%- if site.socials %},
       "sameAs": [
-        {%- for social in site.social_icons %}
+        {%- for social in site.socials %}
         "{{ social.url.split('?') | first }}"{% if not loop.last %},{% endif %}
         {%- endfor %}
       ]

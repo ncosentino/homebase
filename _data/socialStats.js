@@ -4,21 +4,25 @@ const path = require("path");
 
 // Default service metadata keyed by icon name
 const ICON_META = {
-  youtube:      { name: "YouTube",       url: "https://www.youtube.com" },
-  substack:     { name: "Substack",      url: "https://substack.com" },
-  tiktok:       { name: "TikTok",        url: "https://www.tiktok.com" },
-  linkedin:     { name: "LinkedIn",      url: "https://www.linkedin.com" },
-  twitter:      { name: "Twitter",       url: "https://x.com" },
-  instagram:    { name: "Instagram",     url: "https://www.instagram.com" },
-  threads:      { name: "Threads",       url: "https://www.threads.com" },
-  twitch:       { name: "Twitch",        url: "https://www.twitch.tv" },
-  kick:         { name: "Kick",          url: "https://kick.com" },
-  github:       { name: "GitHub",        url: "https://github.com" },
-  bluesky:      { name: "Bluesky",       url: "https://bsky.app" },
-  mastodon:     { name: "Mastodon",      url: null }, // instance URL from icon's own URL
-  facebook:     { name: "Facebook",      url: "https://www.facebook.com" },
-  pinterest:    { name: "Pinterest",     url: "https://www.pinterest.com" },
-  applepodcast: { name: "Apple Podcasts",url: "https://podcasts.apple.com" },
+  youtube:      { name: "YouTube",        url: "https://www.youtube.com" },
+  substack:     { name: "Substack",       url: "https://substack.com" },
+  tiktok:       { name: "TikTok",         url: "https://www.tiktok.com" },
+  linkedin:     { name: "LinkedIn",       url: "https://www.linkedin.com" },
+  twitter:      { name: "Twitter",        url: "https://x.com" },
+  instagram:    { name: "Instagram",      url: "https://www.instagram.com" },
+  threads:      { name: "Threads",        url: "https://www.threads.com" },
+  twitch:       { name: "Twitch",         url: "https://www.twitch.tv" },
+  kick:         { name: "Kick",           url: "https://kick.com" },
+  github:       { name: "GitHub",         url: "https://github.com" },
+  bluesky:      { name: "Bluesky",        url: "https://bsky.app" },
+  mastodon:     { name: "Mastodon",       url: null }, // instance URL from icon's own URL
+  facebook:     { name: "Facebook",       url: "https://www.facebook.com" },
+  pinterest:    { name: "Pinterest",      url: "https://www.pinterest.com" },
+  applepodcast: { name: "Apple Podcasts", url: "https://podcasts.apple.com" },
+  devto:        { name: "DEV Community",  url: "https://dev.to" },
+  medium:       { name: "Medium",         url: "https://medium.com" },
+  dailydev:     { name: "daily.dev",      url: "https://daily.dev" },
+  hashnode:     { name: "Hashnode",       url: "https://hashnode.com" },
 };
 
 module.exports = async function () {
@@ -31,39 +35,36 @@ module.exports = async function () {
   const manualResults = [];
   const apiCalls = [];
 
-  // Step 1: icon-based stats
-  for (const icon of site.social_icons || []) {
+  // Step 1: socials-based stats (all platforms, visible and hidden)
+  const youtubeApiKey = process.env.YOUTUBE_API_KEY;
+  for (const icon of site.socials || []) {
     if (!icon.icon) continue;
     const meta = ICON_META[icon.icon] || { name: icon.icon, url: null };
     const serviceName = icon.name || meta.name;
-    const serviceUrl = meta.url || getOrigin(icon.url);
+    // For YouTube channels use the specific channel URL; for others use ICON_META url
+    const serviceUrl = icon.channel_id
+      ? (icon.url ? icon.url.split("?")[0] : meta.url)
+      : (meta.url || getOrigin(icon.url));
 
-    if (typeof icon.followers === "number") {
+    if (icon.channel_id) {
+      // YouTube channel — use API or manual fallback
+      if (youtubeApiKey) {
+        apiCalls.push({
+          type: "youtube",
+          serviceName,
+          serviceUrl,
+          channelId: icon.channel_id,
+          apiKey: youtubeApiKey,
+          manualFallback: typeof icon.followers === "number" ? icon.followers : null,
+        });
+      } else if (typeof icon.followers === "number") {
+        manualResults.push({ serviceName, serviceUrl, followersCount: icon.followers });
+      }
+    } else if (typeof icon.followers === "number") {
       manualResults.push({ serviceName, serviceUrl, followersCount: icon.followers });
     } else {
       const call = buildAutoFetch(icon.url, serviceName, serviceUrl);
       if (call) apiCalls.push(call);
-    }
-  }
-
-  // Step 2: youtube_channels — one InteractionCounter per channel
-  const youtubeApiKey = process.env.YOUTUBE_API_KEY;
-  for (const channel of site.youtube_channels || []) {
-    if (!channel.channel_id) continue;
-    const serviceName = channel.name ? "YouTube (" + channel.name + ")" : "YouTube";
-    const serviceUrl = "https://www.youtube.com/channel/" + channel.channel_id;
-
-    if (youtubeApiKey) {
-      apiCalls.push({
-        type: "youtube",
-        serviceName,
-        serviceUrl,
-        channelId: channel.channel_id,
-        apiKey: youtubeApiKey,
-        manualFallback: typeof channel.followers === "number" ? channel.followers : null,
-      });
-    } else if (typeof channel.followers === "number") {
-      manualResults.push({ serviceName, serviceUrl, followersCount: channel.followers });
     }
   }
 
@@ -96,6 +97,12 @@ module.exports = async function () {
 function buildAutoFetch(url, serviceName, serviceUrl) {
   if (!url) return null;
 
+  // Hashnode: hashnode.com/@{username}
+  const hashnodeMatch = url.match(/hashnode\.com\/@([^/?#]+)/i);
+  if (hashnodeMatch) {
+    return { type: "hashnode", username: hashnodeMatch[1], serviceName, serviceUrl };
+  }
+
   // GitHub: github.com/{user}
   const ghMatch = url.match(/github\.com\/([^/?#]+)/i);
   if (ghMatch) {
@@ -118,6 +125,17 @@ function buildAutoFetch(url, serviceName, serviceUrl) {
 }
 
 async function runApiCall(call) {
+  if (call.type === "hashnode") {
+    const res = await fetch("https://gql.hashnode.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "User-Agent": "homebase-seo-build" },
+      body: JSON.stringify({ query: `{ user(username: "${call.username}") { followersCount } }` }),
+    });
+    if (!res.ok) throw new Error("Hashnode API " + res.status);
+    const data = await res.json();
+    return { serviceName: call.serviceName, serviceUrl: call.serviceUrl, followersCount: data.data.user.followersCount };
+  }
+
   if (call.type === "github") {
     const res = await fetch("https://api.github.com/users/" + call.user, {
       headers: { "User-Agent": "homebase-seo-build" },

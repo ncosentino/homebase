@@ -126,38 +126,44 @@ utm:
 # ── Theme ────────────────────────────────────────────────────────────────────
 theme: devleader
 
-# ── Featured Videos ──────────────────────────────────────────────────────────
-# Option A — Pull latest video(s) live from YouTube channels at build time.
-# channel_id: the UC... ID from youtube.com/@handle/about (see RSS link)
-# max_videos: how many latest videos to show per channel (default: 1)
-youtube_channels:
-  - channel_id: "UCJ90Is0z9KIyNSufH--IwRg"
-    name: "Dev Leader"
-    max_videos: 1
-    followers: 15000
-  - channel_id: "UC9KQRiF55bj4as3MV00l-CA"
-    name: "Code Commute"
-    max_videos: 1
-    followers: 3000
-  - channel_id: "UCGwW7g70QUMZhSHMyRWnVTQ"
-    name: "Dev Leader: Path to Tech"
-    max_videos: 1
-    followers: 100
-  - channel_id: "UCg5QzmZnkjKzTXlGZTG4NhQ"
-    name: "The Dev Leader Podcast"
-    max_videos: 1
-    followers: 250
+# ── Embeds ───────────────────────────────────────────────────────────────────
+embeds:
+  # Option A — Pull latest video(s) live from YouTube channels at build time.
+  # channel_id: the UC... ID from youtube.com/@handle/about (see RSS link)
+  # max_videos: how many latest videos to show per channel (default: 1)
+  # Subscriber counts are NOT stored here — add a socials entry with channel_id instead.
+  youtube_channels:
+    - channel_id: "UCJ90Is0z9KIyNSufH--IwRg"
+      name: "Dev Leader"
+      max_videos: 1
+    - channel_id: "UC9KQRiF55bj4as3MV00l-CA"
+      name: "Code Commute"
+      max_videos: 1
+    - channel_id: "UCGwW7g70QUMZhSHMyRWnVTQ"
+      name: "Dev Leader: Path to Tech"
+      max_videos: 1
+    - channel_id: "UCg5QzmZnkjKzTXlGZTG4NhQ"
+      name: "The Dev Leader Podcast"
+      max_videos: 1
 
-# Option B — Hard-code specific videos. Used as fallback if youtube_channels
+# Option B — Hard-code specific videos. Used as fallback if embeds.youtube_channels
 # is empty or omitted. Leave both empty to hide the video section entirely.
 featured_videos: []
 
-# ── Social Icons Strip ────────────────────────────────────────────────────────
-social_icons:
+# ── Socials ───────────────────────────────────────────────────────────────────
+# All social presences, used for: icon strip, sameAs JSON-LD, interactionStatistic.
+# show_icon: false = JSON-LD/structured data only, no icon shown in UI (default: true)
+# channel_id: YouTube UC... ID — enables YouTube API subscriber count auto-fetch
+# followers: manual count (used when no auto-fetch is available)
+# Auto-fetched (no followers field needed): github, bluesky, mastodon, hashnode
+socials:
+  # ── Visible icons ────────────────────────────────────────────────────────────
   - icon: "youtube"
+    name: "YouTube (Dev Leader)"
     url: "https://www.youtube.com/@devleader?sub_confirmation=1"
-    # YouTube subscriber counts are fetched via YOUTUBE_API_KEY (see youtube_channels above)
-    # This entry is for the social icon strip only; followers sourced from youtube_channels
+    channel_id: "UCJ90Is0z9KIyNSufH--IwRg"
+    # subscribers auto-fetched via YOUTUBE_API_KEY; falls back to followers if set
+    followers: 15000
   - icon: "substack"
     url: "https://devleaderweekly.substack.com"
     followers: 9000
@@ -201,6 +207,53 @@ social_icons:
   - icon: "pinterest"
     url: "https://pinterest.com/ncosentino"
     # Pinterest does not expose public follower counts
+
+  # ── JSON-LD / structured data only (show_icon: false) ────────────────────────
+  - icon: "youtube"
+    name: "YouTube (Code Commute)"
+    url: "https://www.youtube.com/channel/UC9KQRiF55bj4as3MV00l-CA"
+    channel_id: "UC9KQRiF55bj4as3MV00l-CA"
+    followers: 3000
+    show_icon: false
+  - icon: "youtube"
+    name: "YouTube (Dev Leader: Path to Tech)"
+    url: "https://www.youtube.com/channel/UCGwW7g70QUMZhSHMyRWnVTQ"
+    channel_id: "UCGwW7g70QUMZhSHMyRWnVTQ"
+    followers: 100
+    show_icon: false
+  - icon: "youtube"
+    name: "YouTube (The Dev Leader Podcast)"
+    url: "https://www.youtube.com/channel/UCg5QzmZnkjKzTXlGZTG4NhQ"
+    channel_id: "UCg5QzmZnkjKzTXlGZTG4NhQ"
+    followers: 250
+    show_icon: false
+  - icon: "devto"
+    url: "https://dev.to/devleader"
+    followers: 6110
+    show_icon: false
+  - icon: "medium"
+    url: "https://stories.devleader.ca"
+    followers: 497
+    show_icon: false
+  - icon: "dailydev"
+    name: "daily.dev (Squad)"
+    url: "https://app.daily.dev/devleader"
+    followers: 6400
+    show_icon: false
+  - icon: "hashnode"
+    url: "https://hashnode.com/@devleader"
+    # followers auto-fetched via Hashnode GraphQL API at build time
+    show_icon: false
+  - icon: "linkedin"
+    name: "LinkedIn (Dev Leader)"
+    url: "https://linkedin.com/company/devleader"
+    followers: 1500
+    show_icon: false
+  - icon: "linkedin"
+    name: "LinkedIn (Code Commute)"
+    url: "https://linkedin.com/company/codecommute"
+    followers: 76
+    show_icon: false
 
 # ── Link Sections ─────────────────────────────────────────────────────────────
 sections:

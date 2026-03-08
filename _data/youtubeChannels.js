@@ -8,7 +8,7 @@ module.exports = async function () {
     "utf8"
   );
   const site = yaml.load(siteYaml);
-  const channels = site.youtube_channels;
+  const channels = site.embeds && site.embeds.youtube_channels;
 
   if (!channels || !channels.length) return [];
 
