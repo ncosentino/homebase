@@ -45,14 +45,19 @@ module.exports = function (eleventyConfig) {
   });
 
   // flatLinks filter — flattens sections[].links[] into a single array with 1-based positions.
+  // Deduplicates by URL (first occurrence wins) to satisfy JSON-LD ItemList uniqueness requirement.
   // Used to build ItemList JSON-LD without nested loop namespace issues.
   eleventyConfig.addFilter("flatLinks", function (sections) {
     if (!sections) return [];
     const result = [];
+    const seen = new Set();
     let pos = 0;
     for (const section of sections) {
       for (const link of (section.links || [])) {
         if (!link || !link.title || !link.url) continue;
+        const cleanUrl = link.url.split("?")[0].replace(/\/$/, "");
+        if (seen.has(cleanUrl)) continue;
+        seen.add(cleanUrl);
         pos++;
         result.push({ position: pos, title: link.title, url: link.url });
       }
