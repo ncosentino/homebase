@@ -62,7 +62,8 @@
         {
           "@type": "Article",
           "headline": "{{ article.headline | jsonEscape }}",
-          "url": "{{ article.url }}"
+          "url": "{{ article.url }}",
+          "image": "{{ article.image if article.image else site.seo.og_image }}"
           {%- if article.datePublished %},
           "datePublished": "{{ article.datePublished }}"
           {%- endif %},

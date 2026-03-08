@@ -53,11 +53,13 @@ function parseRss(xml, max) {
     const title = extractTag(item, "title");
     const link = extractTag(item, "link") || extractAttr(item, "link", "href");
     const pubDate = extractTag(item, "pubDate") || extractTag(item, "dc:date");
+    const image = extractAttr(item, "media:content", "url") || extractAttr(item, "enclosure", "url") || null;
     if (title && link) {
       results.push({
         headline: decodeEntities(title),
         url: link.trim(),
         datePublished: pubDate ? toIso(pubDate) : null,
+        image,
       });
     }
   }
@@ -70,11 +72,13 @@ function parseRss(xml, max) {
     const title = extractTag(entry, "title");
     const link = extractAttr(entry, "link", "href");
     const published = extractTag(entry, "published") || extractTag(entry, "updated");
+    const image = extractAttr(entry, "media:content", "url") || extractAttr(entry, "enclosure", "url") || null;
     if (title && link) {
       results.push({
         headline: decodeEntities(title),
         url: link.trim(),
         datePublished: published ? toIso(published) : null,
+        image,
       });
     }
   }
@@ -103,7 +107,7 @@ function decodeEntities(str) {
 
 function toIso(dateStr) {
   try {
-    return new Date(dateStr).toISOString().split("T")[0];
+    return new Date(dateStr).toISOString(); // full ISO-8601 with timezone (Z)
   } catch {
     return null;
   }
