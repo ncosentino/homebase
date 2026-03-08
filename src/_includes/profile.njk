@@ -60,6 +60,9 @@
     {%- if site.profile.creator_type %}<li class="profile-badge">{{ site.profile.creator_type }}</li>{%- endif %}
   </ul>
   {%- endif %}
+  {%- if site.profile.contact_url and site.profile.show_contact_cta != false %}
+  <a class="profile-contact-cta" href="{{ site.profile.contact_url }}" target="_blank" rel="noopener noreferrer">Work with me &rarr;</a>
+  {%- endif %}
   {% if site.social_icons and site.social_icons.length %}
   <div class="social-icons-strip" role="list">
     {% for item in site.social_icons %}

@@ -149,6 +149,9 @@
         {%- endfor %}
       ]
       {%- endif %}
+      {%- if site.profile.contact_url %},
+      "contactPoint": {"@type": "ContactPoint", "contactType": "Work inquiries", "url": "{{ site.profile.contact_url }}"}
+      {%- endif %}
     }
     {%- if site.sections %},
     {
