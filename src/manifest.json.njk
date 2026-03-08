@@ -1,0 +1,29 @@
+---
+permalink: /manifest.json
+---
+{
+  "name": "{{ site.seo.site_name if site.seo.site_name else site.seo.title }}",
+  "short_name": "{{ site.profile.username if site.profile.username else site.seo.title }}",
+  "description": "{{ site.seo.description }}",
+  "start_url": "/",
+  "display": "standalone",
+  "lang": "{{ site.seo.locale if site.seo.locale else 'en' }}"
+  {%- if site.seo.manifest.theme_color %},
+  "theme_color": "{{ site.seo.manifest.theme_color }}"
+  {%- endif %}
+  {%- if site.seo.manifest.background_color %},
+  "background_color": "{{ site.seo.manifest.background_color }}"
+  {%- endif %}
+  {%- if site.seo.og_image %},
+  "icons": [
+    {%- if site.seo.manifest.icons %}
+    {%- for icon in site.seo.manifest.icons %}
+    {%- if not loop.first %},{%- endif %}
+    {"src": "{{ icon.src }}", "sizes": "{{ icon.sizes }}", "type": "image/png"}
+    {%- endfor %}
+    {%- else %}
+    {"src": "{{ site.seo.og_image }}", "sizes": "any", "type": "image/png"}
+    {%- endif %}
+  ]
+  {%- endif %}
+}

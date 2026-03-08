@@ -23,6 +23,9 @@
 <meta property="og:site_name" content="{{ site.seo.site_name if site.seo.site_name else site.seo.title }}" />
 <meta property="og:updated_time" content="{{ buildMeta.unix }}" />
 <meta property="profile:username" content="{{ site.profile.username }}" />
+{%- if site.seo.manifest and site.seo.manifest.enabled %}
+<link rel="manifest" href="/manifest.json" />
+{%- endif %}
 
 {# ── Twitter Card ─────────────────────────────────────────────────────────── #}
 <meta name="twitter:card" content="summary_large_image" />
