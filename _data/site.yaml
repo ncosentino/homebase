@@ -279,3 +279,7 @@ sections:
         url: "https://github.devleader.ca/narnia/"
         github_url: "https://github.com/ncosentino/narnia"
         description: "An MCP server and local web UI for browsing and searching your GitHub Copilot CLI session history. Indexes your local session store, making it easy to retrieve past AI conversations and coding sessions."
+      - title: "Homebase"
+        url: "https://github.devleader.ca/homebase/"
+        github_url: "https://github.com/ncosentino/homebase"
+        description: "A config-driven, self-hosted Linktree alternative built with Eleventy. Fork it, edit one YAML file, and deploy your own landing page to GitHub Pages with full SEO, JSON-LD structured data, PWA manifest, UTM tracking, and auto-fetched social stats."
