@@ -46,7 +46,11 @@
       "significantLink": "{{ site.seo.canonical }}"
       {%- if site.seo.keywords %},
       "keywords": "{{ site.seo.keywords | join(', ') }}"
+      {%- endif %}
+      {%- if site.seo.date_created %},
+      "dateCreated": "{{ site.seo.date_created }}"
       {%- endif %},
+      "dateModified": "{{ buildMeta.iso }}",
       "mainEntity": { "@id": "{{ site.seo.canonical }}#person" }
     },
     {
