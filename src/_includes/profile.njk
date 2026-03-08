@@ -46,6 +46,13 @@
   {%- if site.profile.tagline and site.profile.show_tagline != false %}
   <p class="profile-tagline">{{ site.profile.tagline }}</p>
   {%- endif %}
+  {%- if site.profile.topics and site.profile.show_topics != false %}
+  <ul class="topic-chips">
+    {%- for topic in site.profile.topics %}
+    <li class="topic-chip">{{ topic }}</li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
   {% if site.social_icons and site.social_icons.length %}
   <div class="social-icons-strip" role="list">
     {% for item in site.social_icons %}

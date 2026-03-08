@@ -118,6 +118,13 @@
         {%- endif %}
       ]
       {%- endif %}
+      {%- if site.profile.topics %},
+      "knowsAbout": [
+        {%- for topic in site.profile.topics %}
+        "{{ topic | jsonEscape | safe }}"{% if not loop.last %},{% endif %}
+        {%- endfor %}
+      ]
+      {%- endif %}
     }
     {%- if site.sections %},
     {

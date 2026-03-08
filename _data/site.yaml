@@ -16,6 +16,13 @@ profile:
   tagline: "Simplifying software engineering concepts for you."
   show_tagline: false
   ai_summary: "Nick Cosentino, known as Dev Leader, is a Principal Software Engineering Manager at Microsoft and a prolific content creator focused on C#, .NET, software architecture, design patterns, and engineering career growth. He publishes a weekly newsletter on devleader.ca, runs multiple YouTube channels and a podcast, and has built a combined audience exceeding 85,000 followers across LinkedIn, YouTube, Substack, and other platforms. Nick is known for making complex software engineering concepts approachable for developers at all levels."
+  topics:
+    - "C# & .NET"
+    - "Software Engineering"
+    - "Software Architecture"
+    - "Engineering Management"
+    - "Open Source"
+  show_topics: false
 
 # ── SEO ──────────────────────────────────────────────────────────────────────
 seo:
