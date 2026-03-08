@@ -84,7 +84,7 @@
       {%- if site.social_icons %},
       "sameAs": [
         {%- for social in site.social_icons %}
-        "{{ social.url }}"{% if not loop.last %},{% endif %}
+        "{{ social.url.split('?') | first }}"{% if not loop.last %},{% endif %}
         {%- endfor %}
       ]
       {%- endif %}
