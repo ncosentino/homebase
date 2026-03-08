@@ -52,6 +52,22 @@
       {%- endif %},
       "dateModified": "{{ buildMeta.iso }}",
       "mainEntity": { "@id": "{{ site.seo.canonical }}#person" }
+      {%- if recentContent and recentContent.length %},
+      "hasPart": [
+        {%- for article in recentContent %}
+        {%- if not loop.first %},{%- endif %}
+        {
+          "@type": "Article",
+          "headline": "{{ article.headline | jsonEscape }}",
+          "url": "{{ article.url }}"
+          {%- if article.datePublished %},
+          "datePublished": "{{ article.datePublished }}"
+          {%- endif %},
+          "author": { "@id": "{{ site.seo.canonical }}#person" }
+        }
+        {%- endfor %}
+      ]
+      {%- endif %}
     },
     {
       "@type": "Person",
