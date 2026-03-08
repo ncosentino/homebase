@@ -16,3 +16,20 @@ permalink: /llms.txt
 ## Social Profiles
 {% for icon in site.social_icons %}- {{ icon.platform }}: {{ icon.url }}
 {% endfor %}
+{%- if site.seo.llms_topics %}
+
+## Topics
+{% for topic in site.seo.llms_topics %}- {{ topic }}
+{% endfor %}
+{%- endif %}
+{%- if site.seo.llms_content_formats %}
+
+## Content Formats
+{% for format in site.seo.llms_content_formats %}- {{ format }}
+{% endfor %}
+{%- endif %}
+{%- if site.seo.llms_audience %}
+
+## Audience
+{{ site.seo.llms_audience }}
+{%- endif %}
