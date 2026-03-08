@@ -68,7 +68,7 @@ seo:
     - Short-form video (TikTok, Instagram Reels)
   llms_audience: "Software engineers and developers at all levels interested in C#, .NET, software architecture, and engineering career growth. Also targets engineering managers and technical leaders."
 
-  date_created: "2024-01-01"
+  date_created: "2024-01-01T00:00:00.000Z"
 
   person:
     roles:
