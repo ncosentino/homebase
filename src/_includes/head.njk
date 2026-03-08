@@ -32,15 +32,30 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org/",
-  "@type": "WebPage",
+  "@type": "ProfilePage",
   "name": "{{ site.seo.title }}",
   "url": "{{ site.seo.canonical }}",
   "description": "{{ site.seo.description }}",
   "image": "{{ site.seo.og_image }}",
-  "identifier": "{{ site.profile.username }}",
-  "alternateName": "{{ site.profile.name }} Landing Page",
+  "thumbnailUrl": "{{ site.seo.og_image }}",
   "significantLink": "{{ site.seo.canonical }}",
-  "thumbnailUrl": "{{ site.seo.og_image }}"
+  {% if site.seo.keywords %}"keywords": "{{ site.seo.keywords | join(', ') }}",{% endif %}
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "{{ site.profile.username }}",
+    "name": "{{ site.profile.name }}",
+    "alternateName": "{{ site.profile.username }}",
+    "identifier": "{{ site.profile.username }}",
+    "description": "{{ site.seo.description }}",
+    "image": "{{ site.seo.og_image }}",
+    "url": "{{ site.seo.canonical }}"{% if site.social_icons %},
+    "sameAs": [
+      {% for social in site.social_icons -%}
+      "{{ social.url }}"{% if not loop.last %},{% endif %}
+
+      {%- endfor %}
+    ]{% endif %}
+  }
 }
 </script>
 
