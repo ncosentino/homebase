@@ -123,6 +123,22 @@ utm:
   content: ""
   term: ""
 
+# ── Analytics ────────────────────────────────────────────────────────────────
+# Event name sent to GA for every link click. Choose this once — GA cannot
+# rename historical events, so changing it later starts a new data series.
+ga_event_name: "creator_link_click"
+
+# Per-link label override: add `ga_label` to any link in sections[] to control
+# the "destination" value recorded in GA. Useful when a link title changes
+# seasonally but you want a stable key in your reports.
+#
+# Example:
+#   sections:
+#     - links:
+#         - title: "My Course (Spring Sale!)"
+#           url: "https://example.com/course"
+#           ga_label: "course"   # GA records "course", not the full title
+
 # ── Theme ────────────────────────────────────────────────────────────────────
 theme: devleader
 

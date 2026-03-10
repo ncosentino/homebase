@@ -186,6 +186,20 @@
   gtag('js', new Date());
   gtag('config', '{{ env.GOOGLE_ANALYTICS_ID }}');
 </script>
+<script>
+(function () {
+  var n = "{{ site.ga_event_name or 'creator_link_click' }}";
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a[data-ga-label]");
+    if (!a || typeof gtag === "undefined") return;
+    gtag("event", n, {
+      destination: a.dataset.gaLabel,
+      link_type:   a.dataset.gaType,
+      section:     a.dataset.gaSection
+    });
+  });
+}());
+</script>
 {% endif %}
 
 {# ── Favicons ─────────────────────────────────────────────────────────────── #}

@@ -17,7 +17,10 @@
   {%- if utmTerm     %}{%- set _href = _href + "&utm_term="     + utmTerm -%}{%- endif -%}
 {%- endif -%}
 
-<a class="link-btn{% if link.thumbnail %} has-thumbnail{% endif %}" href="{{ _href }}" target="_blank" rel="noopener noreferrer">
+<a class="link-btn{% if link.thumbnail %} has-thumbnail{% endif %}" href="{{ _href }}" target="_blank" rel="noopener noreferrer"
+   data-ga-label="{{ link.ga_label if link.ga_label else link.title }}"
+   data-ga-type="link_button"
+   data-ga-section="{{ section.title if section else '' }}">
   {% if link.thumbnail %}
   <span class="link-btn-thumb" aria-hidden="true">
     <img src="{{ link.thumbnail }}" alt="" loading="lazy" />

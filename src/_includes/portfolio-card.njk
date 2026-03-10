@@ -35,7 +35,10 @@
   {%- if utmTerm     %}{%- set _href = _href + "&utm_term="     + utmTerm -%}{%- endif -%}
 {%- endif -%}
 
-<a class="portfolio-card" href="{{ _href }}" target="_blank" rel="noopener noreferrer">
+<a class="portfolio-card" href="{{ _href }}" target="_blank" rel="noopener noreferrer"
+   data-ga-label="{{ link.ga_label if link.ga_label else link.title }}"
+   data-ga-type="portfolio_card"
+   data-ga-section="{{ section.title if section else '' }}">
   {% if link.image %}
   <div class="portfolio-card-img" aria-hidden="true">
     <img src="{{ link.image }}" alt="{{ link.title }}" loading="lazy" />

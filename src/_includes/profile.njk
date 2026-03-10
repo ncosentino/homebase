@@ -83,7 +83,8 @@
       {%- endif %}
     {%- endif %}
     <span class="social-icon-wrap">
-    <a class="social-icon-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.icon }}" role="listitem">
+    <a class="social-icon-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.icon }}" role="listitem"
+       data-ga-label="{{ item.icon }}" data-ga-type="social_icon" data-ga-section="social_icons">
       {% icon item.icon %}
     </a>
     {%- if _badgeParts | length %}<span class="follower-badge">{{ (_badgeParts | first / 1000) | round(1) }}k</span>{%- endif %}

@@ -11,6 +11,9 @@
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Play {{ video.title or 'video' }} on YouTube"
+        data-ga-label="{{ video.title if video.title else video.youtube_id }}"
+        data-ga-type="featured_video"
+        data-ga-section="featured_video"
       >
         <img
           class="lite-youtube-thumb"
