@@ -93,4 +93,11 @@
     {% endfor %}
   </div>
   {% endif %}
+  {%- if site.profile.show_extended_bio == true and site.profile.extended_bio %}
+  {%- set _bioLabel = site.profile.extended_bio_label if site.profile.extended_bio_label else ("About " + site.profile.name) %}
+  <details class="bio-extended"{% if site.profile.extended_bio_expanded == true %} open{% endif %}>
+    <summary class="bio-extended-toggle">{{ _bioLabel }}</summary>
+    <div class="bio-extended-body">{{ site.profile.extended_bio | nl2br | safe }}</div>
+  </details>
+  {%- endif %}
 </div>

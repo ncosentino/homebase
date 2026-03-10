@@ -151,6 +151,57 @@ body {
   fill: currentColor;
 }
 
+/* ── Extended bio (SEO collapsible) ─────────────────────────────────────── */
+.bio-extended {
+  width: 100%;
+  max-width: 480px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.bio-extended-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: var(--bio-color, rgba(255,255,255,0.65));
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+  list-style: none;
+  user-select: none;
+}
+
+/* Hide the native disclosure triangle in all browsers */
+.bio-extended-toggle::-webkit-details-marker { display: none; }
+.bio-extended-toggle::marker { display: none; }
+
+/* Append a small chevron via pseudo-element */
+.bio-extended-toggle::after {
+  content: "↓";
+  font-size: 11px;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.bio-extended[open] .bio-extended-toggle::after {
+  transform: rotate(180deg);
+}
+
+.bio-extended-toggle:hover {
+  opacity: 1;
+}
+
+.bio-extended-body {
+  margin-top: 10px;
+  color: var(--bio-color, rgba(255,255,255,0.8));
+  font-size: 13px;
+  line-height: 1.65;
+  text-align: left;
+  opacity: 0.85;
+}
+
 /* ── Section header ──────────────────────────────────────────────────────── */
 .section-header {
   display: flex;
