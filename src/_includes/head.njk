@@ -190,13 +190,20 @@
 (function () {
   var n = "{{ site.ga_event_name or 'creator_link_click' }}";
   document.addEventListener("click", function (e) {
-    var a = e.target.closest("a[data-ga-label]");
+    var a = e.target.closest("a");
     if (!a || typeof gtag === "undefined") return;
-    gtag("event", n, {
-      destination: a.dataset.gaLabel,
-      link_type:   a.dataset.gaType,
-      section:     a.dataset.gaSection
-    });
+    var label   = a.dataset.gaLabel;
+    var type    = a.dataset.gaType;
+    var section = a.dataset.gaSection;
+    if (!label) {
+      var container = a.closest("[data-ga-section]");
+      if (!container) return;
+      section = section || container.dataset.gaSection;
+      type    = type    || container.dataset.gaType || "auto_link";
+      label   = (a.textContent || "").trim().toLowerCase().replace(/\s+/g, "_")
+                || new URL(a.href, location.href).hostname.replace(/^www\./, "");
+    }
+    gtag("event", n, { destination: label, link_type: type, section: section });
   });
 }());
 </script>
