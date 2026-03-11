@@ -180,7 +180,7 @@
       "contactPoint": {"@type": "ContactPoint", "contactType": "Work inquiries", "url": "{{ site.profile.contact_url }}"}
       {%- endif %}
     }
-    {%- if site.sections %},
+    {%- if site.sections and not shopPage %},
     {
       "@type": "ItemList",
       "@id": "{{ site.seo.canonical }}#links",
