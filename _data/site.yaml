@@ -411,6 +411,7 @@ shop:
   currency: "USD"                           # Default currency for all items
   show_prices: true                         # Global price display toggle
   ga_event_name: "shop_item_click"          # GA4 click event name — set once, never change
+  default_collapsed: false                  # Set to true to collapse all sections by default
 
   collections:
     - id: "courses"

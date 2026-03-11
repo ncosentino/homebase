@@ -2,17 +2,31 @@
    Expects: collection (a shop collection object with .id, .title, .items[])
    Context inherits: site, item (from inner loop)
    ───────────────────────────────────────────────────────────────────────── #}
+{%- if collection.collapsed is defined %}
+  {%- set collectionCollapsed = collection.collapsed %}
+{%- else %}
+  {%- set collectionCollapsed = site.shop.default_collapsed | default(false) %}
+{%- endif %}
 <section class="shop-collection" id="collection-{{ collection.id }}">
   {%- if collection.title %}
-  <div class="section-header">
+  <div class="section-header shop-collection-header">
     <span class="section-header-text">{{ collection.title }}</span>
+    <button class="shop-collection-toggle"
+            type="button"
+            aria-expanded="{{ 'false' if collectionCollapsed else 'true' }}"
+            aria-controls="collection-items-{{ collection.id }}"
+            aria-label="{{ 'Expand' if collectionCollapsed else 'Collapse' }} {{ collection.title }}">
+      <svg class="toggle-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 6 8 10 12 6"/></svg>
+    </button>
   </div>
   {%- endif %}
   {%- if collection.description %}
   <p class="shop-collection-desc">{{ collection.description }}</p>
   {%- endif %}
 
-  <div class="shop-{{ 'list' if site.shop.layout == 'list' else 'grid' }}">
+  <div class="shop-{{ 'list' if site.shop.layout == 'list' else 'grid' }} shop-collection-items"
+       id="collection-items-{{ collection.id }}"
+       {%- if collectionCollapsed %} hidden{% endif %}>
     {%- for item in collection.items %}
     {% include "shop-card.njk" %}
     {%- endfor %}

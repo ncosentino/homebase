@@ -36,6 +36,26 @@
 
   <script>
   (function () {
+    // ── Collapsible section toggles ─────────────────────────────────────────
+    document.querySelectorAll(".shop-collection-toggle").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var expanded = btn.getAttribute("aria-expanded") === "true";
+        var targetId = btn.getAttribute("aria-controls");
+        var target = document.getElementById(targetId);
+        var title = btn.closest(".shop-collection-header")
+                       .querySelector(".section-header-text");
+        if (expanded) {
+          target.setAttribute("hidden", "");
+          btn.setAttribute("aria-expanded", "false");
+          btn.setAttribute("aria-label", "Expand " + (title ? title.textContent : "section"));
+        } else {
+          target.removeAttribute("hidden");
+          btn.setAttribute("aria-expanded", "true");
+          btn.setAttribute("aria-label", "Collapse " + (title ? title.textContent : "section"));
+        }
+      });
+    });
+
     // GA4 click tracking for shop CTAs
     document.addEventListener("click", function (e) {
       var cta = e.target.closest(".shop-cta");
