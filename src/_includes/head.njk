@@ -258,6 +258,26 @@
           "url": "{{ item.url }}"
         }
         {%- endif %}
+        {%- elif item.type == "book" %}
+        "@type": "Book",
+        "name": "{{ item.title | jsonEscape }}"
+        {%- if item.description %},
+        "description": "{{ item.description | jsonEscape }}"
+        {%- endif %}
+        {%- if item.image %},
+        "image": "{{ item.image }}"
+        {%- endif %},
+        "url": "{{ item.url }}",
+        "author": {"@id": "{{ site.seo.canonical }}#person"}
+        {%- if item.price is number %},
+        "offers": {
+          "@type": "Offer",
+          "price": "{{ item.price }}",
+          "priceCurrency": "{{ item.currency if item.currency else site.shop.currency }}",
+          "availability": "https://schema.org/InStock",
+          "url": "{{ item.url }}"
+        }
+        {%- endif %}
         {%- else %}
         "@type": "Product",
         "name": "{{ item.title | jsonEscape }}"
