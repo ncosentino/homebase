@@ -1,0 +1,74 @@
+{# ── shop-card.njk ─────────────────────────────────────────────────────────
+   Expects: item (shop item object), collection (parent collection object)
+   Uses: site.utm for page-level UTM defaults; site.shop.* for config
+   ───────────────────────────────────────────────────────────────────────── #}
+
+{# UTM: merge page-wide defaults with per-item overrides #}
+{%- set _utm = site.utm if site.utm else {} -%}
+{%- set _u = item.utm if item.utm else {} -%}
+{%- set utmSource   = _u.source   if _u.source   else _utm.source -%}
+{%- set utmMedium   = _u.medium   if _u.medium   else _utm.medium -%}
+{%- set utmCampaign = _u.campaign if _u.campaign else _utm.campaign -%}
+{%- set utmContent  = _u.content  if _u.content  else _utm.content -%}
+{%- set utmTerm     = _u.term     if _u.term     else _utm.term -%}
+
+{%- set _href = item.url -%}
+{%- if utmSource -%}
+  {%- set _sep = "?" if "?" not in item.url else "&" -%}
+  {%- set _href = item.url + _sep + "utm_source=" + utmSource -%}
+  {%- if utmMedium   %}{%- set _href = _href + "&utm_medium="   + utmMedium -%}{%- endif -%}
+  {%- if utmCampaign %}{%- set _href = _href + "&utm_campaign=" + utmCampaign -%}{%- endif -%}
+  {%- if utmContent  %}{%- set _href = _href + "&utm_content="  + utmContent -%}{%- endif -%}
+  {%- if utmTerm     %}{%- set _href = _href + "&utm_term="     + utmTerm -%}{%- endif -%}
+{%- endif -%}
+
+{%- set _gaLabel = item.ga_label if item.ga_label else item.id -%}
+{%- set _cta = item.cta_label if item.cta_label else ("Get It Free" if (item.price is number and item.price == 0) else "Get It") -%}
+{%- set _currencyCode = item.currency if item.currency else (site.shop.currency if site.shop.currency else "USD") -%}
+{%- set _currencySymbols = {"USD": "$", "EUR": "€", "GBP": "£", "CAD": "CA$", "AUD": "A$", "JPY": "¥"} -%}
+{%- set _currency = _currencySymbols[_currencyCode] if _currencySymbols[_currencyCode] else _currencyCode -%}
+
+<article class="shop-card{% if item.featured %} shop-card--featured{% endif %}"
+  data-ga-item-id="{{ _gaLabel }}"
+  data-ga-item-title="{{ item.title | jsonEscape }}"
+  data-ga-collection-id="{{ collection.id }}"
+  data-ga-item-type="{{ item.type if item.type else 'link' }}"
+  data-ga-item-price="{{ item.price if item.price is number else '' }}"
+  data-ga-destination="{{ item.url }}">
+
+  {%- if item.image %}
+  <div class="shop-card-image-wrap">
+    <img class="shop-card-image" src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" />
+  </div>
+  {%- endif %}
+
+  {%- if item.badge %}
+  <span class="shop-badge">{{ item.badge }}</span>
+  {%- endif %}
+
+  <div class="shop-card-body">
+    <h3 class="shop-card-title">{{ item.title }}</h3>
+    {%- if item.description %}
+    <p class="shop-card-desc">{{ item.description }}</p>
+    {%- endif %}
+    {%- if site.shop.show_prices and item.price is number %}
+    <div class="shop-price-wrap">
+      {%- if item.original_price is number and item.original_price > item.price %}
+      <span class="shop-price-original">{{ _currency }}{{ item.original_price }}</span>
+      {%- endif %}
+      <span class="shop-price">{% if item.price == 0 %}Free{% else %}{{ _currency }}{{ item.price }}{% endif %}</span>
+    </div>
+    {%- endif %}
+  </div>
+
+  <a class="shop-cta"
+     href="{{ _href }}"
+     target="_blank"
+     rel="noopener noreferrer">
+    {{ _cta }}
+    <svg class="shop-cta-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </a>
+
+</article>
