@@ -288,7 +288,7 @@
 
 {# ── Theme CSS ────────────────────────────────────────────────────────────── #}
 <link rel="stylesheet" href="/assets/base.css" />
-{%- if shopPage %}
+{%- if site.shop and site.shop.enabled %}
 <link rel="stylesheet" href="/assets/shop.css" />
 {%- endif %}
 <link rel="stylesheet" href="/themes/{{ site.theme }}/theme.css" />
