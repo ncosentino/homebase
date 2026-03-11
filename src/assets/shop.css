@@ -3,6 +3,9 @@
    Inherits all theme variables from the active theme.css and base.css.
    ───────────────────────────────────────────────────────────────────────── */
 
+/* Ensure [hidden] wins over display:grid / display:flex set on shop grids */
+.shop-collection-items[hidden] { display: none !important; }
+
 /* ── Page tab navigation ─────────────────────────────────────────────────── */
 .page-tabs {
   display: flex;
