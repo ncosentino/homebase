@@ -18,9 +18,12 @@
 
       {# ── Tab navigation ────────────────────────────────────────────────── #}
       {%- set page = "shop" %}
-      {% include "shop-nav.njk" %}
 
       {# ── Profile ───────────────────────────────────────────────────────── #}
+      {% include "profile.njk" %}
+
+      {# ── Shop nav (below profile) ──────────────────────────────────────── #}
+      {% include "shop-nav.njk" %}
       {% include "profile.njk" %}
 
       {# ── Shop collections ──────────────────────────────────────────────── #}
