@@ -531,3 +531,25 @@ body {
     left: 12px;
   }
 }
+
+/* ── Shop CSS variable defaults ──────────────────────────────────────────── */
+/* Themes can override these in their theme.css. Values below use existing     */
+/* button variables so the shop inherits the active theme automatically.       */
+:root {
+  --shop-tab-border:        rgba(255,255,255,0.15);
+  --shop-tab-color:         rgba(255,255,255,0.6);
+  --shop-tab-active-color:  #fff;
+  --shop-tab-active-border: var(--btn-bg, #fff);
+  --shop-card-bg:           var(--btn-bg, #fff);
+  --shop-card-border:       1px solid rgba(255,255,255,0.1);
+  --shop-card-radius:       var(--btn-radius, 12px);
+  --shop-card-shadow:       var(--btn-shadow, 0 2px 8px rgba(0,0,0,0.15));
+  --shop-card-shadow-hover: 0 6px 20px rgba(0,0,0,0.25);
+  --shop-image-bg:          rgba(0,0,0,0.1);
+  --shop-desc-color:        rgba(0,0,0,0.6);
+  --shop-price-color:       var(--btn-text, #1a1a1a);
+  --shop-price-original-color: rgba(0,0,0,0.4);
+  --shop-badge-bg:          rgba(255,210,60,0.92);
+  --shop-badge-color:       #1a1a1a;
+  --shop-grid-cols:         repeat(auto-fill, minmax(260px, 1fr));
+}

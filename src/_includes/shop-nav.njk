@@ -1,0 +1,10 @@
+{%- if site.shop.enabled %}
+<nav class="page-tabs" aria-label="Page sections">
+  <a href="/"
+     class="tab-link{% if page == 'links' %} tab-active{% endif %}"
+     aria-current="{{ 'page' if page == 'links' else 'false' }}">Links</a>
+  <a href="/{{ site.shop.path }}/"
+     class="tab-link{% if page == 'shop' %} tab-active{% endif %}"
+     aria-current="{{ 'page' if page == 'shop' else 'false' }}">{{ site.shop.title }}</a>
+</nav>
+{%- endif %}

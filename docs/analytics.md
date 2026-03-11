@@ -116,3 +116,60 @@ For a richer visual dashboard, connect GA4 to [Looker Studio](https://lookerstud
 3. Build charts for: top destinations, top traffic sources, clicks per link type, and conversion rate per source
 
 No changes to Homebase are needed — Looker Studio reads from the same GA4 data.
+
+---
+
+## Shop Analytics
+
+When the shop is enabled, two additional GA4 events are fired automatically.
+
+### `shop_item_click`
+
+Fired when a visitor clicks the CTA button on any shop card.
+
+| Parameter | Type | Description | Example |
+|-----------|------|-------------|---------|
+| `item_id` | string | Stable item identifier (`ga_label` if set, else `id`) | `"csharp-mastery"` |
+| `item_title` | string | Item title at the time of click | `"C# .NET Mastery"` |
+| `collection_id` | string | Parent collection `id` | `"courses"` |
+| `item_type` | string | Item `type` field value | `"course"`, `"ebook"` |
+| `item_price` | number | Item price (omitted if price is not set) | `97`, `0` |
+| `destination` | string | The destination URL | `"https://…"` |
+
+The event name is configurable via `shop.ga_event_name` in `site.yaml`. Set it once before launch — **GA4 cannot rename historical events**.
+
+### `shop_item_view`
+
+Fired once per item per page visit when a shop card enters the viewport (≥ 50% visible). Powered by `IntersectionObserver`.
+
+| Parameter | Type | Description | Example |
+|-----------|------|-------------|---------|
+| `item_id` | string | Stable item identifier | `"csharp-mastery"` |
+| `item_title` | string | Item title | `"C# .NET Mastery"` |
+| `collection_id` | string | Parent collection `id` | `"courses"` |
+| `item_type` | string | Item `type` field value | `"course"` |
+
+!!! note "Observer not available"
+    `shop_item_view` requires `IntersectionObserver`, which is available in all modern browsers. In environments where it is absent the impression event is silently skipped — click tracking is unaffected.
+
+### Register Shop Custom Dimensions
+
+Open **Admin → Custom definitions → Create custom dimension** and add:
+
+| Display name | Scope | Event parameter |
+|---|---|---|
+| Shop Item ID | Event | `item_id` |
+| Shop Item Title | Event | `item_title` |
+| Shop Collection ID | Event | `collection_id` |
+| Shop Item Type | Event | `item_type` |
+| Shop Item Price | Event | `item_price` |
+
+### Build a Shop Exploration
+
+1. **Explore** → **Blank**
+2. Add **Dimensions**: `Event name`, `Shop Item Title`, `Shop Collection ID`, `Shop Item Type`
+3. Add **Metrics**: `Event count`
+4. Filter: `Event name` exactly matches `shop_item_click`
+5. Drag `Shop Item Title` into **Rows** and `Event count` into **Values**
+
+To see conversion rate (clicks ÷ views), run two separate explorations — one filtered to `shop_item_click` and one to `shop_item_view` — then compare totals in a spreadsheet or Looker Studio.

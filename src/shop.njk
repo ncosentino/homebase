@@ -1,0 +1,82 @@
+---js
+{
+  permalink: (data) =>
+    data.site && data.site.shop && data.site.shop.enabled
+      ? `/${data.site.shop.path}/index.html`
+      : false,
+  shopPage: true
+}
+---
+<!DOCTYPE html>
+<html lang="{{ site.seo.locale if site.seo.locale else 'en' }}">
+<head>
+  {% include "head.njk" %}
+</head>
+<body>
+  <main class="page-wrap">
+    <div class="content-col">
+
+      {# ── Tab navigation ────────────────────────────────────────────────── #}
+      {%- set page = "shop" %}
+      {% include "shop-nav.njk" %}
+
+      {# ── Profile ───────────────────────────────────────────────────────── #}
+      {% include "profile.njk" %}
+
+      {# ── Shop collections ──────────────────────────────────────────────── #}
+      {%- if site.shop.collections %}
+      <div class="shop-wrapper">
+        {%- for collection in site.shop.collections %}
+        {% include "shop-collection.njk" %}
+        {%- endfor %}
+      </div>
+      {%- endif %}
+
+    </div>
+  </main>
+
+  <script>
+  (function () {
+    // GA4 click tracking for shop CTAs
+    document.addEventListener("click", function (e) {
+      var cta = e.target.closest(".shop-cta");
+      if (!cta) return;
+      var card = cta.closest(".shop-card");
+      if (!card || typeof gtag === "undefined") return;
+      var price = card.dataset.gaItemPrice;
+      gtag("event", "{{ site.shop.ga_event_name | default('shop_item_click') }}", {
+        item_id:       card.dataset.gaItemId,
+        item_title:    card.dataset.gaItemTitle,
+        collection_id: card.dataset.gaCollectionId,
+        item_type:     card.dataset.gaItemType,
+        item_price:    price !== "" ? Number(price) : undefined,
+        destination:   card.dataset.gaDestination
+      });
+    });
+
+    // GA4 impression tracking via IntersectionObserver (once per card)
+    if ("IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var card = entry.target;
+          if (typeof gtag !== "undefined") {
+            gtag("event", "shop_item_view", {
+              item_id:       card.dataset.gaItemId,
+              item_title:    card.dataset.gaItemTitle,
+              collection_id: card.dataset.gaCollectionId,
+              item_type:     card.dataset.gaItemType
+            });
+          }
+          observer.unobserve(card);
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll(".shop-card").forEach(function (card) {
+        observer.observe(card);
+      });
+    }
+  }());
+  </script>
+</body>
+</html>

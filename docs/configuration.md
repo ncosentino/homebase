@@ -120,6 +120,81 @@ banner:
   link: "https://your-target-url.com"   # optional: makes the banner clickable
 ```
 
+## Shop
+
+The optional shop tab adds a storefront page at `/{path}/` (default `/shop/`). Set `enabled: true` to activate it. See [Shop](shop.md) for the complete guide.
+
+```yaml
+shop:
+  enabled: false
+  title: "Shop"
+  path: "shop"
+  description: "Products, courses, and services."
+  layout: "grid"    # "grid" | "list"
+  currency: "USD"
+  show_prices: true
+  ga_event_name: "shop_item_click"
+
+  collections:
+    - id: "courses"
+      title: "Courses"
+      items:
+        - id: "my-course"
+          title: "My Course"
+          url: "https://example.com/course"
+          type: "course"
+          price: 97
+          badge: "Bestseller"
+          cta_label: "Enroll Now"
+```
+
+| Field | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `enabled` | Yes | `false` | Set to `true` to activate the shop tab and page. |
+| `title` | No | `"Shop"` | Tab label and page `<title>` prefix. |
+| `path` | No | `"shop"` | URL path segment — e.g. `"store"` → `/store/`. |
+| `description` | No | — | Shop page meta description (SEO). |
+| `og_image` | No | site `og_image` | Override the Open Graph image on the shop page. |
+| `layout` | No | `"grid"` | Card layout: `"grid"` (multi-column) or `"list"` (single column). |
+| `currency` | No | `"USD"` | Default currency shown next to prices. |
+| `show_prices` | No | `true` | Global toggle to hide all prices. Per-item `price` is unaffected. |
+| `ga_event_name` | No | `"shop_item_click"` | GA4 event name for CTA clicks. Set once; never change after launch. |
+| `collections` | No | `[]` | Array of collection objects. |
+
+### Collection fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `id` | Yes | Stable identifier used in analytics (`collection_id`). |
+| `title` | No | Section heading displayed above the items. |
+| `description` | No | Short text shown below the heading. |
+| `items` | No | Array of item objects. |
+
+### Item fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `id` | Yes | Stable identifier used in analytics (`item_id`). |
+| `title` | Yes | Card heading. |
+| `url` | Yes | Destination URL for the CTA button. |
+| `description` | No | Card body text (truncated to 3 lines). |
+| `image` | No | Card image URL. Displayed in 16:9 aspect ratio. |
+| `type` | No | Item type drives JSON-LD schema: `course`, `service`, `consultation`, `ebook`, `merch`, `download`, `link`. |
+| `price` | No | Numeric price (e.g. `97`). Set to `0` for free items. Omit to hide price. |
+| `original_price` | No | Original/list price; shown with strikethrough when higher than `price`. |
+| `currency` | No | Per-item currency override (defaults to `shop.currency`). |
+| `badge` | No | Short text shown as a badge pill on the card (e.g. `"Bestseller"`, `"Free"`). |
+| `cta_label` | No | Button label (default: `"Get It"` or `"Get It Free"` when `price: 0`). |
+| `featured` | No | Pin card to the top of its collection. |
+| `ga_label` | No | Stable GA label override — use when the `title` changes seasonally. |
+| `utm` | No | Per-item UTM overrides merged with page-level `utm` defaults. Fields: `source`, `medium`, `campaign`, `content`, `term`. |
+
+```yaml
+banner:
+  url: "https://your-image.com/banner.png"
+  link: "https://your-target-url.com"   # optional: makes the banner clickable
+```
+
 ## Full Example
 
 ```yaml

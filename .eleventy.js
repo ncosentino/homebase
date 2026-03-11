@@ -77,6 +77,22 @@ module.exports = function (eleventyConfig) {
       .replace(/\t/g, "\\t");
   });
 
+  // shopItems filter — flattens shop.collections[].items[] into a single array with 1-based
+  // positions and collection_id. Used to build ItemList JSON-LD on the shop page.
+  eleventyConfig.addFilter("shopItems", function (collections) {
+    if (!collections) return [];
+    const result = [];
+    let pos = 0;
+    for (const col of collections) {
+      for (const item of (col.items || [])) {
+        if (!item || !item.title) continue;
+        pos++;
+        result.push({ ...item, position: pos, collection_id: col.id });
+      }
+    }
+    return result;
+  });
+
   // Inline file shortcode — for inlining CSS into <style> tags if desired
   eleventyConfig.addShortcode("inlineFile", function (filePath) {
     const fullPath = path.join(__dirname, filePath);

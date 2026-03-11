@@ -9,4 +9,12 @@ permalink: /sitemap.xml
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  {%- if site.shop.enabled %}
+  <url>
+    <loc>{{ site.seo.canonical }}/{{ site.shop.path }}/</loc>
+    <lastmod>{{ buildMeta.iso }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {%- endif %}
 </urlset>

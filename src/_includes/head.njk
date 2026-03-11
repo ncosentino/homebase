@@ -3,14 +3,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
 
 {# ── Primary SEO ──────────────────────────────────────────────────────────── #}
+{%- if shopPage %}
+<title>{{ site.shop.title }} — {{ site.seo.title }}</title>
+<meta name="description" content="{{ site.shop.description }}" />
+<link rel="canonical" href="{{ site.seo.canonical }}/{{ site.shop.path }}/" />
+{%- else %}
 <title>{{ site.seo.title }}</title>
 <meta name="description" content="{{ site.seo.description }}" />
 {% if site.seo.keywords %}
 <meta name="keywords" content="{{ site.seo.keywords | join(', ') }}" />
 {% endif %}
 <link rel="canonical" href="{{ site.seo.canonical }}" />
+{%- endif %}
 
 {# ── Open Graph ───────────────────────────────────────────────────────────── #}
+{%- if shopPage %}
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{ site.shop.title }} — {{ site.seo.title }}" />
+<meta property="og:description" content="{{ site.shop.description }}" />
+<meta property="og:url" content="{{ site.seo.canonical }}/{{ site.shop.path }}/" />
+<meta property="og:image" content="{{ site.shop.og_image if site.shop.og_image else site.seo.og_image }}" />
+<meta property="og:image:width" content="600" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="{{ site.seo.site_name if site.seo.site_name else site.seo.title }}" />
+<meta property="og:updated_time" content="{{ buildMeta.unix }}" />
+{%- else %}
 <meta property="og:type" content="profile" />
 <meta property="og:title" content="{{ site.seo.title }}" />
 <meta property="og:description" content="{{ site.seo.description }}" />
@@ -26,12 +45,19 @@
 {%- if site.seo.manifest and site.seo.manifest.enabled %}
 <link rel="manifest" href="/manifest.json" />
 {%- endif %}
+{%- endif %}
 
 {# ── Twitter Card ─────────────────────────────────────────────────────────── #}
 <meta name="twitter:card" content="summary_large_image" />
+{%- if shopPage %}
+<meta name="twitter:title" content="{{ site.shop.title }} — {{ site.seo.title }}" />
+<meta name="twitter:description" content="{{ site.shop.description }}" />
+<meta name="twitter:image" content="{{ site.shop.og_image if site.shop.og_image else site.seo.og_image }}" />
+{%- else %}
 <meta name="twitter:title" content="{{ site.seo.title }}" />
 <meta name="twitter:description" content="{{ site.seo.description }}" />
 <meta name="twitter:image" content="{{ site.seo.og_image }}" />
+{%- endif %}
 
 {# ── Schema.org JSON-LD ───────────────────────────────────────────────────── #}
 <script type="application/ld+json">
@@ -173,8 +199,98 @@
 }
 </script>
 
+{# ── Shop page JSON-LD (ItemList with Course/Service/Product per item type) ── #}
+{%- if shopPage and site.shop.enabled and site.shop.collections %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "{{ site.shop.title | jsonEscape }} — {{ site.seo.title | jsonEscape }}",
+  "url": "{{ site.seo.canonical }}/{{ site.shop.path }}/",
+  "itemListElement": [
+    {%- set _shopItems = site.shop.collections | shopItems %}
+    {%- for item in _shopItems %}
+    {%- if not loop.first %},{%- endif %}
+    {
+      "@type": "ListItem",
+      "position": {{ item.position }},
+      "item": {
+        {%- if item.type == "course" %}
+        "@type": "Course",
+        "name": "{{ item.title | jsonEscape }}"
+        {%- if item.description %},
+        "description": "{{ item.description | jsonEscape }}"
+        {%- endif %}
+        {%- if item.image %},
+        "image": "{{ item.image }}"
+        {%- endif %},
+        "url": "{{ item.url }}",
+        "provider": {"@id": "{{ site.seo.canonical }}#person"}
+        {%- if item.price is number %},
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "online",
+          "offers": {
+            "@type": "Offer",
+            "price": "{{ item.price }}",
+            "priceCurrency": "{{ item.currency if item.currency else site.shop.currency }}",
+            "availability": "https://schema.org/InStock",
+            "url": "{{ item.url }}"
+          }
+        }
+        {%- endif %}
+        {%- elif item.type == "service" or item.type == "consultation" %}
+        "@type": "Service",
+        "name": "{{ item.title | jsonEscape }}"
+        {%- if item.description %},
+        "description": "{{ item.description | jsonEscape }}"
+        {%- endif %}
+        {%- if item.image %},
+        "image": "{{ item.image }}"
+        {%- endif %},
+        "url": "{{ item.url }}"
+        {%- if item.price is number %},
+        "offers": {
+          "@type": "Offer",
+          "price": "{{ item.price }}",
+          "priceCurrency": "{{ item.currency if item.currency else site.shop.currency }}",
+          "availability": "https://schema.org/InStock",
+          "url": "{{ item.url }}"
+        }
+        {%- endif %}
+        {%- else %}
+        "@type": "Product",
+        "name": "{{ item.title | jsonEscape }}"
+        {%- if item.description %},
+        "description": "{{ item.description | jsonEscape }}"
+        {%- endif %}
+        {%- if item.image %},
+        "image": "{{ item.image }}"
+        {%- endif %},
+        "url": "{{ item.url }}"
+        {%- if item.price is number %},
+        "offers": {
+          "@type": "Offer",
+          "price": "{{ item.price }}",
+          "priceCurrency": "{{ item.currency if item.currency else site.shop.currency }}",
+          "availability": "https://schema.org/InStock",
+          "url": "{{ item.url }}"
+        }
+        {%- endif %}
+        {%- endif %}
+      }
+    }
+    {%- endfor %}
+  ]
+}
+</script>
+{%- endif %}
+
 {# ── Theme CSS ────────────────────────────────────────────────────────────── #}
 <link rel="stylesheet" href="/assets/base.css" />
+{%- if shopPage %}
+<link rel="stylesheet" href="/assets/shop.css" />
+{%- endif %}
 <link rel="stylesheet" href="/themes/{{ site.theme }}/theme.css" />
 
 {# ── Google Analytics (injected via GOOGLE_ANALYTICS_ID CI secret) ─────────── #}

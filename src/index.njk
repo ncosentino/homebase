@@ -10,6 +10,10 @@ permalink: /index.html
   <main class="page-wrap">
     <div class="content-col">
 
+      {# ── Page tab navigation (shown only when shop is enabled) ─────────────── #}
+      {%- set page = "links" %}
+      {% include "shop-nav.njk" %}
+
       {# ── Profile ──────────────────────────────────────────────────────── #}
       {% include "profile.njk" %}
 

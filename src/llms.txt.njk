@@ -38,3 +38,19 @@ permalink: /llms.txt
 ## Audience
 {{ site.seo.llms_audience }}
 {%- endif %}
+{%- if site.shop.enabled and site.shop.collections %}
+
+## Shop
+{{ site.shop.description }}
+{%- for collection in site.shop.collections %}
+
+### {{ collection.title }}
+{%- if collection.description %}
+{{ collection.description }}
+{%- endif %}
+{%- for item in collection.items %}
+- [{{ item.title }}]({{ item.url }}){% if item.type %} ({{ item.type }}){% endif %}{% if item.price is number %} — {% if item.price == 0 %}Free{% else %}{{ item.currency if item.currency else site.shop.currency }} {{ item.price }}{% endif %}{% endif %}
+
+{%- endfor %}
+{%- endfor %}
+{%- endif %}

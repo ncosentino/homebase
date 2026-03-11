@@ -1,0 +1,20 @@
+{# ── shop-collection.njk ───────────────────────────────────────────────────
+   Expects: collection (a shop collection object with .id, .title, .items[])
+   Context inherits: site, item (from inner loop)
+   ───────────────────────────────────────────────────────────────────────── #}
+<section class="shop-collection" id="collection-{{ collection.id }}">
+  {%- if collection.title %}
+  <div class="section-header">
+    <span class="section-header-text">{{ collection.title }}</span>
+  </div>
+  {%- endif %}
+  {%- if collection.description %}
+  <p class="shop-collection-desc">{{ collection.description }}</p>
+  {%- endif %}
+
+  <div class="shop-{{ 'list' if site.shop.layout == 'list' else 'grid' }}">
+    {%- for item in collection.items %}
+    {% include "shop-card.njk" %}
+    {%- endfor %}
+  </div>
+</section>
