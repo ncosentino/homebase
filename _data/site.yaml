@@ -419,6 +419,7 @@ shop:
       items:
         - id: "career-getting-promoted"
           title: "Career: Getting Promoted as a Software Engineer"
+          description: "Nick Cosentino (Microsoft) and Ryan Murphy (Yelp) share everything you need to know to get your well-deserved promotion — written by two engineering managers who've interviewed hundreds of engineers and helped them climb the ladder."
           image: "https://ugc.production.linktr.ee/bb7423a5-6eba-48c5-9c3e-cbf23cd24ea6_promoted-software-career.jpeg"
           url: "https://dometrain.com/course/career-getting-promoted-as-a-software-engineer/?ref=nick-cosentino"
           type: "course"
@@ -430,6 +431,7 @@ shop:
             campaign: "career-getting-promoted"
         - id: "career-behavioral-interview"
           title: "Career: Nailing the Behavioral Interview"
+          description: "Most developers fail their next job because of the behavioral interview. Nick (Microsoft) and Ryan (Yelp) draw on hundreds of interviews conducted to help you craft strong stories, handle tough questions, and ace it every time."
           image: "https://ugc.production.linktr.ee/420e4b90-4086-4866-b943-58d0ce8928fc_nailing-interview-career.jpeg"
           url: "https://dometrain.com/course/career-nailing-the-behavioral-interview/?ref=nick-cosentino"
           type: "course"
@@ -439,20 +441,9 @@ shop:
           ga_label: "career-behavioral-interview"
           utm:
             campaign: "career-behavioral-interview"
-        - id: "fzth-csharp-bundle"
-          title: "From Zero to Hero: C#"
-          image: "https://ugc.production.linktr.ee/62441082-dcaf-4ee1-8b26-66cd3655b62e_fzth-csharp.jpeg"
-          url: "https://dometrain.com/bundle/from-zero-to-hero-csharp/?ref=nick-cosentino"
-          type: "course"
-          price: 143.99
-          currency: "USD"
-          badge: "Bundle"
-          cta_label: "Enroll Now"
-          ga_label: "fzth-csharp-bundle"
-          utm:
-            campaign: "fzth-csharp-bundle"
         - id: "getting-started-csharp"
           title: "Getting Started: C#"
+          description: "Whether you have no programming experience or know a different language, Nick Cosentino teaches you everything to get started with C# — one of the most popular languages powering Office, Azure, and Windows."
           image: "https://ugc.production.linktr.ee/a6e7705c-cbc9-4dff-88d6-c0b618c7a256_csharp-gs.jpeg"
           url: "https://dometrain.com/course/getting-started-csharp/?ref=nick-cosentino"
           type: "course"
@@ -464,6 +455,7 @@ shop:
             campaign: "getting-started-csharp"
         - id: "deep-dive-csharp"
           title: "Deep Dive: C#"
+          description: "Picking up where Getting Started left off, Nick dives deeper into C#: OOP with inheritance and composition, generics, streams, delegates, LINQ, async/await, and multithreading."
           image: "https://ugc.production.linktr.ee/ce96a12f-270b-4b19-b891-ec05f89aeee7_csharp-dd.jpeg"
           url: "https://dometrain.com/course/deep-dive-csharp/?ref=nick-cosentino"
           type: "course"
@@ -475,6 +467,7 @@ shop:
             campaign: "deep-dive-csharp"
         - id: "fzth-refactoring"
           title: "From Zero to Hero: Refactoring for C# Developers"
+          description: "Practical refactoring techniques to improve code quality and maintainability in any C# codebase. Real-world examples from a Microsoft Principal Engineering Manager."
           image: "https://ugc.production.linktr.ee/674b088b-a93a-4b93-be7d-eb71a4347898_fzth-refactoring.jpeg"
           url: "https://dometrain.com/course/from-zero-to-hero-refactoring-for-csharp-developers/?ref=nick-cosentino"
           type: "course"
@@ -490,6 +483,7 @@ shop:
       items:
         - id: "consulting-30"
           title: "Management & Leadership Consult — 30 mins"
+          description: "A focused 30-minute 1:1 with a Microsoft Principal Engineering Manager. Ideal for targeted questions on leadership, management, or career growth."
           url: "https://tidycal.com/nbcosentino/management-and-leadership-consult-30-mins"
           type: "consultation"
           price: 300
@@ -501,6 +495,7 @@ shop:
             campaign: "consulting-30"
         - id: "consulting-60"
           title: "Management & Leadership Consult — 60 mins"
+          description: "A deep-dive 60-minute 1:1 with a Microsoft Principal Engineering Manager. Work through complex challenges in team leadership, career strategy, or engineering management."
           url: "https://tidycal.com/nbcosentino/management-and-leadership-consult-60-mins"
           type: "consultation"
           price: 500
@@ -516,6 +511,7 @@ shop:
       items:
         - id: "debugging-mug-black"
           title: "Debugging Mug - Black"
+          description: "Fuel your debugging sessions in style. Black ceramic mug, lead and BPA-free, available in 11oz and 15oz."
           url: "https://store.devleader.ca/products/debugging-mug-black"
           type: "product"
           price: 8.99
@@ -527,6 +523,7 @@ shop:
             campaign: "merch-debugging-mug-black"
         - id: "dark-mode-mug-black"
           title: "Dark Mode Mug - Black"
+          description: "Caffeinate and code in style with this black ceramic Dark Mode mug. Lead and BPA-free, available in 11oz and 15oz."
           url: "https://store.devleader.ca/products/dark-mode-mug-black"
           type: "product"
           price: 8.99
@@ -538,6 +535,7 @@ shop:
             campaign: "merch-dark-mode-mug-black"
         - id: "99-bugs-mug-black"
           title: "99 Bugs Mug - Black"
+          description: "99 bugs in the code — take one down, caffeinate. Black ceramic mug, lead and BPA-free, available in 11oz and 15oz."
           url: "https://store.devleader.ca/products/99-bugs-mug-black"
           type: "product"
           price: 8.99
@@ -549,6 +547,7 @@ shop:
             campaign: "merch-99-bugs-mug-black"
         - id: "99-bugs-mug-white"
           title: "99 Bugs Mug - White"
+          description: "99 bugs in the code — take one down, caffeinate. White ceramic mug, lead and BPA-free, available in 11oz and 15oz."
           url: "https://store.devleader.ca/products/99-bugs-mug-white"
           type: "product"
           price: 7.99
@@ -560,6 +559,7 @@ shop:
             campaign: "merch-99-bugs-mug-white"
         - id: "debugging-mug-white"
           title: "Debugging Mug - White"
+          description: "Fuel your debugging sessions in style. White ceramic mug, lead and BPA-free, available in 11oz and 15oz."
           url: "https://store.devleader.ca/products/debugging-mug"
           type: "product"
           price: 7.99
@@ -571,6 +571,7 @@ shop:
             campaign: "merch-debugging-mug-white"
         - id: "dark-mode-mug-white"
           title: "Dark Mode Mug - White"
+          description: "Caffeinate and code in style with this white ceramic Dark Mode mug. Lead and BPA-free, available in 11oz and 15oz."
           url: "https://store.devleader.ca/products/dark-mode-mug-white"
           type: "product"
           price: 7.99
@@ -586,6 +587,7 @@ shop:
       items:
         - id: "architecting-aspnet-core"
           title: "Architecting ASP.NET Core Applications"
+          description: "An atypical design patterns guide for ASP.NET Core. Covers clean architecture, vertical slice, microservices, SOLID principles, and more for .NET 8 and C# 12."
           url: "https://amzn.to/4drRe7K"
           type: "book"
           image: "https://ugc.production.linktr.ee/b70ee8b8-4661-4f71-b4c1-19b4a4be6f3d_image.png"
@@ -595,6 +597,7 @@ shop:
             campaign: "books-architecting-aspnet-core"
         - id: "web-dev-with-blazor"
           title: "Web Development with Blazor"
+          description: "Build modern web apps in C# without JavaScript. Covers Blazor Server, WebAssembly, Hybrid, and SSR with streaming rendering in .NET 8."
           url: "https://amzn.to/3wLCO23"
           type: "book"
           image: "https://ugc.production.linktr.ee/8fb5a76c-1144-4e0f-b7b3-37861e05f456_41MlNFG1C1L.-SX342-SY445-.jpeg"
@@ -604,6 +607,7 @@ shop:
             campaign: "books-web-dev-with-blazor"
         - id: "apps-and-services-dotnet8"
           title: "Apps and Services with .NET 8"
+          description: "A practical guide to modern .NET 8 services and apps — gRPC, GraphQL, SignalR, Azure Functions, Cosmos DB, Blazor Full Stack, and more."
           url: "https://amzn.to/4bNjRL4"
           type: "book"
           image: "https://ugc.production.linktr.ee/121b6c05-677c-4909-8286-f71e73c1614a_41oafNuSw1L.-SX342-SY445-.jpeg"
@@ -613,6 +617,7 @@ shop:
             campaign: "books-apps-and-services-dotnet8"
         - id: "software-architecture-csharp12"
           title: "Software Architecture with C# 12 and .NET 8"
+          description: "Put software architecture theory into practice with C# 12 and .NET 8. Covers microservices, domain-driven design, DevOps pipelines, and a full real-world case study."
           url: "https://amzn.to/3UNYCSo"
           type: "book"
           image: "https://ugc.production.linktr.ee/1b42e456-f88b-448d-8c41-10399787a7d5_41wV62kwM9L.-SX342-SY445-.jpeg"
@@ -622,6 +627,7 @@ shop:
             campaign: "books-software-architecture-csharp12"
         - id: "csharp12-dotnet8-fundamentals"
           title: "C# 12 and .NET 8 - Modern Cross-Platform Development Fundamentals"
+          description: "A beginner-to-intermediate guide to C# 12 and .NET 8 with hands-on exercises covering OOP, LINQ, Blazor, and ASP.NET Core."
           url: "https://amzn.to/3QXWmHj"
           type: "book"
           image: "https://ugc.production.linktr.ee/bebab1c6-f3f9-452a-a24f-eca8d6288000_image.png"
@@ -635,6 +641,7 @@ shop:
       items:
         - id: "design-patterns-1-0"
           title: "Design Patterns 1.0"
+          description: "A quick-reference e-book covering 23+ Gang of Four design patterns with descriptions, use cases, and C# implementation guidance. Future updates included free."
           url: "https://products.devleader.ca/l/uwxyp"
           type: "digital"
           price: 4.99
@@ -646,6 +653,7 @@ shop:
             campaign: "digital-design-patterns-1-0"
         - id: "brag-document-template"
           title: "Brag Document / Highlight Tracker Template"
+          description: "A free template to track your wins and impact as a software engineer. Supports performance reviews, promotion conversations, and career growth — from a Principal Engineering Manager at Microsoft."
           url: "https://products.devleader.ca/l/brag-document"
           type: "digital"
           price: 0
