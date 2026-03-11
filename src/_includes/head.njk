@@ -287,16 +287,16 @@
         {%- if item.image %},
         "image": "{{ item.image }}"
         {%- endif %},
-        "url": "{{ item.url }}"
-        {%- if item.price is number %},
+        "url": "{{ item.url }}",
         "offers": {
           "@type": "Offer",
-          "price": "{{ item.price }}",
-          "priceCurrency": "{{ item.currency if item.currency else site.shop.currency }}",
           "availability": "https://schema.org/InStock",
           "url": "{{ item.url }}"
+          {%- if item.price is number %},
+          "price": "{{ item.price }}",
+          "priceCurrency": "{{ item.currency if item.currency else site.shop.currency }}"
+          {%- endif %}
         }
-        {%- endif %}
         {%- endif %}
       }
     }
