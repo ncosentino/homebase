@@ -629,3 +629,29 @@ shop:
           ga_label: "book-csharp12-dotnet8-fundamentals"
           utm:
             campaign: "books-csharp12-dotnet8-fundamentals"
+    - id: "digital-products"
+      title: "Digital Products"
+      description: "Digital downloads and templates from Dev Leader."
+      items:
+        - id: "design-patterns-1-0"
+          title: "Design Patterns 1.0"
+          url: "https://products.devleader.ca/l/uwxyp"
+          type: "digital"
+          price: 4.99
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/72a43c34-61c0-4455-80f8-0efd927aa6c5_imkj86kbvidhpdc6qo6i15icgqpw.png"
+          cta_label: "Buy Now"
+          ga_label: "digital-design-patterns-1-0"
+          utm:
+            campaign: "digital-design-patterns-1-0"
+        - id: "brag-document-template"
+          title: "Brag Document / Highlight Tracker Template"
+          url: "https://products.devleader.ca/l/brag-document"
+          type: "digital"
+          price: 0
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/f37a8177-f522-4ccb-a5ea-7d305ed9df72_opengraph-image-4110ebae42201eaa14606ecde6ca17e380f576b25224ba270116b0439775cd0a.png"
+          cta_label: "Get It Free"
+          ga_label: "digital-brag-document-template"
+          utm:
+            campaign: "digital-brag-document-template"
