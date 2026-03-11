@@ -397,3 +397,186 @@ sections:
         url: "https://github.devleader.ca/homebase/"
         github_url: "https://github.com/ncosentino/homebase"
         description: "A config-driven, self-hosted Linktree alternative built with Eleventy. Fork it, edit one YAML file, and deploy your own landing page to GitHub Pages with full SEO, JSON-LD structured data, PWA manifest, UTM tracking, and auto-fetched social stats."
+
+# ── Shop ─────────────────────────────────────────────────────────────────────
+# Optional storefront tab. Set enabled: true to activate.
+# All fields below are documented at docs/shop.md
+shop:
+  enabled: true                            # Set to true to show the Shop tab
+  title: "Shop"                             # Tab label and page <title> prefix
+  path: "shop"                              # URL path — change to "store", "products", etc.
+  description: "Products, courses, and services from Dev Leader."
+  og_image: ""                              # Optional: override site og_image for the shop page
+  layout: "grid"                            # "grid" | "list"
+  currency: "USD"                           # Default currency for all items
+  show_prices: true                         # Global price display toggle
+  ga_event_name: "shop_item_click"          # GA4 click event name — set once, never change
+
+  collections:
+    - id: "courses"
+      title: "Courses"
+      description: "Level up your software engineering and career skills with Dometrain courses."
+      items:
+        - id: "career-getting-promoted"
+          title: "Career: Getting Promoted as a Software Engineer"
+          image: "https://ugc.production.linktr.ee/bb7423a5-6eba-48c5-9c3e-cbf23cd24ea6_promoted-software-career.jpeg"
+          url: "https://dometrain.com/course/career-getting-promoted-as-a-software-engineer/?ref=nick-cosentino"
+          type: "course"
+          price: 99
+          currency: "USD"
+          cta_label: "Enroll Now"
+          ga_label: "career-getting-promoted"
+          utm:
+            campaign: "career-getting-promoted"
+        - id: "career-behavioral-interview"
+          title: "Career: Nailing the Behavioral Interview"
+          image: "https://ugc.production.linktr.ee/420e4b90-4086-4866-b943-58d0ce8928fc_nailing-interview-career.jpeg"
+          url: "https://dometrain.com/course/career-nailing-the-behavioral-interview/?ref=nick-cosentino"
+          type: "course"
+          price: 99.99
+          currency: "USD"
+          cta_label: "Enroll Now"
+          ga_label: "career-behavioral-interview"
+          utm:
+            campaign: "career-behavioral-interview"
+        - id: "fzth-csharp-bundle"
+          title: "From Zero to Hero: C#"
+          image: "https://ugc.production.linktr.ee/62441082-dcaf-4ee1-8b26-66cd3655b62e_fzth-csharp.jpeg"
+          url: "https://dometrain.com/bundle/from-zero-to-hero-csharp/?ref=nick-cosentino"
+          type: "course"
+          price: 143.99
+          currency: "USD"
+          badge: "Bundle"
+          cta_label: "Enroll Now"
+          ga_label: "fzth-csharp-bundle"
+          utm:
+            campaign: "fzth-csharp-bundle"
+        - id: "getting-started-csharp"
+          title: "Getting Started: C#"
+          image: "https://ugc.production.linktr.ee/a6e7705c-cbc9-4dff-88d6-c0b618c7a256_csharp-gs.jpeg"
+          url: "https://dometrain.com/course/getting-started-csharp/?ref=nick-cosentino"
+          type: "course"
+          price: 89.99
+          currency: "USD"
+          cta_label: "Enroll Now"
+          ga_label: "getting-started-csharp"
+          utm:
+            campaign: "getting-started-csharp"
+        - id: "deep-dive-csharp"
+          title: "Deep Dive: C#"
+          image: "https://ugc.production.linktr.ee/ce96a12f-270b-4b19-b891-ec05f89aeee7_csharp-dd.jpeg"
+          url: "https://dometrain.com/course/deep-dive-csharp/?ref=nick-cosentino"
+          type: "course"
+          price: 89.99
+          currency: "USD"
+          cta_label: "Enroll Now"
+          ga_label: "deep-dive-csharp"
+          utm:
+            campaign: "deep-dive-csharp"
+        - id: "fzth-refactoring"
+          title: "From Zero to Hero: Refactoring for C# Developers"
+          image: "https://ugc.production.linktr.ee/674b088b-a93a-4b93-be7d-eb71a4347898_fzth-refactoring.jpeg"
+          url: "https://dometrain.com/course/from-zero-to-hero-refactoring-for-csharp-developers/?ref=nick-cosentino"
+          type: "course"
+          price: 89.99
+          currency: "USD"
+          cta_label: "Enroll Now"
+          ga_label: "fzth-refactoring"
+          utm:
+            campaign: "fzth-refactoring"
+    - id: "services"
+      title: "1:1 Services"
+      description: "Work directly with Nick to level up your career or engineering leadership."
+      items:
+        - id: "consulting-30"
+          title: "Management & Leadership Consult — 30 mins"
+          url: "https://tidycal.com/nbcosentino/management-and-leadership-consult-30-mins"
+          type: "consultation"
+          price: 300
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/98526ba8-93cf-4a64-80f1-b363d3bae648_share-image.jpeg"
+          cta_label: "Book a Session"
+          ga_label: "consulting-30"
+          utm:
+            campaign: "consulting-30"
+        - id: "consulting-60"
+          title: "Management & Leadership Consult — 60 mins"
+          url: "https://tidycal.com/nbcosentino/management-and-leadership-consult-60-mins"
+          type: "consultation"
+          price: 500
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/a4022d16-a32b-4094-8cb9-ce4428958c74_share-image.jpeg"
+          cta_label: "Book a Session"
+          ga_label: "consulting-60"
+          utm:
+            campaign: "consulting-60"
+    - id: "merch"
+      title: "Merch"
+      description: "Dev Leader branded mugs and gear."
+      items:
+        - id: "debugging-mug-black"
+          title: "Debugging Mug - Black"
+          url: "https://store.devleader.ca/products/debugging-mug-black"
+          type: "product"
+          price: 8.99
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/ff7bd0f8-513f-4d1e-a268-39d05e02c653_4737668754688937513-2048.jpeg"
+          cta_label: "Buy Now"
+          ga_label: "debugging-mug-black"
+          utm:
+            campaign: "merch-debugging-mug-black"
+        - id: "dark-mode-mug-black"
+          title: "Dark Mode Mug - Black"
+          url: "https://store.devleader.ca/products/dark-mode-mug-black"
+          type: "product"
+          price: 8.99
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/d400fee0-48f5-442c-b2b5-861634fa4005_9569017777516436602-2048.jpeg"
+          cta_label: "Buy Now"
+          ga_label: "dark-mode-mug-black"
+          utm:
+            campaign: "merch-dark-mode-mug-black"
+        - id: "99-bugs-mug-black"
+          title: "99 Bugs Mug - Black"
+          url: "https://store.devleader.ca/products/99-bugs-mug-black"
+          type: "product"
+          price: 8.99
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/21482e71-589e-461c-b7ca-254b9b99feed_9426655205101190193-2048.jpeg"
+          cta_label: "Buy Now"
+          ga_label: "99-bugs-mug-black"
+          utm:
+            campaign: "merch-99-bugs-mug-black"
+        - id: "99-bugs-mug-white"
+          title: "99 Bugs Mug - White"
+          url: "https://store.devleader.ca/products/99-bugs-mug-white"
+          type: "product"
+          price: 7.99
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/6c47a30c-4b88-40c7-90c0-dac44fc78409_13120109686049516080-2048.jpeg"
+          cta_label: "Buy Now"
+          ga_label: "99-bugs-mug-white"
+          utm:
+            campaign: "merch-99-bugs-mug-white"
+        - id: "debugging-mug-white"
+          title: "Debugging Mug - White"
+          url: "https://store.devleader.ca/products/debugging-mug"
+          type: "product"
+          price: 7.99
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/aac66801-1dc2-48e8-9394-c3c57a3d87fe_6621151749360019753-2048.jpeg"
+          cta_label: "Buy Now"
+          ga_label: "debugging-mug-white"
+          utm:
+            campaign: "merch-debugging-mug-white"
+        - id: "dark-mode-mug-white"
+          title: "Dark Mode Mug - White"
+          url: "https://store.devleader.ca/products/dark-mode-mug-white"
+          type: "product"
+          price: 7.99
+          currency: "USD"
+          image: "https://ugc.production.linktr.ee/e7cb6832-c14e-4489-8903-3ce0624908b9_1263425424890825701-2048.jpeg"
+          cta_label: "Buy Now"
+          ga_label: "dark-mode-mug-white"
+          utm:
+            campaign: "merch-dark-mode-mug-white"
