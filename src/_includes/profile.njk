@@ -66,6 +66,9 @@
   {%- if site.profile.show_total_reach != false and socialStats and socialStats.totalReach %}
   <p class="profile-total-reach">Total Audience: {{ (socialStats.totalReach / 1000) | round(1) }}k+</p>
   {%- endif %}
+  {%- if site.shop and site.shop.enabled %}
+  {% include "shop-nav.njk" %}
+  {%- endif %}
   {% if site.socials and site.socials.length %}
   <div class="social-icons-strip" role="list">
     {% for item in site.socials %}
