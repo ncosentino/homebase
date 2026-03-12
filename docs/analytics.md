@@ -19,8 +19,19 @@ Every `<a>` link rendered by Homebase — link buttons, portfolio cards, social 
 | `destination` | The link label (what was clicked) | `"YouTube"`, `"GitHub"`, `"course"` |
 | `link_type` | The component type | `link_button`, `portfolio_card`, `social_icon`, `featured_video` |
 | `section` | Which section it belongs to | `"Top Links"`, `"social_icons"`, `"featured_video"` |
+| `link_category` | Auto-classified destination type | `"video"`, `"social"`, `"newsletter"`, `"booking"`, `"external"` |
 
 The event name defaults to `creator_link_click`. You can change it in `site.yaml` (see [Configuration](#configuration) below).
+
+`link_category` is computed automatically from the destination URL — no configuration needed. Classification rules:
+
+| Category | URL patterns matched |
+|---|---|
+| `video` | `youtube.com`, `youtu.be`, `vimeo.com`, `twitch.tv` |
+| `social` | `twitter.com`, `x.com`, `linkedin.com`, `instagram.com`, `tiktok.com`, `threads.net`, `bsky.app`, `mastodon.*`, `facebook.com`, `pinterest.com`, `reddit.com` |
+| `newsletter` | `substack.com`, `convertkit.com`, `mailchimp.com`, `beehiiv.com` |
+| `booking` | `tidycal.com`, `calendly.com`, `cal.com` |
+| `external` | Everything else |
 
 ## One-Time GA4 Setup
 
@@ -30,13 +41,14 @@ GA4 collects the raw event data automatically, but custom event parameters must 
 
 1. Open [Google Analytics](https://analytics.google.com) → **Admin** (gear icon, bottom left)
 2. Under the **Property** column, click **Custom definitions**
-3. Click **Create custom dimension** and add all three:
+3. Click **Create custom dimension** and add all four:
 
 | Display name | Scope | Event parameter |
 |---|---|---|
 | Link Destination | Event | `destination` |
 | Link Type | Event | `link_type` |
 | Link Section | Event | `section` |
+| Link Category | Event | `link_category` |
 
 4. Save each one.
 
@@ -173,3 +185,57 @@ Open **Admin → Custom definitions → Create custom dimension** and add:
 5. Drag `Shop Item Title` into **Rows** and `Event count` into **Values**
 
 To see conversion rate (clicks ÷ views), run two separate explorations — one filtered to `shop_item_click` and one to `shop_item_view` — then compare totals in a spreadsheet or Looker Studio.
+
+---
+
+## Engagement Events
+
+Three additional engagement events fire automatically on every page when GA4 is configured. No setup or configuration is required.
+
+### `scroll_depth`
+
+Fires once per page visit at each scroll depth milestone.
+
+| Parameter | Type | Values |
+|---|---|---|
+| `percent` | number | `25`, `50`, `75`, `100` |
+
+Use this to see whether visitors are reading to the bottom of your page or bouncing early. Build an exploration filtered to `scroll_depth` with `percent` as a dimension.
+
+### `time_on_page`
+
+Fires once per milestone while the tab is in focus (pauses if the user switches tabs).
+
+| Parameter | Type | Values |
+|---|---|---|
+| `seconds` | number | `30`, `60`, `120`, `300` |
+
+A `seconds: 300` event means the visitor spent at least 5 active minutes on the page — a strong quality signal.
+
+### `first_interaction`
+
+Fires once, on the first click, keypress, or touch anywhere on the page.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `element_type` | string | Tag name of the element first interacted with |
+| `time_to_first_interaction_ms` | number | Milliseconds from page load to first interaction |
+
+### Register Engagement Custom Dimensions
+
+Open **Admin → Custom definitions → Create custom dimension** and add:
+
+| Display name | Scope | Event parameter |
+|---|---|---|
+| Scroll Depth % | Event | `percent` |
+| Time on Page (s) | Event | `seconds` |
+| First Interaction Element | Event | `element_type` |
+| Time to First Interaction | Event | `time_to_first_interaction_ms` |
+
+---
+
+## UTM Persistence
+
+Homebase automatically persists UTM parameters across same-origin navigation using `sessionStorage`. If a visitor arrives at your page with a UTM-tagged URL (e.g. from a newsletter), those UTM values are re-attached to any same-origin links they click — so attribution is not lost when navigating between pages (e.g. from the home page to the shop).
+
+This runs on every page load regardless of whether GA4 is configured. No configuration is needed.

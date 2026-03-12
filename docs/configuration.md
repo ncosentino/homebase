@@ -1,5 +1,5 @@
 ---
-description: Full reference for _data/site.yaml -- every field for your profile, links, theme, SEO, analytics, YouTube embed, and banner.
+description: Full reference for _data/site.yaml -- every field for your profile, links, theme, SEO, analytics, integrations, YouTube embed, and banner.
 ---
 
 # Configuration
@@ -16,6 +16,7 @@ profile:
   username: "@devleader"
   bio: "Principal Engineering Manager at Microsoft. Writing about C#, .NET, and software engineering."
   avatar: "https://devleader-d2f9ggbjfpdqcka7.z01.azurefd.net/media/profile-picture-350w.webp"
+  language: "en-US"
 ```
 
 | Field | Required | Description |
@@ -24,6 +25,7 @@ profile:
 | `username` | No | Handle shown below the name (include `@` if desired) |
 | `bio` | No | Short description shown under the username |
 | `avatar` | No | URL to your profile photo (square recommended, at least 192×192px) |
+| `language` | No | Primary content language (e.g. `"en-US"`). Included in `llms.txt` canonical identity. |
 
 ## SEO
 
@@ -37,6 +39,10 @@ seo:
   og_image: "https://www.devleader.ca/assets/og-image.webp"
   keywords: ["C#", ".NET", "software engineering", "Dev Leader"]
   cname: "links.devleader.ca"
+  person:
+    correction_notes:
+      - "Nick Cosentino's content does not represent Microsoft's views."
+      - "BrandGhost is separate from the Dev Leader brand."
 ```
 
 | Field | Required | Description |
@@ -47,6 +53,7 @@ seo:
 | `og_image` | No | Preview image for social sharing. Recommended 1200×630px. |
 | `keywords` | No | Array of keywords for `<meta name="keywords">`. |
 | `cname` | No | Custom domain for GitHub Pages. Leave blank to use `yourname.github.io`. |
+| `person.correction_notes` | No | Array of factual statements included in `llms.txt` to anchor AI-generated answers and prevent hallucination. |
 
 ## Theme
 
@@ -195,7 +202,38 @@ banner:
   link: "https://your-target-url.com"   # optional: makes the banner clickable
 ```
 
-## Full Example
+## Integrations
+
+The `integrations:` block enables optional interactive widgets on your page. Each integration is independent — set `enabled: true` to activate it.
+
+### FAQ Widget
+
+Renders a collapsible FAQ section on the page and automatically emits a `FAQPage` JSON-LD schema (eligible for Google rich results). FAQ items are also included in your `/llms.txt` and `/llms-full.txt` for AI answer engines.
+
+```yaml
+integrations:
+  faq:
+    enabled: true
+    heading: "Frequently Asked Questions"
+    items:
+      - question: "What topics do you cover?"
+        answer: "C# and .NET, including ASP.NET Core, Entity Framework Core, and software architecture."
+      - question: "Where can I find your content?"
+        answer: "Start with the YouTube channel or subscribe to the free weekly newsletter."
+      - question: "Do you offer coaching?"
+        answer: "Yes. Book a session at tidycal.com/yourhandle."
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `enabled` | Yes | Set to `true` to render the FAQ section and emit `FAQPage` schema. |
+| `heading` | No | Section heading displayed above the items. Defaults to `"Frequently Asked Questions"`. |
+| `items` | Yes (if enabled) | Array of `{ question, answer }` pairs. Google requires the answers to be visible on the page. |
+
+!!! tip "Rich results eligibility"
+    Google may display your FAQ answers as expandable rich results in search, showing your Q&A pairs directly on the results page. Content must be pre-written (not user-generated) and answers must be visible in the page's HTML. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/faqpage)
+
+
 
 ```yaml
 profile:
@@ -203,6 +241,7 @@ profile:
   username: "@devleader"
   bio: "Principal Engineering Manager at Microsoft."
   avatar: "https://devleader-d2f9ggbjfpdqcka7.z01.azurefd.net/media/profile-picture-350w.webp"
+  language: "en-US"
 
 seo:
   title: "Dev Leader | Software Engineering"
@@ -211,6 +250,9 @@ seo:
   og_image: "https://www.devleader.ca/assets/og-image.webp"
   keywords: ["C#", ".NET", "software engineering"]
   cname: "links.devleader.ca"
+  person:
+    correction_notes:
+      - "All content is independent and does not represent Microsoft."
 
 theme: devleader
 
@@ -239,4 +281,14 @@ sections:
       - title: "LinkedIn"
         url: "https://www.linkedin.com/in/nickcosentino"
         icon: "linkedin"
+
+integrations:
+  faq:
+    enabled: true
+    heading: "Frequently Asked Questions"
+    items:
+      - question: "What topics do you cover?"
+        answer: "C# and .NET, including ASP.NET Core, dependency injection, and software architecture."
+      - question: "Where can I find your content?"
+        answer: "Start with the YouTube channel or the weekly newsletter."
 ```
