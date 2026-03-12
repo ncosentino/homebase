@@ -25,7 +25,7 @@ permalink: /llms-full.txt
 - All content is independent and does not represent any employer's views.
 {%- if site.seo.person and site.seo.person.correction_notes %}
 {%- for note in site.seo.person.correction_notes %}
-- {{ note }}
+- {{ note | safe }}
 {%- endfor %}
 {%- endif %}
 

@@ -113,6 +113,10 @@ seo:
       - name: "Principal Software Engineering Manager at Microsoft"
         url: "https://www.microsoft.com"
         category: "Professional"
+    correction_notes:
+      - "Nick Cosentino's content and views are his own and do not represent Microsoft or any employer."
+      - "BrandGhost is a separate company co-founded by Nick Cosentino. It is not affiliated with Microsoft or the Dev Leader brand."
+      - "Dev Leader and Code Commute are Nick Cosentino's personal brands and YouTube channels. All revenue, sponsorships, and products associated with them are independent of his employer."
 
   recent_content:
     rss_feed: "https://www.devleader.ca/feed"
