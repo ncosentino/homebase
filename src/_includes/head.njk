@@ -59,6 +59,17 @@
 <meta name="twitter:image" content="{{ site.seo.og_image }}" />
 {%- endif %}
 
+{# ── Author & Identity Meta Tags ─────────────────────────────────────────── #}
+<meta name="author" content="{{ site.profile.name }}" />
+<meta name="creator" content="{{ site.profile.name }}" />
+<meta name="publisher" content="{{ site.seo.title }}" />
+
+{# ── rel="me" — IndieAuth / Mastodon identity verification ───────────────── #}
+{#   Establishes profile ownership for IndieAuth, Mastodon, and IndieWeb.     #}
+{%- for social in site.socials %}
+<link rel="me" href="{{ social.url }}" />
+{%- endfor %}
+
 {# ── Schema.org JSON-LD ───────────────────────────────────────────────────── #}
 <script type="application/ld+json">
 {
@@ -306,6 +317,67 @@
 </script>
 {%- endif %}
 
+{# ── FAQPage structured data ──────────────────────────────────────────────── #}
+{#   Source: developers.google.com/search/docs/appearance/structured-data/faqpage #}
+{%- if not shopPage and site.integrations and site.integrations.faq
+    and site.integrations.faq.enabled and site.integrations.faq.items
+    and site.integrations.faq.items.length %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "{{ site.seo.canonical }}#faq",
+  "mainEntity": [
+    {%- for item in site.integrations.faq.items %}
+    {%- if not loop.first %},{%- endif %}
+    {
+      "@type": "Question",
+      "name": "{{ item.question | jsonEscape }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ item.answer | jsonEscape }}"
+      }
+    }
+    {%- endfor %}
+  ]
+}
+</script>
+{%- endif %}
+
+{# ── BreadcrumbList structured data ──────────────────────────────────────── #}
+{#   Source: developers.google.com/search/docs/appearance/structured-data/breadcrumb #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "{{ site.seo.canonical }}#breadcrumb",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.seo.canonical }}"}
+    {%- if shopPage and site.shop %},
+    {"@type": "ListItem", "position": 2, "name": "{{ site.shop.title | jsonEscape }}", "item": "{{ site.seo.canonical }}/{{ site.shop.path }}/"}
+    {%- endif %}
+  ]
+}
+</script>
+
+{# ── Speakable structured data (Google BETA) ──────────────────────────────── #}
+{#   Marks page sections as voice-assistant readable.                          #}
+{#   Source: developers.google.com/search/docs/appearance/structured-data/speakable #}
+{%- if not shopPage %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "{{ site.seo.canonical }}#webpage",
+  "url": "{{ site.seo.canonical }}",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".profile-bio"{% if site.integrations and site.integrations.faq and site.integrations.faq.enabled %}, ".integration-faq-answer"{% endif %}]
+  }
+}
+</script>
+{%- endif %}
+
 {# ── Theme CSS ────────────────────────────────────────────────────────────── #}
 <link rel="stylesheet" href="/assets/base.css" />
 {%- if site.shop and site.shop.enabled %}
@@ -325,6 +397,20 @@
 <script>
 (function () {
   var n = "{{ site.ga_event_name or 'creator_link_click' }}";
+  var _rSocial   = /\b(youtube|youtu\.be|twitter|x\.com|instagram|tiktok|linkedin|github|discord|twitch|kick|bluesky|mastodon|threads|facebook|pinterest|reddit|bsky\.app)\b/i;
+  var _rNewsltr  = /\b(substack|mailchimp|beehiiv|convertkit|brevo|revue|buttondown|ghost)\b/i;
+  var _rBooking  = /\b(tidycal|calendly|cal\.com)\b/i;
+  var _rVideo    = /\b(youtube|youtu\.be|vimeo|twitch\.tv|kick\.com)\b/i;
+  function _linkCat(href) {
+    try {
+      var h = new URL(href, location.href).hostname;
+      if (_rVideo.test(h))   return "video";
+      if (_rSocial.test(h))  return "social";
+      if (_rNewsltr.test(h)) return "newsletter";
+      if (_rBooking.test(h)) return "booking";
+    } catch (e) {}
+    return "external";
+  }
   document.addEventListener("click", function (e) {
     var a = e.target.closest("a");
     if (!a || typeof gtag === "undefined") return;
@@ -339,11 +425,68 @@
       label   = (a.textContent || "").trim().toLowerCase().replace(/\s+/g, "_")
                 || new URL(a.href, location.href).hostname.replace(/^www\./, "");
     }
-    gtag("event", n, { destination: label, link_type: type, section: section });
+    gtag("event", n, { destination: label, link_type: type, section: section, link_category: _linkCat(a.href) });
+  });
+}());
+</script>
+<script>
+(function () {
+  if (typeof gtag === "undefined") return;
+
+  // Scroll depth milestones: 25 / 50 / 75 / 100 %
+  var _sdFired = {};
+  window.addEventListener("scroll", function () {
+    var pct = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100;
+    [25, 50, 75, 100].forEach(function (m) {
+      if (!_sdFired[m] && pct >= m) { _sdFired[m] = true; gtag("event", "scroll_depth", { percent: m }); }
+    });
+  }, { passive: true });
+
+  // Time-on-page milestones: 30 / 60 / 120 / 300 s (paused when tab hidden)
+  var _tabHidden = false;
+  document.addEventListener("visibilitychange", function () { _tabHidden = document.hidden; });
+  [30, 60, 120, 300].forEach(function (s) {
+    setTimeout(function () { if (!_tabHidden) gtag("event", "time_on_page", { seconds: s }); }, s * 1000);
+  });
+
+  // First interaction: time from page load to first click/key/touch
+  var _fiT0 = Date.now(), _fiFired = false;
+  function _fi(e) {
+    if (_fiFired) return; _fiFired = true;
+    gtag("event", "first_interaction", {
+      element_type: e.target.tagName.toLowerCase(),
+      time_to_first_interaction_ms: Date.now() - _fiT0
+    });
+  }
+  ["click", "keydown", "touchstart"].forEach(function (ev) {
+    document.addEventListener(ev, _fi, { once: true, passive: true });
   });
 }());
 </script>
 {% endif %}
+
+{# ── UTM sessionStorage persistence (runs regardless of GA config) ─────────── #}
+<script>
+(function () {
+  var _utmKeys = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
+  var _params  = new URLSearchParams(location.search);
+  _utmKeys.forEach(function (k) { var v = _params.get(k); if (v) sessionStorage.setItem(k, v); });
+  // Re-attach stored UTMs to same-origin navigation links
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a");
+    if (!a || !a.href) return;
+    try {
+      var u = new URL(a.href);
+      if (u.origin !== location.origin) return;
+      _utmKeys.forEach(function (k) {
+        var v = sessionStorage.getItem(k);
+        if (v && !u.searchParams.has(k)) u.searchParams.set(k, v);
+      });
+      a.href = u.toString();
+    } catch (x) {}
+  });
+}());
+</script>
 
 {# ── Favicons ─────────────────────────────────────────────────────────────── #}
 <link rel="icon" type="image/png" href="/assets/favicon.png" />

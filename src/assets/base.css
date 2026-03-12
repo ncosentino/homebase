@@ -553,3 +553,69 @@ body {
   --shop-badge-color:       #1a1a1a;
   --shop-grid-cols:         repeat(auto-fill, minmax(260px, 1fr));
 }
+
+
+/* ── FAQ Integration Widget ────────────────────────────────────────────────── */
+.integration-faq {
+  width: 100%;
+  max-width: var(--content-max-width, 640px);
+  margin: 2rem auto 0;
+}
+
+.integration-faq-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--color-text, inherit);
+  text-align: center;
+}
+
+.integration-faq-item {
+  border: 1px solid var(--color-border, rgba(255,255,255,0.12));
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  background: var(--color-card-bg, rgba(255,255,255,0.04));
+}
+
+.integration-faq-item[open] {
+  background: var(--color-card-bg-open, rgba(255,255,255,0.07));
+}
+
+.integration-faq-question {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color-text, inherit);
+  user-select: none;
+}
+
+.integration-faq-question::-webkit-details-marker { display: none; }
+
+.integration-faq-question::after {
+  content: "+";
+  font-size: 1.2rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+.integration-faq-item[open] .integration-faq-question::after {
+  content: "−";
+}
+
+.integration-faq-answer {
+  padding: 0 1rem 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-muted, rgba(255,255,255,0.75));
+  border-top: 1px solid var(--color-border, rgba(255,255,255,0.08));
+  padding-top: 0.75rem;
+}

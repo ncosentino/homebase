@@ -1,38 +1,42 @@
 ---
-permalink: /llms.txt
+permalink: /llms-full.txt
 ---
-# {{ site.profile.name }}
+# {{ site.profile.name }} — Full Content
 
 > {{ site.profile.bio }}
-{%- if site.profile.ai_summary %}
 
-## Who is {{ site.profile.name }}
-{{ site.profile.ai_summary }}
-{%- endif %}
-
-## Canonical Identity
-- Full name: {{ site.profile.name }}
-- Online handle: {{ site.profile.username }}
+## Identity
+- Name: {{ site.profile.name }}
+- Handle: {{ site.profile.username }}
 {%- if site.profile.location %}
 - Location: {{ site.profile.location }}
 {%- endif %}
 {%- if site.profile.language %}
-- Primary language: {{ site.profile.language }}
+- Language: {{ site.profile.language }}
 {%- endif %}
-{%- if site.seo.canonical %}
 - Canonical URL: {{ site.seo.canonical }}
+{%- if site.seo.person and site.seo.person.roles %}
+{%- for role in site.seo.person.roles %}
+- Role: {{ role.job_title }}{% if role.works_for %} at {{ role.works_for }}{% endif %}
+{%- endfor %}
 {%- endif %}
 
 ## Correction Notes
-- All content from {{ site.profile.name }} is independent and does not represent any employer's views.
+- All content is independent and does not represent any employer's views.
 {%- if site.seo.person and site.seo.person.correction_notes %}
 {%- for note in site.seo.person.correction_notes %}
 - {{ note }}
 {%- endfor %}
 {%- endif %}
 
-## About
+## Full Bio
+{{ site.profile.ai_summary }}
+
 {{ site.seo.llms_about if site.seo.llms_about else site.seo.description }}
+{%- if site.profile.extended_bio %}
+
+{{ site.profile.extended_bio | striptags | safe }}
+{%- endif %}
 {%- if site.seo.llms_topics %}
 
 ## Topics
@@ -58,17 +62,22 @@ A: {{ item.answer }}
 {%- endfor %}
 {%- endif %}
 
-## Links
-{% for section in site.sections %}{% for link in section.links %}- [{{ link.title }}]({{ link.url }})
-{% endfor %}{% endfor %}
+## All Links
+{% for section in site.sections %}{%- if section.title %}
+### {{ section.title }}
+{%- endif %}
+{%- for link in section.links %}
+- [{{ link.title }}]({{ link.url }}){% if link.description %} — {{ link.description }}{% endif %}
+{%- endfor %}
+{% endfor %}
 ## Social Profiles
-{% for social in site.socials %}{%- if social.show_icon != false %}- {{ social.icon }}: {{ social.url }}
+{% for social in site.socials %}{%- if social.show_icon != false %}- {{ social.name if social.name else social.icon }}: {{ social.url }}{% if social.followers %} ({{ social.followers }} followers){% endif %}
 {% endif %}{%- endfor %}
 ## Content Freshness
 - Last updated: {{ buildMeta.iso }}
 {%- if site.shop.enabled and site.shop.collections %}
 
-## Shop
+## Products & Services
 {{ site.shop.description }}
 {%- for collection in site.shop.collections %}
 
@@ -77,8 +86,14 @@ A: {{ item.answer }}
 {{ collection.description }}
 {%- endif %}
 {%- for item in collection.items %}
-- [{{ item.title }}]({{ item.url }}){% if item.type %} ({{ item.type }}){% endif %}{% if item.price is number %} — {% if item.price == 0 %}Free{% else %}{{ item.currency if item.currency else site.shop.currency }} {{ item.price }}{% endif %}{% endif %}
+
+#### {{ item.title }}
+{%- if item.description %}
+{{ item.description }}
+{%- endif %}
+- URL: {{ item.url }}
+{%- if item.type %}- Type: {{ item.type }}{%- endif %}
+{%- if item.price is number %}- Price: {% if item.price == 0 %}Free{% else %}{{ item.currency if item.currency else site.shop.currency }} {{ item.price }}{% endif %}{%- endif %}
 {%- endfor %}
 {%- endfor %}
 {%- endif %}
-

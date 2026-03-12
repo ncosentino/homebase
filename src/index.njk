@@ -30,6 +30,11 @@ permalink: /index.html
       </section>
       {% endfor %}
 
+      {# ── Integrations ────────────────────────────────────────────────── #}
+      {%- if site.integrations and site.integrations.faq and site.integrations.faq.enabled %}
+      {% include "integrations/faq.njk" %}
+      {%- endif %}
+
     </div>
   </main>
 

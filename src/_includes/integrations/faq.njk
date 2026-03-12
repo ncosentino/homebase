@@ -1,0 +1,14 @@
+{%- if site.integrations and site.integrations.faq and site.integrations.faq.enabled
+    and site.integrations.faq.items and site.integrations.faq.items.length %}
+<section class="integration-faq" aria-label="{{ site.integrations.faq.heading or 'Frequently Asked Questions' }}">
+  {%- if site.integrations.faq.heading %}
+  <h2 class="integration-faq-heading">{{ site.integrations.faq.heading }}</h2>
+  {%- endif %}
+  {%- for item in site.integrations.faq.items %}
+  <details class="integration-faq-item" data-ga-section="faq" data-ga-type="faq_item">
+    <summary class="integration-faq-question">{{ item.question }}</summary>
+    <div class="integration-faq-answer">{{ item.answer | nl2br | safe }}</div>
+  </details>
+  {%- endfor %}
+</section>
+{%- endif %}

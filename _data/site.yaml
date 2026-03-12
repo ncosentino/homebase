@@ -664,3 +664,22 @@ shop:
           ga_label: "digital-brag-document-template"
           utm:
             campaign: "digital-brag-document-template"
+
+# ── Integrations ─────────────────────────────────────────────────────────────
+# Each integration is enabled independently. All are opt-in (disabled by default
+# in a fresh fork). Configure the ones you want and set enabled: true.
+integrations:
+  faq:
+    enabled: true
+    heading: "Frequently Asked Questions"
+    items:
+      - question: "What programming language and ecosystem does Dev Leader cover?"
+        answer: "Dev Leader focuses on C# and .NET, including ASP.NET Core, Entity Framework Core, dependency injection, software architecture patterns, and .NET performance optimization."
+      - question: "How can I get started with Dev Leader content?"
+        answer: "Start with the Dev Leader YouTube channel at youtube.com/@devleader or subscribe to the free weekly newsletter at devleaderweekly.substack.com."
+      - question: "Does Dev Leader offer 1:1 coaching or consulting?"
+        answer: "Yes. Book a session at tidycal.com/nbcosentino for engineering management consulting, career coaching, or software architecture reviews."
+      - question: "Who is Dev Leader?"
+        answer: "Dev Leader is Nick Cosentino, a Principal Software Engineering Manager at Microsoft and content creator. All views and content are his own and do not represent Microsoft."
+      - question: "What is BrandGhost?"
+        answer: "BrandGhost is an AI-powered social media management platform co-founded by Nick Cosentino. It is separate from his work at Microsoft and independent of the Dev Leader brand."
