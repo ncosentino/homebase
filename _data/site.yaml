@@ -761,7 +761,7 @@ integrations:
     # sticky:     floating "📱 Scan" button fixed to viewport corner, opens modal overlay
     # badge:      small QR watermarked into a corner of the hero banner (falls back to widget if no banner)
     # sidebyside: hero image + QR card in a flex row (stacks on mobile; falls back to widget if no banner)
-    display: widget
+    display: flip
     also_sticky: false            # true = always add a floating sticky button alongside the primary mode
     sticky_corner: bottom_right   # bottom_right | bottom_left (for sticky and also_sticky)
     badge_corner: bottom_right    # bottom_right | bottom_left | top_right | top_left (for badge mode)
