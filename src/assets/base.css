@@ -643,3 +643,278 @@ body {
   color: var(--btn-text, #1a1a1a);
   border-top: 1px solid rgba(0,0,0,0.08);
 }
+
+/* ── Banner, hero, flip card — critical above-fold CSS ───────────────────────
+   Moved here from integrations.css so integrations.css can be async-loaded
+   without causing a flash of unstyled content on the hero / flip card.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Inner clip wrapper — sits around the <img>, NOT the avatar */
+.banner-img-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+}
+
+/* ── Full-bleed hero mode ── */
+.banner-img-wrap.banner-hero,
+.qr-flip-outer.banner-hero {
+  border-radius: 0;
+  align-self: flex-start;
+  width: var(--hero-w, 100vw);
+  aspect-ratio: var(--banner-aspect, 2/1);
+  margin-left: var(--hero-ml, calc(50% - 50vw));
+}
+
+.profile-banner-wrap:has(.banner-hero) {
+  border-radius: 0;
+}
+
+.banner-img-wrap.banner-hero img,
+.banner-img-wrap.banner-hero > a > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--banner-obj-pos, top) center;
+  display: block;
+  border-radius: 0;
+}
+
+.qr-flip-outer.banner-hero .qr-flip-inner,
+.qr-flip-outer.banner-hero .qr-flip-front {
+  height: 100%;
+}
+.qr-flip-outer.banner-hero .qr-flip-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--banner-obj-pos, top) center;
+}
+
+.qr-flip-outer.banner-hero,
+.qr-flip-outer.banner-hero .qr-flip-inner,
+.qr-flip-outer.banner-hero .qr-flip-front,
+.qr-flip-outer.banner-hero .qr-flip-back,
+.qr-flip-outer.banner-hero .qr-flip-front img {
+  border-radius: 0;
+}
+
+.banner-fade .banner-img-wrap.banner-hero::after,
+.qr-flip-outer.banner-hero.banner-fade .qr-flip-front::after {
+  border-radius: 0;
+}
+
+/* ── Banner parallax ── */
+.banner-parallax-clip > img,
+.banner-parallax-clip > a > img {
+  display: block;
+  width: 100%;
+  transform: translateY(var(--hb-parallax, 0px));
+  will-change: transform;
+  transition: none;
+}
+
+.qr-flip-outer.banner-parallax {
+  transform: translateY(var(--hb-parallax, 0px));
+  will-change: transform;
+}
+
+/* ── Banner fade overlays ── */
+.banner-fade .banner-img-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent 0%, var(--bg-color, #f5f5f5) 100%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 0 0 16px 16px;
+}
+
+.banner-fade .banner-img-wrap.banner-hero::after {
+  border-radius: 0;
+}
+
+.qr-flip-outer.banner-fade .qr-flip-front {
+  position: relative;
+}
+.qr-flip-outer.banner-fade .qr-flip-front::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent 0%, var(--bg-color, #f5f5f5) 100%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 0 0 16px 16px;
+}
+
+.qr-flip-outer.banner-hero.banner-fade .qr-flip-front::after {
+  border-radius: 0;
+}
+
+.qr-sidebyside-banner.banner-fade .banner-img-wrap::after {
+  border-radius: 0 0 16px 16px;
+}
+
+/* ── QR flip card ── */
+.qr-flip-outer {
+  position: relative;
+  width: 100%;
+  perspective: 1000px;
+  cursor: pointer;
+  border-radius: 16px;
+  margin-bottom: 48px;
+}
+
+.qr-flip-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  border-radius: 16px;
+}
+
+.qr-flip-outer.qr-flipped .qr-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.qr-flip-front,
+.qr-flip-back {
+  border-radius: 16px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.qr-flip-front {
+  width: 100%;
+}
+
+.qr-flip-back {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotateY(180deg);
+  background: var(--btn-bg, #fff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  box-shadow: var(--btn-shadow, 0 2px 8px rgba(0,0,0,0.15));
+}
+
+.qr-flip-back .hb-qr-svg svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.qr-flip-back .hb-qr-url {
+  font-size: 0.78rem;
+  font-family: var(--font-family, Inter, sans-serif);
+  color: var(--btn-text, #1a1a1a);
+  opacity: 0.5;
+  text-align: center;
+  margin: 0;
+}
+
+.qr-flip-hint {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 11px;
+  font-family: var(--font-family, Inter, sans-serif);
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1.4;
+  pointer-events: none;
+  letter-spacing: 0.01em;
+  z-index: 2;
+}
+
+.qr-flip-close-hint {
+  font-size: 0.72rem;
+  font-family: var(--font-family, Inter, sans-serif);
+  color: var(--btn-text, #1a1a1a);
+  opacity: 0.45;
+  text-align: center;
+  margin: 0;
+}
+
+.qr-flip-outer .avatar-over-banner {
+  z-index: 3;
+}
+
+/* ── QR badge overlay — above fold in badge mode ── */
+.hb-qr-badge {
+  position: absolute;
+  z-index: 2;
+  background: rgba(255,255,255,0.92);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  line-height: 0;
+}
+.hb-qr-badge svg { display: block; }
+.hb-qr-badge--bottom-right { bottom: 10px; right: 10px; }
+.hb-qr-badge--bottom-left  { bottom: 10px; left:  10px; }
+.hb-qr-badge--top-right    { top:    10px; right: 10px; }
+.hb-qr-badge--top-left     { top:    10px; left:  10px; }
+
+/* ── QR side-by-side row — above fold in sidebyside mode ── */
+.qr-sidebyside-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+.qr-sidebyside-banner {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.qr-sidebyside-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.qr-sidebyside-banner .avatar-over-banner {
+  bottom: -36px;
+}
+
+.qr-sidebyside-qr {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-sidebyside-qr .hb-widget-qr-code {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+@media (min-width: 560px) {
+  .qr-sidebyside-row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .qr-sidebyside-banner { flex: 1 1 60%; }
+  .qr-sidebyside-qr     { flex: 0 0 36%; }
+  .qr-sidebyside-banner .avatar-over-banner {
+    bottom: -36px;
+  }
+}
