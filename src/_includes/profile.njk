@@ -25,13 +25,16 @@
   {%- set _qrHasBanner = true if site.profile.banner else false %}
   {%- set _bannerFade     = true if site.profile.banner_fade     else false %}
   {%- set _bannerParallax = true if site.profile.banner_parallax else false %}
+  {%- set _bannerHero     = true if site.profile.banner_hero     else false %}
+  {%- set _bannerAspect   = site.profile.banner_aspect_ratio    if site.profile.banner_aspect_ratio    else "2/1" %}
+  {%- set _bannerObjPos   = site.profile.banner_object_position if site.profile.banner_object_position else "top" %}
   {%- set _parallaxFactor = site.profile.parallax_factor | string if site.profile.parallax_factor else "0.3" %}
 
   {% if site.profile.banner %}
 
   {# ── Flip mode ── #}
   {%- if _qrDisplay == "flip" %}
-  <div class="qr-flip-outer{% if _bannerFade %} banner-fade{% endif %}{% if _bannerParallax %} banner-parallax{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %} role="button" tabindex="0" aria-label="Tap to reveal QR code">
+  <div class="qr-flip-outer{% if _bannerFade %} banner-fade{% endif %}{% if _bannerParallax %} banner-parallax{% endif %}{% if _bannerHero %} banner-hero{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}{% if _bannerHero %} style="--banner-aspect:{{ _bannerAspect }};--banner-obj-pos:{{ _bannerObjPos }}"{% endif %} role="button" tabindex="0" aria-label="Tap to reveal QR code">
     <div class="qr-flip-inner">
       <div class="qr-flip-front">
         <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
@@ -54,7 +57,7 @@
   {%- elif _qrDisplay == "sidebyside" %}
   <div class="qr-sidebyside-row">
     <div class="qr-sidebyside-banner{% if _bannerFade %} banner-fade{% endif %}">
-      <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}>
+      <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}{% if _bannerHero %} banner-hero{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}{% if _bannerHero %} style="--banner-aspect:{{ _bannerAspect }};--banner-obj-pos:{{ _bannerObjPos }}"{% endif %}>
         {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
         <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
         {% if site.profile.banner_url %}</a>{% endif %}
@@ -88,7 +91,7 @@
   {%- elif _qrDisplay == "badge" %}
   {%- set _badgeCorner = _qrCfg.badge_corner or "bottom_right" %}
   <div class="profile-banner-wrap{% if _bannerFade %} banner-fade{% endif %}">
-    <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}>
+    <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}{% if _bannerHero %} banner-hero{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}{% if _bannerHero %} style="--banner-aspect:{{ _bannerAspect }};--banner-obj-pos:{{ _bannerObjPos }}"{% endif %}>
       {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
       <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
       {% if site.profile.banner_url %}</a>{% endif %}
@@ -104,7 +107,7 @@
   {# ── Default banner (widget / sticky / compact — no hero modification needed) ── #}
   {%- else %}
   <div class="profile-banner-wrap{% if _bannerFade %} banner-fade{% endif %}">
-    <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}>
+    <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}{% if _bannerHero %} banner-hero{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}{% if _bannerHero %} style="--banner-aspect:{{ _bannerAspect }};--banner-obj-pos:{{ _bannerObjPos }}"{% endif %}>
       {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
       <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
       {% if site.profile.banner_url %}</a>{% endif %}

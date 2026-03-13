@@ -29,8 +29,11 @@ profile:
   show_badges: false
   contact_url: "https://tidycal.com/nbcosentino/management-and-leadership-consult-30-mins"
   show_contact_cta: false
-  banner_fade: true         # gradient fade at bottom of hero image (blends into page bg)
-  banner_parallax: false    # hero image scrolls at a slower speed, creating depth
+  banner_fade: true             # gradient fade at bottom of hero image (blends into page bg)
+  banner_parallax: false        # hero image scrolls at a slower speed, creating depth
+  banner_hero: true             # full-bleed edge-to-edge hero (breaks out of content column)
+  banner_aspect_ratio: "2/1"   # aspect ratio in hero mode: 21/9 | 16/9 | 2/1 | 3/1
+  banner_object_position: "top" # anchor when cropped: top | center | bottom
   # parallax_factor: 0.3   # scroll speed fraction (0 = no parallax, 1 = fixed). Default: 0.3
   # ── Extended bio (SEO) ──────────────────────────────────────────────────
   # A 200–400 word bio rendered as a collapsible block below the social icons.
