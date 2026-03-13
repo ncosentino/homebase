@@ -380,6 +380,10 @@ sections:
   - title: "Open Source Projects"
     type: cards
     links:
+      - title: "Dev Leader Examples"
+        url: "https://github.com/ncosentino/devleader"
+        github_url: "https://github.com/ncosentino/devleader"
+        description: "Example code from Dev Leader articles, videos, and tutorials. C#, .NET, software architecture, design patterns, dependency injection, performance, and more — organized by topic."
       - title: "Needlr"
         url: "https://github.devleader.ca/needlr/"
         github_url: "https://github.com/ncosentino/needlr"
