@@ -6,6 +6,7 @@
   data-formspree-id="{{ _lm.formspree_id }}"
   data-convertkit-form-id="{{ _lm.convertkit_form_id }}"
   data-web3forms-key="{{ _lm.web3forms_key }}"
+  data-webhook-url="{{ _lm.webhook_url }}"
   data-success-msg="{{ _lm.success_message or 'Check your inbox! Your resource is on its way.' }}"
   aria-label="{{ _lm.heading or 'Free Resource' }}">
 
@@ -35,8 +36,8 @@
   </form>
   <p class="hb-msg" aria-live="polite"></p>
 
-  {%- if _lm.resource_url %}
-  <a href="{{ _lm.resource_url }}" target="_blank" rel="noopener"
+  {%- if _lm.resource_url or _lm.backend == 'webhook' %}
+  <a href="{{ _lm.resource_url or '#' }}" target="_blank" rel="noopener"
     class="hb-resource-link"
     data-ga-label="lead-magnet-resource">
     ↓ Click here to access your resource

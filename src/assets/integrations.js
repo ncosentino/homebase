@@ -85,6 +85,14 @@
         if (!r.success) throw new Error(r.message || 'Error');
         return r;
       });
+    } else if (backend === 'webhook') {
+      // Configurable server-side endpoint. Expected response:
+      //   success: { "resource_url": "https://..." } or {} (resource delivered by email)
+      //   failure: non-2xx status, or { "error": "message" }
+      p = HB._post(d.webhookUrl, { email: email }).then(function (r) {
+        if (r.error) throw new Error(r.error);
+        return r;
+      });
     } else {
       p = Promise.reject(new Error('Unknown backend: ' + backend));
     }
@@ -92,10 +100,12 @@
     var successMsg = d.successMsg || "You're subscribed!";
     var gaWidget = d.gaWidget || 'newsletter';
 
-    p.then(function () {
-      HB.setState(widget, 'success', successMsg);
+    p.then(function (result) {
+      // Server may return a custom message; fall back to configured success_message
+      var msg = (result && result.message) || successMsg;
+      HB.setState(widget, 'success', msg);
       HB.track('newsletter_subscribe', { method: backend, widget: gaWidget });
-      if (opts.onSuccess) opts.onSuccess();
+      if (opts.onSuccess) opts.onSuccess(result || {});
     }).catch(function (err) {
       HB.setState(widget, 'error', 'Something went wrong. Please try again.');
       console.error('[HB newsletter]', err);
@@ -166,9 +176,17 @@
         e.preventDefault();
         var emailEl = form.querySelector('[type="email"]');
         HB.submitEmail(widget, emailEl ? emailEl.value : '', {
-          onSuccess: function () {
+          onSuccess: function (result) {
             var link = widget.querySelector('.hb-resource-link');
-            if (link) link.style.display = 'block';
+            if (!link) return;
+            // Webhook backend: server may return the resource URL dynamically
+            if (result && result.resource_url) {
+              link.href = result.resource_url;
+            }
+            // Only show the link if it has a real href (not the '#' placeholder)
+            if (link.href && link.getAttribute('href') !== '#') {
+              link.style.display = 'block';
+            }
           }
         });
       });

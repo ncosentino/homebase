@@ -409,6 +409,44 @@ integrations:
     success_message: "Check your inbox! Your resource is on its way."
 ```
 
+**Two delivery modes:**
+
+| Mode | How it works | Resource URL in page source? |
+|------|-------------|------------------------------|
+| Static (`resource_url` set) | URL is embedded in page HTML. Revealed client-side after submit. | ✅ Yes — inspectable |
+| Webhook (`backend: webhook`) | Client POSTs to your server. Server validates, records the email, and returns the URL in its response (or delivers it via email). URL never appears in HTML. | ❌ No — server-gated |
+
+**Webhook backend config:**
+
+```yaml
+  lead_magnet:
+    enabled: true
+    backend: webhook
+    webhook_url: "https://your-api.example.com/lead-magnet"
+    resource_url: ""                # Leave blank — URL comes from the server
+    success_message: "Check your inbox! Your resource is on its way."
+```
+
+**Webhook contract** — your server receives:
+```json
+POST {webhook_url}
+Content-Type: application/json
+
+{ "email": "user@example.com" }
+```
+
+And must respond with one of:
+
+```json
+// Option A: reveal URL in-page after submit
+{ "resource_url": "https://cdn.example.com/secret-resource.pdf" }
+
+// Option B: deliver resource by email server-side (no URL shown in page)
+{}
+```
+
+Any non-2xx response, or a response body containing `{ "error": "message" }`, is shown as an error to the user.
+
 ### Social Proof Counters
 
 Display audience reach numbers as a stat grid. Values are static — update them in `site.yaml` as your numbers grow.

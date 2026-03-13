@@ -815,10 +815,11 @@ integrations:
     resource_image: ""              # Optional preview image URL
     placeholder: "your@email.com"
     cta_label: "Send Me the Resource"
-    backend: formspree              # formspree | convertkit | web3forms
+    backend: formspree              # formspree | convertkit | web3forms | webhook
     formspree_id: ""
     convertkit_form_id: ""
     web3forms_key: ""
+    webhook_url: ""                 # Your server endpoint (POST {email} → returns {resource_url} or {})
     resource_url: ""                # URL revealed in page after successful submission
     success_message: "Check your inbox! Your resource is on its way."
 
