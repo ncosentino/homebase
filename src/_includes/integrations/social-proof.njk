@@ -1,0 +1,15 @@
+{%- set _sp = site.integrations.social_proof %}
+{%- if _sp and _sp.enabled and _sp.counters and _sp.counters.length %}
+<section class="hb-widget hb-widget-social-proof" data-ga-widget="social_proof"
+  aria-label="{{ _sp.heading or 'Social Proof' }}">
+  {%- if _sp.heading %}<h2 class="hb-widget-heading">{{ _sp.heading }}</h2>{%- endif %}
+  <div class="hb-counters-grid">
+    {%- for counter in _sp.counters %}
+    <div class="hb-counter">
+      <span class="hb-counter-value">{{ counter.value }}</span>
+      <span class="hb-counter-label">{{ counter.label }}</span>
+    </div>
+    {%- endfor %}
+  </div>
+</section>
+{%- endif %}

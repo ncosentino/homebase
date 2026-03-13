@@ -14,6 +14,10 @@ permalink: /index.html
       {%- set page = "links" %}
       {% include "profile.njk" %}
 
+      {# ── SLOT: after_profile ──────────────────────────────────────────── #}
+      {%- set _slot = 'after_profile' %}
+      {%- include "integrations/_slot.njk" %}
+
       {# ── Featured Videos ─────────────────────────────────────────────── #}
       {# Prefer live channel feed; fall back to manually configured videos #}
       {% set _videos = youtubeChannels if youtubeChannels.length else site.featured_videos %}
@@ -23,6 +27,10 @@ permalink: /index.html
       {% endfor %}
       {% endif %}
 
+      {# ── SLOT: after_videos ───────────────────────────────────────────── #}
+      {%- set _slot = 'after_videos' %}
+      {%- include "integrations/_slot.njk" %}
+
       {# ── Link Sections ───────────────────────────────────────────────── #}
       {% for section in site.sections %}
       <section class="link-section">
@@ -30,10 +38,13 @@ permalink: /index.html
       </section>
       {% endfor %}
 
-      {# ── Integrations ────────────────────────────────────────────────── #}
-      {%- if site.integrations and site.integrations.faq and site.integrations.faq.enabled %}
-      {% include "integrations/faq.njk" %}
-      {%- endif %}
+      {# ── SLOT: after_links ────────────────────────────────────────────── #}
+      {%- set _slot = 'after_links' %}
+      {%- include "integrations/_slot.njk" %}
+
+      {# ── SLOT: bottom ─────────────────────────────────────────────────── #}
+      {%- set _slot = 'bottom' %}
+      {%- include "integrations/_slot.njk" %}
 
     </div>
   </main>

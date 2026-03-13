@@ -1,0 +1,54 @@
+{%- set _pl = site.integrations.poll %}
+{%- if _pl and _pl.enabled %}
+{%- set _provider = _pl.provider or 'tally' %}
+
+{%- if _provider == 'tally' and _pl.tally_form_id %}
+{# ── Tally.so embed ──────────────────────────────────────────────────────── #}
+<section class="hb-widget hb-widget-poll" data-ga-widget="poll"
+  aria-label="{{ _pl.heading or 'Poll' }}">
+  {%- if _pl.heading %}<h2 class="hb-widget-heading">{{ _pl.heading }}</h2>{%- endif %}
+  <iframe
+    data-tally-src="https://tally.so/embed/{{ _pl.tally_form_id }}?alignLeft=1&hideTitle={{ _pl.tally_hide_title | default(true) | lower }}&transparentBackground=1&dynamicHeight=1"
+    loading="lazy"
+    width="100%"
+    height="{{ _pl.tally_height or 200 }}"
+    frameborder="0"
+    marginheight="0"
+    marginwidth="0"
+    title="{{ _pl.heading or 'Poll' }}">
+  </iframe>
+  <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+</section>
+
+{%- elif _provider == 'custom' and _pl.question and _pl.options and _pl.options.length %}
+{# ── Custom YAML-defined poll (submits to Formspree / Web3Forms) ─────────── #}
+<section class="hb-widget hb-widget-poll"
+  data-ga-widget="poll"
+  data-backend="{{ _pl.backend or 'formspree' }}"
+  data-formspree-id="{{ _pl.formspree_id }}"
+  data-web3forms-key="{{ _pl.web3forms_key }}"
+  data-success-msg="{{ _pl.success_message or 'Thanks for your vote!' }}"
+  data-question="{{ _pl.question | escape }}"
+  aria-label="{{ _pl.heading or 'Poll' }}">
+  {%- if _pl.heading %}<h2 class="hb-widget-heading">{{ _pl.heading }}</h2>{%- endif %}
+  <form novalidate>
+    <fieldset style="border:none;padding:0;margin:0">
+      <legend class="hb-widget-subheading" style="width:100%">{{ _pl.question }}</legend>
+      <div class="hb-poll-options">
+        {%- for opt in _pl.options %}
+        <label class="hb-poll-option">
+          <input type="radio" name="poll_option" value="{{ opt.value | escape }}"
+            data-label="{{ opt.label | escape }}" />
+          <span class="hb-poll-option-label">{{ opt.label }}</span>
+        </label>
+        {%- endfor %}
+      </div>
+    </fieldset>
+    <button type="submit" class="hb-btn hb-btn-full">
+      {{ _pl.cta_label or 'Submit Vote' }}
+    </button>
+  </form>
+  <p class="hb-msg" aria-live="polite"></p>
+</section>
+{%- endif %}
+{%- endif %}

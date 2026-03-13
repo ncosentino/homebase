@@ -1,0 +1,69 @@
+{%- set _ce = site.integrations.code_embeds %}
+{%- if _ce and _ce.enabled and _ce.items and _ce.items.length %}
+<section class="hb-widget hb-widget-code-embeds" data-ga-widget="code_embeds"
+  aria-label="{{ _ce.heading or 'Code Demos' }}">
+  {%- if _ce.heading %}<h2 class="hb-widget-heading">{{ _ce.heading }}</h2>{%- endif %}
+  <div class="hb-code-embeds-list">
+    {%- for item in _ce.items %}
+    {%- set _height = item.height or 400 %}
+
+    {%- if item.provider == 'codepen' and item.embed_id and item.user %}
+    {# ── CodePen ─────────────────────────────────────────────────────── #}
+    <div class="hb-code-embed">
+      {%- if item.title %}<p class="hb-code-embed-title">{{ item.title }}</p>{%- endif %}
+      <iframe
+        src="https://codepen.io/{{ item.user }}/embed/{{ item.embed_id }}?default-tab=result&theme-id=dark"
+        style="height:{{ _height }}px"
+        title="{{ item.title or 'CodePen Embed' }}"
+        frameborder="0"
+        allowfullscreen="true"
+        loading="lazy">
+      </iframe>
+    </div>
+
+    {%- elif item.provider == 'gist' and item.gist_id %}
+    {# ── GitHub Gist (via render.githubusercontent.com) ─────────────── #}
+    <div class="hb-code-embed">
+      {%- if item.title %}<p class="hb-code-embed-title">{{ item.title }}</p>{%- endif %}
+      <iframe
+        src="data:text/html;charset=utf-8,<script src='https://gist.github.com/{{ item.gist_id }}.js'></script>"
+        style="height:{{ _height }}px;background:#fff"
+        title="{{ item.title or 'GitHub Gist' }}"
+        frameborder="0"
+        loading="lazy">
+      </iframe>
+    </div>
+
+    {%- elif item.provider == 'stackblitz' and item.project_id %}
+    {# ── StackBlitz ──────────────────────────────────────────────────── #}
+    <div class="hb-code-embed">
+      {%- if item.title %}<p class="hb-code-embed-title">{{ item.title }}</p>{%- endif %}
+      <iframe
+        src="https://stackblitz.com/edit/{{ item.project_id }}?embed=1&view=preview"
+        style="height:{{ _height }}px"
+        title="{{ item.title or 'StackBlitz Embed' }}"
+        frameborder="0"
+        allowfullscreen="true"
+        loading="lazy">
+      </iframe>
+    </div>
+
+    {%- elif item.provider == 'replit' and item.repl_url %}
+    {# ── Replit ──────────────────────────────────────────────────────── #}
+    <div class="hb-code-embed">
+      {%- if item.title %}<p class="hb-code-embed-title">{{ item.title }}</p>{%- endif %}
+      <iframe
+        src="{{ item.repl_url }}?lite=true"
+        style="height:{{ _height }}px"
+        title="{{ item.title or 'Replit Embed' }}"
+        frameborder="0"
+        allowfullscreen="true"
+        loading="lazy">
+      </iframe>
+    </div>
+    {%- endif %}
+
+    {%- endfor %}
+  </div>
+</section>
+{%- endif %}

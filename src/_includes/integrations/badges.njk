@@ -1,0 +1,60 @@
+{%- set _bg = site.integrations.badges %}
+{%- if _bg and _bg.enabled and _bg.items and _bg.items.length %}
+<section class="hb-widget hb-widget-badges" data-ga-widget="badges"
+  aria-label="{{ _bg.heading or 'Certifications & Badges' }}">
+  {%- if _bg.heading %}<h2 class="hb-widget-heading">{{ _bg.heading }}</h2>{%- endif %}
+  <div class="hb-badges-grid">
+    {%- for item in _bg.items %}
+
+    {%- if item.type == 'credly' and item.badge_id %}
+    {# ── Credly badge ──────────────────────────────────────────────────── #}
+    <a href="https://www.credly.com/badges/{{ item.badge_id }}" target="_blank" rel="noopener"
+      class="hb-badge" aria-label="{{ item.label or 'Credly Badge' }}"
+      data-ga-label="badge-credly-{{ item.badge_id }}">
+      <img src="https://images.credly.com/size/220x220/images/{{ item.badge_id }}/image.png"
+        alt="{{ item.label or 'Credly Badge' }}" loading="lazy" />
+    </a>
+
+    {%- elif item.type == 'stackoverflow' and item.user_id %}
+    {# ── Stack Overflow flair ──────────────────────────────────────────── #}
+    <a href="https://stackoverflow.com/users/{{ item.user_id }}" target="_blank" rel="noopener"
+      class="hb-badge" aria-label="Stack Overflow Profile"
+      data-ga-label="badge-stackoverflow-{{ item.user_id }}">
+      <img src="https://stackoverflow.com/users/flair/{{ item.user_id }}.png"
+        alt="Stack Overflow Flair" loading="lazy"
+        style="border-radius:4px" />
+    </a>
+
+    {%- elif item.type == 'shields' and item.url %}
+    {# ── shields.io badge ──────────────────────────────────────────────── #}
+    {%- if item.link %}
+    <a href="{{ item.link }}" target="_blank" rel="noopener"
+      class="hb-badge" aria-label="{{ item.alt or 'Badge' }}"
+      data-ga-label="badge-shields">
+      <img src="{{ item.url }}" alt="{{ item.alt or 'Badge' }}" loading="lazy" />
+    </a>
+    {%- else %}
+    <span class="hb-badge">
+      <img src="{{ item.url }}" alt="{{ item.alt or 'Badge' }}" loading="lazy" />
+    </span>
+    {%- endif %}
+
+    {%- elif item.type == 'image' and item.image_url %}
+    {# ── Custom image badge ────────────────────────────────────────────── #}
+    {%- if item.link %}
+    <a href="{{ item.link }}" target="_blank" rel="noopener"
+      class="hb-badge" aria-label="{{ item.label or 'Badge' }}"
+      data-ga-label="badge-custom">
+      <img src="{{ item.image_url }}" alt="{{ item.label or 'Badge' }}" loading="lazy" />
+    </a>
+    {%- else %}
+    <span class="hb-badge">
+      <img src="{{ item.image_url }}" alt="{{ item.label or 'Badge' }}" loading="lazy" />
+    </span>
+    {%- endif %}
+
+    {%- endif %}
+    {%- endfor %}
+  </div>
+</section>
+{%- endif %}

@@ -1,0 +1,46 @@
+{%- set _lm = site.integrations.lead_magnet %}
+{%- if _lm and _lm.enabled %}
+<section class="hb-widget hb-widget-lead-magnet"
+  data-ga-widget="lead_magnet"
+  data-backend="{{ _lm.backend or 'formspree' }}"
+  data-formspree-id="{{ _lm.formspree_id }}"
+  data-convertkit-form-id="{{ _lm.convertkit_form_id }}"
+  data-web3forms-key="{{ _lm.web3forms_key }}"
+  data-success-msg="{{ _lm.success_message or 'Check your inbox! Your resource is on its way.' }}"
+  aria-label="{{ _lm.heading or 'Free Resource' }}">
+
+  {%- if _lm.resource_image %}
+  <img src="{{ _lm.resource_image }}" alt="{{ _lm.resource_title or 'Free resource' }}"
+    class="hb-lead-magnet-img" loading="lazy" />
+  {%- endif %}
+
+  {%- if _lm.heading %}<h2 class="hb-widget-heading">{{ _lm.heading }}</h2>{%- endif %}
+  {%- if _lm.resource_title and _lm.resource_title != _lm.heading %}
+  <p class="hb-widget-subheading" style="font-weight:700">{{ _lm.resource_title }}</p>
+  {%- endif %}
+  {%- if _lm.resource_description %}
+  <p class="hb-widget-subheading">{{ _lm.resource_description }}</p>
+  {%- endif %}
+  {%- if _lm.subheading %}
+  <p class="hb-widget-subheading">{{ _lm.subheading }}</p>
+  {%- endif %}
+
+  <form class="hb-form" novalidate>
+    <div class="hb-form-row">
+      <input type="email" class="hb-input"
+        placeholder="{{ _lm.placeholder or 'your@email.com' }}"
+        autocomplete="email" required />
+      <button type="submit" class="hb-btn">{{ _lm.cta_label or 'Send Me the Resource' }}</button>
+    </div>
+  </form>
+  <p class="hb-msg" aria-live="polite"></p>
+
+  {%- if _lm.resource_url %}
+  <a href="{{ _lm.resource_url }}" target="_blank" rel="noopener"
+    class="hb-resource-link"
+    data-ga-label="lead-magnet-resource">
+    ↓ Click here to access your resource
+  </a>
+  {%- endif %}
+</section>
+{%- endif %}

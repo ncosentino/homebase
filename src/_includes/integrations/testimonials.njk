@@ -1,0 +1,26 @@
+{%- set _tm = site.integrations.testimonials %}
+{%- if _tm and _tm.enabled and _tm.items and _tm.items.length %}
+<section class="hb-widget hb-widget-testimonials" data-ga-widget="testimonials"
+  aria-label="{{ _tm.heading or 'Testimonials' }}">
+  {%- if _tm.heading %}<h2 class="hb-widget-heading">{{ _tm.heading }}</h2>{%- endif %}
+  <div class="hb-testimonials-grid">
+    {%- for item in _tm.items %}
+    <blockquote class="hb-testimonial">
+      <p class="hb-testimonial-quote">{{ item.quote }}</p>
+      <footer class="hb-testimonial-author">
+        {%- if item.url %}
+        <a href="{{ item.url }}" target="_blank" rel="noopener"
+          class="hb-testimonial-author-name"
+          data-ga-label="testimonial-{{ loop.index }}">{{ item.author }}</a>
+        {%- else %}
+        <span class="hb-testimonial-author-name">{{ item.author }}</span>
+        {%- endif %}
+        {%- if item.handle %}
+        <span class="hb-testimonial-author-handle">{{ item.handle }}</span>
+        {%- endif %}
+      </footer>
+    </blockquote>
+    {%- endfor %}
+  </div>
+</section>
+{%- endif %}

@@ -1,0 +1,31 @@
+{%- set _cf = site.integrations.contact_form %}
+{%- if _cf and _cf.enabled %}
+<section class="hb-widget hb-widget-contact"
+  data-ga-widget="contact_form"
+  data-backend="{{ _cf.backend or 'formspree' }}"
+  data-formspree-id="{{ _cf.formspree_id }}"
+  data-web3forms-key="{{ _cf.web3forms_key }}"
+  data-success-msg="{{ _cf.success_message or "Message sent! I'll get back to you soon." }}"
+  aria-label="{{ _cf.heading or 'Contact' }}">
+  {%- if _cf.heading %}<h2 class="hb-widget-heading">{{ _cf.heading }}</h2>{%- endif %}
+  {%- if _cf.subheading %}<p class="hb-widget-subheading">{{ _cf.subheading }}</p>{%- endif %}
+  <form class="hb-form" novalidate>
+    {%- if _cf.show_name or _cf.show_name == null %}
+    <input type="text" name="name" class="hb-input"
+      placeholder="Your name" autocomplete="name" />
+    {%- endif %}
+    <input type="email" name="email" class="hb-input"
+      placeholder="your@email.com" autocomplete="email" required />
+    {%- if _cf.show_subject %}
+    <input type="text" name="subject" class="hb-input"
+      placeholder="Subject" />
+    {%- endif %}
+    <textarea name="message" class="hb-textarea"
+      placeholder="Your message…" required></textarea>
+    <button type="submit" class="hb-btn hb-btn-full">
+      {{ _cf.cta_label or 'Send Message' }}
+    </button>
+  </form>
+  <p class="hb-msg" aria-live="polite"></p>
+</section>
+{%- endif %}

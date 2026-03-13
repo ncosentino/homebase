@@ -385,6 +385,17 @@
 {%- endif %}
 <link rel="stylesheet" href="/themes/{{ site.theme }}/theme.css" />
 
+{# ── Integrations assets (loaded when any interactive widget is enabled) ──── #}
+{%- set _igs = site.integrations if site.integrations else {} %}
+{%- set _hasWidget = false %}
+{%- for _k in ['newsletter','social_follow','support_buttons','booking','poll','contact_form','lead_magnet','social_proof','discord','badges','testimonials','code_embeds'] %}
+  {%- if _igs[_k] and _igs[_k].enabled %}{%- set _hasWidget = true %}{%- endif %}
+{%- endfor %}
+{%- if _hasWidget %}
+<link rel="stylesheet" href="/assets/integrations.css" />
+<script src="/assets/integrations.js" defer></script>
+{%- endif %}
+
 {# ── Google Analytics (injected via GOOGLE_ANALYTICS_ID CI secret) ─────────── #}
 {% if env.GOOGLE_ANALYTICS_ID %}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ env.GOOGLE_ANALYTICS_ID }}"></script>

@@ -1,0 +1,15 @@
+{%- set _dc = site.integrations.discord %}
+{%- if _dc and _dc.enabled and _dc.server_id %}
+<section class="hb-widget hb-widget-discord" data-ga-widget="discord"
+  aria-label="{{ _dc.heading or 'Discord Community' }}">
+  {%- if _dc.heading %}<h2 class="hb-widget-heading">{{ _dc.heading }}</h2>{%- endif %}
+  <iframe
+    src="https://discord.com/widget?id={{ _dc.server_id }}&theme=dark"
+    class="hb-discord-embed"
+    allowtransparency="true"
+    frameborder="0"
+    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+    title="{{ _dc.heading or 'Discord Community Widget' }}">
+  </iframe>
+</section>
+{%- endif %}

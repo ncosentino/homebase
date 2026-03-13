@@ -1,0 +1,59 @@
+{#
+  integrations/_slot.njk
+  Renders all enabled integrations assigned to the current position slot.
+  Usage: set _slot = 'after_profile' (or after_videos | after_links | bottom)
+         then include this file.
+#}
+{%- set _igs = site.integrations if site.integrations else {} %}
+
+{%- if _igs.social_proof and _igs.social_proof.enabled and ((_igs.social_proof.position) or 'after_profile') == _slot %}
+  {%- include "integrations/social-proof.njk" %}
+{%- endif %}
+
+{%- if _igs.newsletter and _igs.newsletter.enabled and ((_igs.newsletter.position) or 'after_profile') == _slot %}
+  {%- include "integrations/newsletter.njk" %}
+{%- endif %}
+
+{%- if _igs.social_follow and _igs.social_follow.enabled and ((_igs.social_follow.position) or 'after_profile') == _slot %}
+  {%- include "integrations/social-follow.njk" %}
+{%- endif %}
+
+{%- if _igs.booking and _igs.booking.enabled and ((_igs.booking.position) or 'after_links') == _slot %}
+  {%- include "integrations/booking.njk" %}
+{%- endif %}
+
+{%- if _igs.poll and _igs.poll.enabled and ((_igs.poll.position) or 'after_links') == _slot %}
+  {%- include "integrations/poll.njk" %}
+{%- endif %}
+
+{%- if _igs.contact_form and _igs.contact_form.enabled and ((_igs.contact_form.position) or 'after_links') == _slot %}
+  {%- include "integrations/contact-form.njk" %}
+{%- endif %}
+
+{%- if _igs.lead_magnet and _igs.lead_magnet.enabled and ((_igs.lead_magnet.position) or 'after_links') == _slot %}
+  {%- include "integrations/lead-magnet.njk" %}
+{%- endif %}
+
+{%- if _igs.faq and _igs.faq.enabled and ((_igs.faq.position) or 'after_links') == _slot %}
+  {%- include "integrations/faq.njk" %}
+{%- endif %}
+
+{%- if _igs.discord and _igs.discord.enabled and ((_igs.discord.position) or 'after_links') == _slot %}
+  {%- include "integrations/discord.njk" %}
+{%- endif %}
+
+{%- if _igs.badges and _igs.badges.enabled and ((_igs.badges.position) or 'after_links') == _slot %}
+  {%- include "integrations/badges.njk" %}
+{%- endif %}
+
+{%- if _igs.testimonials and _igs.testimonials.enabled and ((_igs.testimonials.position) or 'after_links') == _slot %}
+  {%- include "integrations/testimonials.njk" %}
+{%- endif %}
+
+{%- if _igs.code_embeds and _igs.code_embeds.enabled and ((_igs.code_embeds.position) or 'after_links') == _slot %}
+  {%- include "integrations/code-embeds.njk" %}
+{%- endif %}
+
+{%- if _igs.support_buttons and _igs.support_buttons.enabled and ((_igs.support_buttons.position) or 'bottom') == _slot %}
+  {%- include "integrations/support-buttons.njk" %}
+{%- endif %}

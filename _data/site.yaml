@@ -687,3 +687,223 @@ integrations:
         answer: "Dev Leader is Nick Cosentino, a Principal Software Engineering Manager at Microsoft and content creator. All views and content are his own and do not represent Microsoft."
       - question: "What is BrandGhost?"
         answer: "BrandGhost is an AI-powered social media management platform co-founded by Nick Cosentino. It is separate from his work at Microsoft and independent of the Dev Leader brand."
+
+  # ── Email Newsletter Signup ──────────────────────────────────────────────
+  # Capture emails and send to your newsletter backend of choice.
+  # backend options: formspree | convertkit | web3forms | mailchimp_embed | beehiiv_embed | substack
+  newsletter:
+    enabled: false
+    position: after_profile         # after_profile | after_videos | after_links | bottom
+    heading: "Join the Newsletter"
+    subheading: "Weekly insights. No spam, ever."
+    placeholder: "your@email.com"
+    cta_label: "Subscribe"
+    backend: formspree
+    formspree_id: ""                # Formspree form ID — sign up at formspree.io (free tier)
+    convertkit_form_id: ""          # Kit (ConvertKit) public form ID
+    web3forms_key: ""               # Web3Forms access key — web3forms.com (free tier)
+    mailchimp_embed_url: ""         # Mailchimp embedded form action URL
+    mailchimp_honey_field: ""       # Mailchimp anti-bot honeypot field name (e.g. b_xxxxxx)
+    beehiiv_publication_id: ""      # Beehiiv publication ID (e.g. pub_xxxxx)
+    substack_url: ""                # Substack base URL (e.g. https://yourname.substack.com)
+    success_message: "You're in! Check your inbox to confirm."
+    gdpr_note: ""                   # e.g. "No spam. Unsubscribe anytime."
+
+  # ── Social Follow Buttons ────────────────────────────────────────────────
+  # Platform-branded follow buttons with optional subscriber counts.
+  # platform values: youtube | github | twitter | x | linkedin | discord | twitch | instagram | tiktok | bluesky | mastodon
+  social_follow:
+    enabled: false
+    position: after_profile
+    heading: "Follow Along"
+    buttons: []
+    # buttons:
+    #   - platform: youtube
+    #     label: "Subscribe on YouTube"
+    #     url: "https://youtube.com/@yourname?sub_confirmation=1"
+    #     count: "32K"
+    #   - platform: github
+    #     label: "Follow on GitHub"
+    #     url: "https://github.com/yourname"
+    #   - platform: twitter
+    #     label: "Follow on X"
+    #     url: "https://x.com/yourhandle"
+
+  # ── Support / Monetization Buttons ──────────────────────────────────────
+  # Ko-fi, GitHub Sponsors, Buy Me a Coffee, Patreon, etc.
+  # platform values: kofi | github_sponsors | buymeacoffee | patreon
+  support_buttons:
+    enabled: false
+    position: bottom
+    heading: "Support the Content"
+    subheading: ""
+    buttons: []
+    # buttons:
+    #   - platform: kofi
+    #     label: "Buy Me a Coffee"
+    #     url: "https://ko-fi.com/yourname"
+    #   - platform: github_sponsors
+    #     label: "Sponsor on GitHub"
+    #     url: "https://github.com/sponsors/yourname"
+    #   - platform: buymeacoffee
+    #     label: "Buy Me a Coffee"
+    #     url: "https://www.buymeacoffee.com/yourname"
+
+  # ── Calendar / Booking Widget ────────────────────────────────────────────
+  # Show a booking button or inline calendar embed.
+  # provider values: tidycal | calendly | cal
+  booking:
+    enabled: false
+    position: after_links
+    heading: "Book a Session"
+    subheading: ""
+    provider: tidycal
+    embed: false                    # true = inline iframe, false = button link only
+    url: ""                         # Full booking URL
+    cta_label: "Book a Call"
+    embed_height: 600               # iframe height in px when embed: true
+
+  # ── Poll / Survey Widget ─────────────────────────────────────────────────
+  # Embed a Tally.so form OR define a custom radio-button poll backed by Formspree/Web3Forms.
+  # provider values: tally | custom
+  poll:
+    enabled: false
+    position: after_links
+    heading: "Quick Poll"
+    provider: tally
+    tally_form_id: ""               # Tally form ID (from tally.so embed link)
+    tally_hide_title: true
+    tally_height: 200
+    # Custom poll (provider: custom):
+    question: ""
+    cta_label: "Submit Vote"
+    options: []
+    # options:
+    #   - label: "Option A"
+    #     value: "a"
+    #   - label: "Option B"
+    #     value: "b"
+    backend: formspree              # For custom polls only: formspree | web3forms
+    formspree_id: ""
+    web3forms_key: ""
+    success_message: "Thanks for your vote!"
+
+  # ── Contact Form ─────────────────────────────────────────────────────────
+  # Name + email + message form. Submissions go to Formspree or Web3Forms.
+  contact_form:
+    enabled: false
+    position: after_links
+    heading: "Get in Touch"
+    subheading: ""
+    show_name: true
+    show_subject: false
+    backend: formspree              # formspree | web3forms
+    formspree_id: ""
+    web3forms_key: ""
+    cta_label: "Send Message"
+    success_message: "Message sent! I'll get back to you soon."
+
+  # ── Lead Magnet (Email-Gated Resource) ──────────────────────────────────
+  # Collect an email and reveal a resource URL (PDF, template, guide, etc).
+  lead_magnet:
+    enabled: false
+    position: after_links
+    heading: "Free Resource"
+    subheading: "Enter your email to get instant access."
+    resource_title: ""
+    resource_description: ""
+    resource_image: ""              # Optional preview image URL
+    placeholder: "your@email.com"
+    cta_label: "Send Me the Resource"
+    backend: formspree              # formspree | convertkit | web3forms
+    formspree_id: ""
+    convertkit_form_id: ""
+    web3forms_key: ""
+    resource_url: ""                # URL revealed in page after successful submission
+    success_message: "Check your inbox! Your resource is on its way."
+
+  # ── Social Proof Counters ────────────────────────────────────────────────
+  # Display audience size / reach numbers as a stat grid.
+  social_proof:
+    enabled: false
+    position: after_profile
+    heading: ""
+    counters: []
+    # counters:
+    #   - label: "YouTube subscribers"
+    #     value: "32K+"
+    #   - label: "Newsletter readers"
+    #     value: "4,500+"
+    #   - label: "GitHub followers"
+    #     value: "1,200+"
+
+  # ── Discord Community Widget ─────────────────────────────────────────────
+  # Embeds the official Discord server widget (requires Widget enabled in server settings).
+  discord:
+    enabled: false
+    position: after_links
+    server_id: ""                   # Numeric Discord server ID
+    heading: "Join the Community"
+
+  # ── Achievement Badges ───────────────────────────────────────────────────
+  # Display Credly badges, Stack Overflow flair, shields.io badges, or custom images.
+  # type values: credly | stackoverflow | shields | image
+  badges:
+    enabled: false
+    position: after_links
+    heading: "Certifications & Achievements"
+    items: []
+    # items:
+    #   - type: credly
+    #     badge_id: "xxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    #     label: "AWS Certified Developer"
+    #   - type: stackoverflow
+    #     user_id: "1234567"
+    #   - type: shields
+    #     url: "https://img.shields.io/github/stars/user/repo"
+    #     alt: "GitHub Stars"
+    #     link: "https://github.com/user/repo"
+    #   - type: image
+    #     image_url: "https://example.com/badge.png"
+    #     label: "My Badge"
+    #     link: "https://example.com"
+
+  # ── Testimonials / Social Quotes ────────────────────────────────────────
+  # Show quotes from your audience, collaborators, or press.
+  testimonials:
+    enabled: false
+    position: after_links
+    heading: "What People Say"
+    items: []
+    # items:
+    #   - quote: "This content changed how I think about software architecture."
+    #     author: "Jane D."
+    #     handle: "@janed"
+    #     platform: twitter
+    #     url: "https://x.com/janed/status/..."
+
+  # ── Live Code / Demo Embeds ──────────────────────────────────────────────
+  # Embed interactive code demos from CodePen, GitHub Gist, StackBlitz, or Replit.
+  # provider values: codepen | gist | stackblitz | replit
+  code_embeds:
+    enabled: false
+    position: after_links
+    heading: "Featured Projects"
+    items: []
+    # items:
+    #   - provider: codepen
+    #     embed_id: "xxxxx"
+    #     user: "yourname"
+    #     title: "My Cool Pen"
+    #     height: 400
+    #   - provider: gist
+    #     gist_id: "yourusername/xxxxxxxxxxxx"
+    #     title: "Useful Code Snippet"
+    #   - provider: stackblitz
+    #     project_id: "xxxxx"
+    #     title: "Live Demo"
+    #     height: 500
+    #   - provider: replit
+    #     repl_url: "https://replit.com/@yourname/yourrepl"
+    #     title: "Interactive Demo"
+    #     height: 500
