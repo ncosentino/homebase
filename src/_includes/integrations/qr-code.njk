@@ -1,0 +1,30 @@
+{#
+  integrations/qr-code.njk
+  Build-time QR code widget.
+  QR SVG and download URI are pre-generated in _data/qrCode.js at build time.
+  No runtime JS required for display or download.
+  Appearance mirrors the link-btn / FAQ / extended-bio card style.
+#}
+{%- set _qr = site.integrations.qr_code %}
+{%- if qrCode and qrCode.svg %}
+<section class="hb-widget hb-widget-qr-code" data-ga-widget="qr_code" aria-label="{{ _qr.heading or 'QR Code' }}">
+  {%- if _qr.heading %}
+  <h2 class="hb-widget-heading">{{ _qr.heading }}</h2>
+  {%- endif %}
+  <div class="hb-qr-inner">
+    <div class="hb-qr-svg">{{ qrCode.svg | safe }}</div>
+    {%- if _qr.label %}
+    <p class="hb-qr-label">{{ _qr.label }}</p>
+    {%- endif %}
+    <p class="hb-qr-url">{{ qrCode.baseUrl | replace("https://", "") | replace("http://", "") }}</p>
+    {%- if _qr.show_download != false %}
+    <a class="hb-qr-download link-btn"
+       href="{{ qrCode.dataUri }}"
+       download="qr-code.svg"
+       aria-label="Download QR code as SVG">
+      <span class="link-btn-label">↓ Save QR Code</span>
+    </a>
+    {%- endif %}
+  </div>
+</section>
+{%- endif %}

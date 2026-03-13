@@ -427,6 +427,64 @@
 @keyframes hb-spin { to { transform: rotate(360deg); } }
 
 .hb-state-success form { display: none; }
+
+/* ── QR Code widget ───────────────────────────────────────────────────────── */
+.hb-widget-qr-code {
+  background: var(--btn-bg, #fff);
+  border: var(--btn-border-width, 0px) solid var(--btn-border-color, transparent);
+  border-radius: var(--btn-radius, 12px);
+  box-shadow: var(--btn-shadow, 0 2px 8px rgba(0,0,0,0.15));
+  padding: 20px 20px 16px;
+}
+
+.hb-widget-qr-code .hb-widget-heading {
+  color: var(--btn-text, #1a1a1a);
+  font-family: var(--font-family, Inter, sans-serif);
+  margin-bottom: 12px;
+}
+
+.hb-qr-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.hb-qr-svg {
+  line-height: 0;
+}
+
+.hb-qr-svg svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.hb-qr-label {
+  font-size: 0.9rem;
+  font-family: var(--font-family, Inter, sans-serif);
+  color: var(--btn-text, #1a1a1a);
+  text-align: center;
+  margin: 0;
+}
+
+.hb-qr-url {
+  font-size: 0.78rem;
+  font-family: var(--font-family, Inter, sans-serif);
+  color: var(--btn-text, #1a1a1a);
+  opacity: 0.5;
+  text-align: center;
+  margin: 0;
+}
+
+.hb-qr-download {
+  font-size: 14px !important;
+  min-height: 44px !important;
+  padding: 8px 20px !important;
+  width: auto !important;
+  display: inline-flex !important;
+  text-decoration: none;
+}
 
 /* ── Privacy / GDPR note ──────────────────────────────────────────────────── */
 .hb-privacy-note {

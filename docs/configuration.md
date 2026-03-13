@@ -551,7 +551,60 @@ integrations:
 
 Supported `provider` values: `codepen`, `gist`, `stackblitz`, `replit`.
 
-### Position Slots
+### QR Code Widget
+
+Generates a real QR code **at build time** and embeds it directly in the page as an inline SVG — no external services, no network requests, infinitely scalable at any size. The QR code automatically appends UTM parameters so scans are trackable in GA4 as their own source.
+
+```yaml
+integrations:
+  qr_code:
+    enabled: true
+    position: bottom              # after_profile | after_videos | after_links | bottom
+    heading: "Scan to Visit"
+    label: ""                     # optional caption below the QR code
+    url: ""                       # blank = auto-uses site.seo.canonical
+    size: 200                     # width/height in px (QR is always square)
+    show_download: true           # adds a "Save QR Code" button (SVG download)
+    # Appearance
+    color: "#000000"              # dot/module color
+    bg_color: ""                  # background color (blank = transparent — card white shows through)
+    error_correction: M           # L=compact | M=default | Q=outdoor | H=logo-overlay safe
+    margin: 1                     # quiet zone around the code (in modules)
+    # Logo overlay (optional — only effective with error_correction: H)
+    logo: ""                      # URL or path to an image to stamp in the center
+    logo_size: 0                  # logo width/height in px (0 = auto ~30% of QR size)
+    # UTM tracking
+    utm_medium: qr                # medium always defaults to "qr" (not your site.utm.medium)
+    utm_source: ""                # blank = inherits site.utm.source
+    utm_campaign: ""              # blank = inherits site.utm.campaign
+```
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `enabled` | `false` | Set to `true` to generate and display the QR code. |
+| `position` | `bottom` | Page slot: `after_profile`, `after_videos`, `after_links`, or `bottom`. |
+| `heading` | `"Scan to Visit"` | Heading rendered above the QR code card. |
+| `label` | `""` | Optional short caption rendered below the code, above the URL. |
+| `url` | `""` | Target URL encoded in the QR code. Leave blank to use `site.seo.canonical`. |
+| `size` | `200` | QR code width/height in pixels. The SVG scales cleanly to any size. |
+| `show_download` | `true` | Shows a "Save QR Code" download button. Downloads the SVG file. |
+| `color` | `"#000000"` | Color of the dark modules (dots). |
+| `bg_color` | `""` | Background color. Leave blank for transparent (the white card background shows through). |
+| `error_correction` | `M` | Reed-Solomon error correction level. `L` = 7% recoverable, `M` = 15%, `Q` = 25%, `H` = 30%. Use `H` if you add a logo overlay so the logo doesn't break scannability. |
+| `margin` | `1` | Number of module-widths of whitespace around the code (the "quiet zone"). |
+| `logo` | `""` | Image URL to stamp in the center of the QR code. Only visually effective with `error_correction: H`. |
+| `logo_size` | `0` | Logo width/height in px. `0` auto-sizes to ~30% of `size`. |
+| `utm_medium` | `"qr"` | UTM medium appended to the encoded URL. Intentionally defaults to `"qr"` (not `site.utm.medium`) so QR scans appear as their own GA4 channel. |
+| `utm_source` | `""` | UTM source. Blank inherits `site.utm.source`. |
+| `utm_campaign` | `""` | UTM campaign. Blank inherits `site.utm.campaign`. |
+
+!!! tip "Use for print materials"
+    The download button saves the QR code as an SVG file, making it print-ready at any resolution. Drop it into a business card, slide deck, or banner — it will be razor-sharp at any size.
+
+!!! note "Build-time generation"
+    The QR code is generated once when Eleventy builds your site. There is no JavaScript required to display it. Changing `url`, `color`, or any other option requires a new build to take effect.
+
+
 
 Every widget has a `position` key that controls where it appears on the page:
 
@@ -564,7 +617,7 @@ Every widget has a `position` key that controls where it appears on the page:
 
 ### Asset loading
 
-`integrations.css` and `integrations.js` are only loaded when at least one interactive widget (`newsletter`, `social_follow`, `support_buttons`, `booking`, `poll`, `contact_form`, `lead_magnet`, `social_proof`, `discord`, `badges`, `testimonials`, or `code_embeds`) is enabled. The FAQ widget uses its own CSS in `base.css` and requires no JS.
+`integrations.css` and `integrations.js` are only loaded when at least one interactive widget (`newsletter`, `social_follow`, `support_buttons`, `booking`, `poll`, `contact_form`, `lead_magnet`, `social_proof`, `discord`, `badges`, `testimonials`, `code_embeds`, or `qr_code`) is enabled. The FAQ widget uses its own CSS in `base.css` and requires no JS. The QR code widget uses `integrations.css` for layout but requires no JS.
 
 
 

@@ -388,7 +388,7 @@
 {# ── Integrations assets (loaded when any interactive widget is enabled) ──── #}
 {%- set _igs = site.integrations if site.integrations else {} %}
 {%- set _hasWidget = false %}
-{%- for _k in ['newsletter','social_follow','support_buttons','booking','poll','contact_form','lead_magnet','social_proof','discord','badges','testimonials','code_embeds'] %}
+{%- for _k in ['newsletter','social_follow','support_buttons','booking','poll','contact_form','lead_magnet','social_proof','discord','badges','testimonials','code_embeds','qr_code'] %}
   {%- if _igs[_k] and _igs[_k].enabled %}{%- set _hasWidget = true %}{%- endif %}
 {%- endfor %}
 {%- if _hasWidget %}

@@ -749,6 +749,29 @@ integrations:
     #     label: "Buy Me a Coffee"
     #     url: "https://www.buymeacoffee.com/yourname"
 
+  # ── QR Code Widget ───────────────────────────────────────────────────────
+  # Generates a real QR code at build time (inline SVG, no runtime JS).
+  # URL auto-appends UTM params so QR scans appear as their own channel in GA4.
+  qr_code:
+    enabled: false
+    position: bottom              # after_profile | after_videos | after_links | bottom
+    heading: "Scan to Visit"
+    label: ""                     # optional sub-label below the QR code
+    url: ""                       # leave blank to auto-use site.seo.canonical
+    size: 200                     # width/height in px
+    show_download: true           # show "Save QR Code" download button
+    # Appearance
+    color: "#000000"              # dot/module color
+    bg_color: ""                  # background (blank = transparent — white card shows through)
+    error_correction: M           # L=compact | M=default | Q=outdoor | H=logo-overlay-safe
+    margin: 1                     # quiet zone in modules
+    logo: ""                      # image URL to stamp in center (use error_correction: H)
+    logo_size: 0                  # logo px size (0 = auto ~30% of size)
+    # UTM (medium defaults to "qr" regardless of site.utm.medium)
+    utm_medium: qr
+    utm_source: ""                # blank = inherit from site.utm.source
+    utm_campaign: ""              # blank = inherit from site.utm.campaign
+
   # ── Calendar / Booking Widget ────────────────────────────────────────────
   # Show a booking button or inline calendar embed.
   # provider values: tidycal | calendly | cal

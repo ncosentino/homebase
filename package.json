@@ -9,7 +9,8 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "qrcode": "^1.5.4"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -54,6 +54,10 @@
   {%- include "integrations/code-embeds.njk" %}
 {%- endif %}
 
+{%- if _igs.qr_code and _igs.qr_code.enabled and ((_igs.qr_code.position) or 'bottom') == _slot %}
+  {%- include "integrations/qr-code.njk" %}
+{%- endif %}
+
 {%- if _igs.support_buttons and _igs.support_buttons.enabled and ((_igs.support_buttons.position) or 'bottom') == _slot %}
   {%- include "integrations/support-buttons.njk" %}
 {%- endif %}
