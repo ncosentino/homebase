@@ -695,7 +695,7 @@
 /* Flip hint button on front face */
 .qr-flip-hint {
   position: absolute;
-  bottom: 10px;
+  top: 10px;
   right: 10px;
   background: rgba(0,0,0,0.55);
   color: #fff;
