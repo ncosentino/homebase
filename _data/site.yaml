@@ -753,20 +753,20 @@ integrations:
   # Generates a real QR code at build time (inline SVG, no runtime JS).
   # URL auto-appends UTM params so QR scans appear as their own channel in GA4.
   qr_code:
-    enabled: false
+    enabled: true
     position: bottom              # after_profile | after_videos | after_links | bottom
     heading: "Scan to Visit"
     label: ""                     # optional sub-label below the QR code
     url: ""                       # leave blank to auto-use site.seo.canonical
-    size: 200                     # width/height in px
+    size: 300                     # width/height in px
     show_download: true           # show "Save QR Code" download button
-    # Appearance
-    color: "#000000"              # dot/module color
-    bg_color: ""                  # background (blank = transparent — white card shows through)
-    error_correction: M           # L=compact | M=default | Q=outdoor | H=logo-overlay-safe
-    margin: 1                     # quiet zone in modules
-    logo: ""                      # image URL to stamp in center (use error_correction: H)
-    logo_size: 0                  # logo px size (0 = auto ~30% of size)
+    # Appearance — Dev Leader blue on white, matching page theme
+    color: "#4B8FDB"              # dot/module color (matches --bg-color theme blue)
+    bg_color: "#ffffff"           # white background (matches card/button bg)
+    error_correction: H           # H=30% recoverable — required when using a logo overlay
+    margin: 2                     # quiet zone in modules
+    logo: "https://github.com/ncosentino.png"  # profile avatar stamped in center
+    logo_size: 0                  # logo px size (0 = auto ~30% of size = ~90px)
     # UTM (medium defaults to "qr" regardless of site.utm.medium)
     utm_medium: qr
     utm_source: ""                # blank = inherit from site.utm.source
