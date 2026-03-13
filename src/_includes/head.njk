@@ -378,6 +378,11 @@
 </script>
 {%- endif %}
 
+{# ── LCP preload — banner image (fetched ASAP, before CSS blocks rendering) ── #}
+{%- if site.profile.banner %}
+<link rel="preload" as="image" href="{{ site.profile.banner }}" fetchpriority="high" />
+{%- endif %}
+
 {# ── Theme CSS ────────────────────────────────────────────────────────────── #}
 <link rel="stylesheet" href="/assets/base.css" />
 {%- if site.shop and site.shop.enabled %}
