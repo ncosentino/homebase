@@ -212,6 +212,55 @@
     });
   };
 
+  /* ── QR flip card ──────────────────────────────────────────────────────── */
+  HB.initQrFlip = function () {
+    var outer = document.querySelector('.qr-flip-outer');
+    if (!outer) return;
+    outer.addEventListener('click', function () {
+      outer.classList.toggle('qr-flipped');
+    });
+    outer.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        outer.classList.toggle('qr-flipped');
+      }
+    });
+  };
+
+  /* ── QR sticky modal ────────────────────────────────────────────────────── */
+  HB.initQrSticky = function () {
+    var btn   = document.querySelector('.hb-qr-sticky-btn');
+    var modal = document.querySelector('.hb-qr-modal');
+    var close = document.querySelector('.hb-qr-modal-close');
+    if (!btn || !modal) return;
+
+    function openModal() {
+      modal.classList.add('hb-qr-modal--open');
+      modal.setAttribute('aria-hidden', 'false');
+      if (close) close.focus();
+    }
+    function closeModal() {
+      modal.classList.remove('hb-qr-modal--open');
+      modal.setAttribute('aria-hidden', 'true');
+      btn.focus();
+    }
+
+    btn.addEventListener('click', openModal);
+    if (close) close.addEventListener('click', closeModal);
+
+    // Close on outside click
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('hb-qr-modal--open')) {
+        closeModal();
+      }
+    });
+  };
+
   /* ── Boot ───────────────────────────────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', function () {
     HB.observeWidgets();
@@ -219,6 +268,9 @@
     HB.initContactForm();
     HB.initLeadMagnet();
     HB.initPoll();
+    HB.initQrFlip();
+    HB.initQrSticky();
   });
 
 }(window.HB = window.HB || {}));
+

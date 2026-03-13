@@ -754,7 +754,19 @@ integrations:
   # URL auto-appends UTM params so QR scans appear as their own channel in GA4.
   qr_code:
     enabled: true
-    position: bottom              # after_profile | after_videos | after_links | bottom
+    # Display mode — controls how/where the QR code appears
+    # widget:     standalone card at `position` (default)
+    # compact:    small card after_profile, no heading
+    # flip:       hero banner flips to reveal QR on tap/click (falls back to widget if no banner)
+    # sticky:     floating "📱 Scan" button fixed to viewport corner, opens modal overlay
+    # badge:      small QR watermarked into a corner of the hero banner (falls back to widget if no banner)
+    # sidebyside: hero image + QR card in a flex row (stacks on mobile; falls back to widget if no banner)
+    display: widget
+    also_sticky: false            # true = always add a floating sticky button alongside the primary mode
+    sticky_corner: bottom_right   # bottom_right | bottom_left (for sticky and also_sticky)
+    badge_corner: bottom_right    # bottom_right | bottom_left | top_right | top_left (for badge mode)
+    badge_size: 80                # QR code size in px for badge overlay
+    position: bottom              # after_profile | after_videos | after_links | bottom (widget/compact modes)
     heading: "Scan to Visit"
     label: ""                     # optional sub-label below the QR code
     url: ""                       # leave blank to auto-use site.seo.canonical

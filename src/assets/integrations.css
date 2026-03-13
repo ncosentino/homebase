@@ -486,7 +486,276 @@
   text-decoration: none;
 }
 
-/* ── Privacy / GDPR note ──────────────────────────────────────────────────── */
+/* ── QR compact mode ──────────────────────────────────────────────────────── */
+.hb-widget-qr-code--compact {
+  padding: 12px 16px;
+}
+.hb-widget-qr-code--compact .hb-qr-inner {
+  gap: 6px;
+}
+.hb-widget-qr-code--compact .hb-qr-url {
+  font-size: 0.72rem;
+}
+
+/* ── QR flip card ─────────────────────────────────────────────────────────── */
+.qr-flip-outer {
+  position: relative;
+  width: 100%;
+  perspective: 1000px;
+  cursor: pointer;
+  border-radius: 16px;
+  margin-bottom: 48px;  /* matches .profile-banner-wrap margin */
+}
+
+.qr-flip-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  border-radius: 16px;
+}
+
+.qr-flip-outer.qr-flipped .qr-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.qr-flip-front,
+.qr-flip-back {
+  border-radius: 16px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.qr-flip-front {
+  width: 100%;
+}
+
+.qr-flip-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotateY(180deg);
+  background: var(--btn-bg, #fff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  box-shadow: var(--btn-shadow, 0 2px 8px rgba(0,0,0,0.15));
+}
+
+.qr-flip-back .hb-qr-svg svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.qr-flip-back .hb-qr-url {
+  font-size: 0.78rem;
+  font-family: var(--font-family, Inter, sans-serif);
+  color: var(--btn-text, #1a1a1a);
+  opacity: 0.5;
+  text-align: center;
+  margin: 0;
+}
+
+/* Flip hint button on front face */
+.qr-flip-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 11px;
+  font-family: var(--font-family, Inter, sans-serif);
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1.4;
+  pointer-events: none;
+  letter-spacing: 0.01em;
+  z-index: 2;
+}
+
+/* Flip back close hint */
+.qr-flip-close-hint {
+  font-size: 0.72rem;
+  font-family: var(--font-family, Inter, sans-serif);
+  color: var(--btn-text, #1a1a1a);
+  opacity: 0.45;
+  text-align: center;
+  margin: 0;
+}
+
+/* Avatar-over-banner stays on top of flip card */
+.qr-flip-outer .avatar-over-banner {
+  z-index: 3;
+}
+
+/* ── QR sticky floating button ────────────────────────────────────────────── */
+.hb-qr-sticky-btn {
+  position: fixed;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: var(--btn-bg, #fff);
+  color: var(--btn-text, #1a1a1a);
+  font-family: var(--font-family, Inter, sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+.hb-qr-sticky-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.28);
+}
+.hb-qr-sticky-btn--bottom-right { bottom: 24px; right: 24px; }
+.hb-qr-sticky-btn--bottom-left  { bottom: 24px; left:  24px; }
+
+/* ── QR modal overlay ─────────────────────────────────────────────────────── */
+.hb-qr-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9100;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.65);
+  padding: 24px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.hb-qr-modal.hb-qr-modal--open {
+  display: flex;
+}
+
+.hb-qr-modal-inner {
+  background: var(--btn-bg, #fff);
+  border-radius: var(--btn-radius, 12px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+  padding: 28px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 380px;
+  width: 100%;
+  position: relative;
+}
+
+.hb-qr-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--btn-text, #1a1a1a);
+  opacity: 0.4;
+  cursor: pointer;
+  padding: 4px;
+  transition: opacity 0.15s;
+}
+.hb-qr-modal-close:hover { opacity: 0.8; }
+
+.hb-qr-modal-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-family, Inter, sans-serif);
+  color: var(--btn-text, #1a1a1a);
+  text-align: center;
+  margin: 0;
+}
+
+.hb-qr-modal-url {
+  font-size: 0.75rem;
+  font-family: var(--font-family, Inter, sans-serif);
+  color: var(--btn-text, #1a1a1a);
+  opacity: 0.45;
+  text-align: center;
+  margin: 0;
+}
+
+/* ── QR badge overlay on hero ─────────────────────────────────────────────── */
+.hb-qr-badge {
+  position: absolute;
+  z-index: 2;
+  background: rgba(255,255,255,0.92);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  line-height: 0;
+}
+.hb-qr-badge svg { display: block; }
+.hb-qr-badge--bottom-right { bottom: 10px; right: 10px; }
+.hb-qr-badge--bottom-left  { bottom: 10px; left:  10px; }
+.hb-qr-badge--top-right    { top:    10px; right: 10px; }
+.hb-qr-badge--top-left     { top:    10px; left:  10px; }
+
+/* ── QR side-by-side row ──────────────────────────────────────────────────── */
+.qr-sidebyside-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 48px;  /* matches .profile-banner-wrap margin */
+}
+
+.qr-sidebyside-banner {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.qr-sidebyside-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.qr-sidebyside-banner .avatar-over-banner {
+  bottom: -36px;
+}
+
+.qr-sidebyside-qr {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-sidebyside-qr .hb-widget-qr-code {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+@media (min-width: 560px) {
+  .qr-sidebyside-row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .qr-sidebyside-banner { flex: 1 1 60%; }
+  .qr-sidebyside-qr     { flex: 0 0 36%; }
+  /* Avatar offset accounts for flex row — keep it over the banner */
+  .qr-sidebyside-banner .avatar-over-banner {
+    bottom: -36px;
+  }
+}
+
+
 .hb-privacy-note {
   font-size: 0.75rem;
   color: var(--color-text-muted, rgba(255,255,255,0.45));

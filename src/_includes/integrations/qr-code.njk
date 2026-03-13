@@ -1,14 +1,17 @@
 {#
   integrations/qr-code.njk
-  Build-time QR code widget.
-  QR SVG and download URI are pre-generated in _data/qrCode.js at build time.
-  No runtime JS required for display or download.
-  Appearance mirrors the link-btn / FAQ / extended-bio card style.
+  Renders the QR widget card (display: widget or compact) and/or the sticky modal HTML.
+  For display: flip / badge / sidebyside — the QR is rendered directly in profile.njk.
+  QR SVG is pre-generated in _data/qrCode.js at build time.
 #}
 {%- set _qr = site.integrations.qr_code %}
-{%- if qrCode and qrCode.svg %}
-<section class="hb-widget hb-widget-qr-code" data-ga-widget="qr_code" aria-label="{{ _qr.heading or 'QR Code' }}">
-  {%- if _qr.heading %}
+{%- set _qrDisplay = _qr.display or "widget" %}
+
+{#-- Standalone card widget (widget or compact mode) --#}
+{%- if qrCode and qrCode.svg and (_qrDisplay == "widget" or _qrDisplay == "compact") %}
+{%- set _isCompact = _qrDisplay == "compact" %}
+<section class="hb-widget hb-widget-qr-code{% if _isCompact %} hb-widget-qr-code--compact{% endif %}" data-ga-widget="qr_code" aria-label="{{ _qr.heading or 'QR Code' }}">
+  {%- if _qr.heading and not _isCompact %}
   <h2 class="hb-widget-heading">{{ _qr.heading }}</h2>
   {%- endif %}
   <div class="hb-qr-inner">
@@ -27,4 +30,30 @@
     {%- endif %}
   </div>
 </section>
+{%- endif %}
+
+{#-- Sticky button + modal (display: sticky, or any mode with also_sticky: true) --#}
+{%- if qrCode and qrCode.svg and (_qrDisplay == "sticky" or _qr.also_sticky) %}
+{%- set _corner = _qr.sticky_corner or "bottom_right" %}
+<button class="hb-qr-sticky-btn hb-qr-sticky-btn--{{ _corner | replace("_", "-") }}"
+        aria-label="Scan QR code to visit {{ qrCode.baseUrl | replace('https://', '') | replace('http://', '') }}"
+        aria-controls="hb-qr-modal">
+  <span aria-hidden="true">📱</span> Scan
+</button>
+<div class="hb-qr-modal" id="hb-qr-modal" role="dialog" aria-modal="true" aria-label="QR Code" aria-hidden="true">
+  <div class="hb-qr-modal-inner">
+    <button class="hb-qr-modal-close" aria-label="Close QR code">✕</button>
+    {%- if _qr.heading %}<p class="hb-qr-modal-heading">{{ _qr.heading }}</p>{%- endif %}
+    <div class="hb-qr-svg">{{ qrCode.svg | safe }}</div>
+    <p class="hb-qr-modal-url">{{ qrCode.baseUrl | replace("https://", "") | replace("http://", "") }}</p>
+    {%- if _qr.show_download != false %}
+    <a class="hb-qr-download link-btn"
+       href="{{ qrCode.dataUri }}"
+       download="qr-code.svg"
+       aria-label="Download QR code as SVG">
+      <span class="link-btn-label">↓ Save QR Code</span>
+    </a>
+    {%- endif %}
+  </div>
+</div>
 {%- endif %}

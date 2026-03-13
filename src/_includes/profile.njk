@@ -20,7 +20,82 @@
     {%- endif -%}
   {%- endmacro -%}
 
+  {%- set _qrCfg = site.integrations.qr_code if site.integrations else null %}
+  {%- set _qrDisplay = (_qrCfg.display or "widget") if (_qrCfg and _qrCfg.enabled and qrCode and qrCode.svg) else "widget" %}
+  {%- set _qrHasBanner = true if site.profile.banner else false %}
+
   {% if site.profile.banner %}
+
+  {# ── Flip mode ── #}
+  {%- if _qrDisplay == "flip" %}
+  <div class="qr-flip-outer" role="button" tabindex="0" aria-label="Tap to reveal QR code">
+    <div class="qr-flip-inner">
+      <div class="qr-flip-front">
+        <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
+        <span class="qr-flip-hint">📱 Scan</span>
+      </div>
+      <div class="qr-flip-back">
+        <div class="hb-qr-svg">{{ qrCode.svg | safe }}</div>
+        <p class="hb-qr-url">{{ qrCode.baseUrl | replace("https://", "") | replace("http://", "") }}</p>
+        <p class="qr-flip-close-hint">Tap to flip back</p>
+      </div>
+    </div>
+    <div class="avatar-over-banner">
+      {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+      <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
+      {% if site.profile.avatar_url %}</a>{% endif %}
+    </div>
+  </div>
+
+  {# ── Side-by-side mode ── #}
+  {%- elif _qrDisplay == "sidebyside" %}
+  <div class="qr-sidebyside-row">
+    <div class="qr-sidebyside-banner">
+      {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
+      <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
+      {% if site.profile.banner_url %}</a>{% endif %}
+      <div class="avatar-over-banner">
+        {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+        <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
+        {% if site.profile.avatar_url %}</a>{% endif %}
+      </div>
+    </div>
+    <div class="qr-sidebyside-qr">
+      <section class="hb-widget hb-widget-qr-code" data-ga-widget="qr_code" aria-label="{{ _qrCfg.heading or 'QR Code' }}">
+        {%- if _qrCfg.heading %}
+        <h2 class="hb-widget-heading">{{ _qrCfg.heading }}</h2>
+        {%- endif %}
+        <div class="hb-qr-inner">
+          <div class="hb-qr-svg">{{ qrCode.svg | safe }}</div>
+          {%- if _qrCfg.label %}<p class="hb-qr-label">{{ _qrCfg.label }}</p>{%- endif %}
+          <p class="hb-qr-url">{{ qrCode.baseUrl | replace("https://", "") | replace("http://", "") }}</p>
+          {%- if _qrCfg.show_download != false %}
+          <a class="hb-qr-download link-btn" href="{{ qrCode.dataUri }}" download="qr-code.svg" aria-label="Download QR code">
+            <span class="link-btn-label">↓ Save QR Code</span>
+          </a>
+          {%- endif %}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  {# ── Badge mode (or default with badge) ── #}
+  {%- elif _qrDisplay == "badge" %}
+  {%- set _badgeCorner = _qrCfg.badge_corner or "bottom_right" %}
+  <div class="profile-banner-wrap">
+    {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
+    <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
+    {% if site.profile.banner_url %}</a>{% endif %}
+    <div class="hb-qr-badge hb-qr-badge--{{ _badgeCorner | replace("_", "-") }}" aria-label="QR code">{{ qrCode.badgeSvg | safe }}</div>
+    <div class="avatar-over-banner">
+      {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+      <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
+      {% if site.profile.avatar_url %}</a>{% endif %}
+    </div>
+  </div>
+
+  {# ── Default banner (widget / sticky / compact — no hero modification needed) ── #}
+  {%- else %}
   <div class="profile-banner-wrap">
     {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
     <img class="profile-banner" src="{{ site.profile.banner }}" alt="{{ site.profile.name }} banner" loading="eager" />
@@ -31,6 +106,8 @@
       {% if site.profile.avatar_url %}</a>{% endif %}
     </div>
   </div>
+  {%- endif %}
+
   {% else %}
   <div class="avatar-wrap">
     {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}

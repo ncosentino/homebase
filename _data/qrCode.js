@@ -1,7 +1,7 @@
 /**
  * _data/qrCode.js
- * Generates a QR code SVG at build time for the qr_code integration widget.
- * Returns { svg, dataUri, url } or null if the widget is disabled or not configured.
+ * Generates QR code SVGs at build time for the qr_code integration widget.
+ * Returns { svg, dataUri, badgeSvg, badgeDataUri, url, baseUrl } or null if disabled.
  */
 
 const fs   = require("fs");
@@ -69,5 +69,18 @@ module.exports = async function () {
   const svg     = await buildQrSvg(qrUrl, opts);
   const dataUri = "data:image/svg+xml;base64," + Buffer.from(svg).toString("base64");
 
-  return { svg, dataUri, url: qrUrl, baseUrl };
+  // Badge SVG — smaller size, no logo overlay (keeps it scannable at small sizes)
+  const badgeSize = cfg.badge_size || 80;
+  const badgeOpts = {
+    ...opts,
+    size:     badgeSize,
+    margin:   1,
+    logo:     "",  // no logo at badge size
+    logoSize: 0,
+    // Keep same error correction — H is still valid at small sizes
+  };
+  const badgeSvg     = await buildQrSvg(qrUrl, badgeOpts);
+  const badgeDataUri = "data:image/svg+xml;base64," + Buffer.from(badgeSvg).toString("base64");
+
+  return { svg, dataUri, badgeSvg, badgeDataUri, url: qrUrl, baseUrl };
 };

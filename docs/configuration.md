@@ -555,11 +555,31 @@ Supported `provider` values: `codepen`, `gist`, `stackblitz`, `replit`.
 
 Generates a real QR code **at build time** and embeds it directly in the page as an inline SVG — no external services, no network requests, infinitely scalable at any size. The QR code automatically appends UTM parameters so scans are trackable in GA4 as their own source.
 
+Five display modes let you choose how the QR code surfaces — as a standalone card, integrated into the hero banner, or as a floating overlay button — all configurable without touching code.
+
+#### Display modes
+
+| `display` value | Behavior | Requires hero banner? |
+|-----------------|----------|-----------------------|
+| `widget` | Standalone card at `position` *(default)* | No |
+| `compact` | Small card after_profile, no heading | No |
+| `flip` | Hero banner becomes a flip card — front=image, back=QR on tap/click | Yes *(falls back to `widget`)* |
+| `sticky` | Floating "📱 Scan" pill button fixed to viewport corner; tap opens a modal with full QR | No |
+| `badge` | Small QR watermarked into a corner of the hero banner | Yes *(falls back to `widget`)* |
+| `sidebyside` | Hero image + QR card in a flex row above the links; stacks on mobile | Yes *(falls back to `widget`)* |
+
+Set `also_sticky: true` to always add the floating sticky button *alongside* any other display mode (e.g. `display: flip` + `also_sticky: true` gives you both).
+
 ```yaml
 integrations:
   qr_code:
     enabled: true
-    position: bottom              # after_profile | after_videos | after_links | bottom
+    display: widget               # widget | compact | flip | sticky | badge | sidebyside
+    also_sticky: false            # true = add floating sticky button alongside primary mode
+    sticky_corner: bottom_right   # bottom_right | bottom_left
+    badge_corner: bottom_right    # bottom_right | bottom_left | top_right | top_left (badge mode)
+    badge_size: 80                # QR size in px for the badge overlay
+    position: bottom              # after_profile | after_videos | after_links | bottom (widget/compact)
     heading: "Scan to Visit"
     label: ""                     # optional caption below the QR code
     url: ""                       # blank = auto-uses site.seo.canonical
@@ -582,7 +602,12 @@ integrations:
 | Field | Default | Description |
 |-------|---------|-------------|
 | `enabled` | `false` | Set to `true` to generate and display the QR code. |
-| `position` | `bottom` | Page slot: `after_profile`, `after_videos`, `after_links`, or `bottom`. |
+| `display` | `widget` | How/where the QR appears. See display modes table above. |
+| `also_sticky` | `false` | Add a floating sticky button alongside any other mode. |
+| `sticky_corner` | `bottom_right` | Corner for the sticky button / modal trigger: `bottom_right` or `bottom_left`. |
+| `badge_corner` | `bottom_right` | Corner for badge overlay: `bottom_right`, `bottom_left`, `top_right`, `top_left`. |
+| `badge_size` | `80` | Width/height in px for the badge overlay QR. No logo is stamped at badge size. |
+| `position` | `bottom` | Page slot for `widget`/`compact` modes: `after_profile`, `after_videos`, `after_links`, `bottom`. |
 | `heading` | `"Scan to Visit"` | Heading rendered above the QR code card. |
 | `label` | `""` | Optional short caption rendered below the code, above the URL. |
 | `url` | `""` | Target URL encoded in the QR code. Leave blank to use `site.seo.canonical`. |
@@ -602,7 +627,7 @@ integrations:
     The download button saves the QR code as an SVG file, making it print-ready at any resolution. Drop it into a business card, slide deck, or banner — it will be razor-sharp at any size.
 
 !!! note "Build-time generation"
-    The QR code is generated once when Eleventy builds your site. There is no JavaScript required to display it. Changing `url`, `color`, or any other option requires a new build to take effect.
+    The QR code is generated once when Eleventy builds your site. There is no JavaScript required to display it (except flip/sticky which use a minimal click handler). Changing `url`, `color`, `display`, or any other option requires a new build to take effect.
 
 
 
