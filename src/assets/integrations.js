@@ -214,25 +214,18 @@
 
   /* ── Full-bleed hero banner ─────────────────────────────────────────────── */
   HB.initBannerHero = function () {
-    var heroes = document.querySelectorAll('.banner-hero');
-    if (!heroes.length) return;
+    if (!document.querySelector('.banner-hero')) return;
 
+    // Initial sizing is handled by the inline <head> script (sets --hero-w / --hero-ml
+    // before first paint). This function only updates those vars on resize to keep
+    // the hero dimensions correct after viewport changes. No DOM measurements needed.
     function apply() {
-      heroes.forEach(function (el) {
-        // CSS pre-sizes via width:100vw + aspect-ratio + margin-left:calc(50%-50vw).
-        // JS converts to exact clientWidth pixels to avoid the ~17px scrollbar
-        // discrepancy that 100vw includes. margin-left stays CSS-controlled (responsive).
-        var vw = document.documentElement.clientWidth;
-        var aspectRaw = el.style.getPropertyValue('--banner-aspect') || '2/1';
-        var parts = aspectRaw.split('/');
-        var ratio = parseFloat(parts[0]) / parseFloat(parts[1] || 1);
-
-        el.style.width  = vw + 'px';
-        el.style.height = Math.round(vw / ratio) + 'px';
-      });
+      var vw = document.documentElement.clientWidth; // excludes scrollbar
+      var cw = Math.min(680, vw - 32); // mirrors base.css: max-width:680px, padding:16px each side
+      document.documentElement.style.setProperty('--hero-w', vw + 'px');
+      document.documentElement.style.setProperty('--hero-ml', (-(vw - cw) / 2) + 'px');
     }
 
-    apply();
     window.addEventListener('resize', apply, { passive: true });
   };
 

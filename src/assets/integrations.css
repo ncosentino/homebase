@@ -34,18 +34,16 @@
 }
 
 /* ── Full-bleed hero mode ── */
-/* CSS pre-sizes the hero to eliminate CLS — element is correctly sized before JS runs.  */
-/* JS (HB.initBannerHero) then converts 100vw → exact clientWidth px to avoid the       */
-/* scrollbar-width discrepancy (~17px on desktop). margin-left stays CSS-controlled.     */
+/* CSS vars --hero-w and --hero-ml are set by an inline <head> script BEFORE     */
+/* first paint, giving the browser correct dimensions with zero layout shift.    */
+/* JS (HB.initBannerHero) only updates these vars on window resize.              */
 .banner-img-wrap.banner-hero,
 .qr-flip-outer.banner-hero {
   border-radius: 0;
-  width: 100vw;
-  aspect-ratio: var(--banner-aspect, 2/1);
-  /* calc(50% - 50vw): offset = half parent width - half viewport = exact negative margin
-     needed to align the left edge of the 100vw element with the viewport left edge.      */
-  margin-left: calc(50% - 50vw);
   align-self: flex-start;
+  width: var(--hero-w, 100vw);
+  aspect-ratio: var(--banner-aspect, 2/1);
+  margin-left: var(--hero-ml, calc(50% - 50vw));
 }
 
 /* Remove parent border-radius too when child is hero */

@@ -383,6 +383,14 @@
 <link rel="preload" as="image" href="{{ site.profile.banner }}" fetchpriority="high" />
 {%- endif %}
 
+{# ── Hero sizing — set CSS vars before first paint to eliminate CLS ─────────── #}
+{# Runs synchronously in <head>: browser has correct values on first render.     #}
+{# Calculates: hero width = clientWidth (no scrollbar), margin-left = negative  #}
+{# offset to break out of the centered 680px content column to full viewport.   #}
+{%- if site.profile.banner_hero %}
+<script>(function(){var vw=window.innerWidth;var cw=Math.min(680,vw-32);document.documentElement.style.setProperty('--hero-w',vw+'px');document.documentElement.style.setProperty('--hero-ml',(-(vw-cw)/2)+'px');})()</script>
+{%- endif %}
+
 {# ── Theme CSS ────────────────────────────────────────────────────────────── #}
 <link rel="stylesheet" href="/assets/base.css" />
 {%- if site.shop and site.shop.enabled %}
