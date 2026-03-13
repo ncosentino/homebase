@@ -65,7 +65,7 @@ seo:
   description: "Principal Software Engineering Manager at Microsoft. Content creator, educator, and software engineering enthusiast."
   canonical: "https://github.devleader.ca"
   og_image: "https://github.com/ncosentino.png"
-  locale: "en_US"
+  locale: "en-US"
   # Custom domain for GitHub Pages CNAME. Set to your domain (e.g. "links.yoursite.com").
   # Leave blank if using the default youruser.github.io URL (no custom domain).
   cname: "github.devleader.ca"
