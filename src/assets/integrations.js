@@ -219,23 +219,16 @@
 
     function apply() {
       heroes.forEach(function (el) {
-        // Reset inline dimensions to get the natural DOM position
-        el.style.marginLeft = '';
-        el.style.width = '';
-        el.style.height = '';
-
-        var rect = el.getBoundingClientRect();
-        // clientWidth excludes scrollbar — the true visual viewport width
+        // CSS pre-sizes via width:100vw + aspect-ratio + margin-left:calc(50%-50vw).
+        // JS converts to exact clientWidth pixels to avoid the ~17px scrollbar
+        // discrepancy that 100vw includes. margin-left stays CSS-controlled (responsive).
         var vw = document.documentElement.clientWidth;
-
-        // Parse aspect ratio from inline CSS var (e.g. "2/1", "16/9")
         var aspectRaw = el.style.getPropertyValue('--banner-aspect') || '2/1';
         var parts = aspectRaw.split('/');
         var ratio = parseFloat(parts[0]) / parseFloat(parts[1] || 1);
 
-        el.style.marginLeft = (-rect.left) + 'px';
-        el.style.width      = vw + 'px';
-        el.style.height     = Math.round(vw / ratio) + 'px';
+        el.style.width  = vw + 'px';
+        el.style.height = Math.round(vw / ratio) + 'px';
       });
     }
 

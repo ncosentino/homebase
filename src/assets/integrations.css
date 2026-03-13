@@ -34,16 +34,17 @@
 }
 
 /* ── Full-bleed hero mode ── */
-/* JS (HB.initBannerHero) measures DOM position and sets width/height/margin-left */
-/* dynamically to handle flex centering, scrollbar width, and any future layout changes. */
+/* CSS pre-sizes the hero to eliminate CLS — element is correctly sized before JS runs.  */
+/* JS (HB.initBannerHero) then converts 100vw → exact clientWidth px to avoid the       */
+/* scrollbar-width discrepancy (~17px on desktop). margin-left stays CSS-controlled.     */
 .banner-img-wrap.banner-hero,
 .qr-flip-outer.banner-hero {
   border-radius: 0;
-  /* width/height/margin-left set by JS */
-}
-
-/* Flip card: prevent flex column's align-items:center from re-centering after JS sets width */
-.qr-flip-outer.banner-hero {
+  width: 100vw;
+  aspect-ratio: var(--banner-aspect, 2/1);
+  /* calc(50% - 50vw): offset = half parent width - half viewport = exact negative margin
+     needed to align the left edge of the 100vw element with the viewport left edge.      */
+  margin-left: calc(50% - 50vw);
   align-self: flex-start;
 }
 
