@@ -60,6 +60,7 @@
   object-fit: cover;
   object-position: var(--banner-obj-pos, top) center;
   display: block;
+  border-radius: 0;
 }
 
 /* Flip card internals fill the JS-set outer height */
@@ -72,6 +73,20 @@
   height: 100%;
   object-fit: cover;
   object-position: var(--banner-obj-pos, top) center;
+}
+
+/* No border-radius on image or flip card internals in hero mode */
+.banner-img-wrap.banner-hero img,
+.banner-img-wrap.banner-hero > a > img {
+  border-radius: 0;
+}
+
+.qr-flip-outer.banner-hero,
+.qr-flip-outer.banner-hero .qr-flip-inner,
+.qr-flip-outer.banner-hero .qr-flip-front,
+.qr-flip-outer.banner-hero .qr-flip-back,
+.qr-flip-outer.banner-hero .qr-flip-front img {
+  border-radius: 0;
 }
 
 /* No border-radius on fade overlays in hero mode */
