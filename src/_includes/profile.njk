@@ -186,7 +186,7 @@
   {%- set _bioLabel = site.profile.extended_bio_label if site.profile.extended_bio_label else ("About " + site.profile.name) %}
   <details class="bio-extended"{% if site.profile.extended_bio_expanded == true %} open{% endif %}>
     <summary class="bio-extended-toggle">{{ _bioLabel }}</summary>
-    <div class="bio-extended-body" data-ga-section="extended_bio" data-ga-type="bio_link">{{ site.profile.extended_bio | nl2br | safe }}</div>
+    <div class="bio-extended-body" data-ga-section="extended_bio" data-ga-type="bio_link">{{ site.profile.extended_bio | addUTM(site.utm) | nl2br | safe }}</div>
   </details>
   {%- endif %}
 </div>

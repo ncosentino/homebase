@@ -7,7 +7,7 @@
   {%- for item in site.integrations.faq.items %}
   <details class="integration-faq-item" data-ga-section="faq" data-ga-type="faq_item">
     <summary class="integration-faq-question">{{ item.question }}</summary>
-    <div class="integration-faq-answer">{{ item.answer | nl2br | safe }}</div>
+    <div class="integration-faq-answer">{{ item.answer | addUTM(site.utm) | nl2br | safe }}</div>
   </details>
   {%- endfor %}
 </section>

@@ -77,6 +77,24 @@ module.exports = function (eleventyConfig) {
       .replace(/\t/g, "\\t");
   });
 
+  // addUTM filter — appends UTM params to every href in an HTML string.
+  // Skips hrefs that already contain utm_source, and skips #anchors/mailto/tel.
+  // Idempotent: safe to call on bio content that already has baked-in UTM params.
+  eleventyConfig.addFilter("addUTM", function (content, utmConfig) {
+    if (!content || !utmConfig || !utmConfig.source) return content || "";
+    return String(content).replace(/href=(["'])([^"']+)\1/gi, function (match, q, url) {
+      if (!url || url.startsWith("#") || url.startsWith("mailto:") || url.startsWith("tel:")) return match;
+      if (url.includes("utm_source=")) return match;
+      const sep = url.includes("?") ? "&" : "?";
+      let qs = "utm_source=" + utmConfig.source;
+      if (utmConfig.medium)   qs += "&utm_medium="   + utmConfig.medium;
+      if (utmConfig.campaign) qs += "&utm_campaign=" + utmConfig.campaign;
+      if (utmConfig.content)  qs += "&utm_content="  + utmConfig.content;
+      if (utmConfig.term)     qs += "&utm_term="     + utmConfig.term;
+      return "href=" + q + url + sep + qs + q;
+    });
+  });
+
   // shopItems filter — flattens shop.collections[].items[] into a single array with 1-based
   // positions and collection_id. Used to build ItemList JSON-LD on the shop page.
   eleventyConfig.addFilter("shopItems", function (collections) {
