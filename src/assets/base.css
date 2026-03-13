@@ -566,32 +566,38 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
-  color: var(--color-text, inherit);
+  color: var(--btn-text, #1a1a1a);
   text-align: center;
+  font-family: var(--font-family, Inter, sans-serif);
 }
 
 .integration-faq-item {
-  border: 1px solid var(--color-border, rgba(255,255,255,0.12));
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
+  border: var(--btn-border-width, 0px) solid var(--btn-border-color, transparent);
+  border-radius: var(--btn-radius, 12px);
+  margin-bottom: 12px;
   overflow: hidden;
-  background: var(--color-card-bg, rgba(255,255,255,0.04));
+  background: var(--btn-bg, #fff);
+  box-shadow: var(--btn-shadow, 0 2px 8px rgba(0,0,0,0.15));
+  font-family: var(--font-family, Inter, sans-serif);
+  transition: background-color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .integration-faq-item[open] {
-  background: var(--color-card-bg-open, rgba(255,255,255,0.07));
+  background: var(--btn-hover-bg, rgba(255,255,255,0.88));
 }
 
 .integration-faq-question {
-  padding: 0.75rem 1rem;
+  padding: 8px 16px;
   cursor: pointer;
-  font-weight: 500;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: 15px;
   list-style: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--color-text, inherit);
+  min-height: 56px;
+  color: var(--btn-text, #1a1a1a);
+  font-family: var(--font-family, Inter, sans-serif);
   user-select: none;
 }
 
@@ -603,7 +609,7 @@ body {
   line-height: 1;
   flex-shrink: 0;
   margin-left: 0.75rem;
-  opacity: 0.6;
+  opacity: 0.45;
   transition: transform 0.2s ease;
 }
 
@@ -612,10 +618,10 @@ body {
 }
 
 .integration-faq-answer {
-  padding: 0 1rem 0.85rem;
+  padding: 0.75rem 1rem 0.85rem;
   font-size: 0.9rem;
+  font-family: var(--font-family, Inter, sans-serif);
   line-height: 1.6;
-  color: var(--color-text-muted, rgba(255,255,255,0.75));
-  border-top: 1px solid var(--color-border, rgba(255,255,255,0.08));
-  padding-top: 0.75rem;
+  color: var(--btn-text, #1a1a1a);
+  border-top: 1px solid rgba(0,0,0,0.08);
 }
