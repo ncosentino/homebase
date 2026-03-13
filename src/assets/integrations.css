@@ -24,6 +24,33 @@
 }
 
 /* ── Banner fade + parallax ───────────────────────────────────────────────── */
+.banner-img-wrap.banner-full-height {
+  height: 100vh;
+  height: 100dvh;
+}
+.banner-img-wrap.banner-full-height > img,
+.banner-img-wrap.banner-full-height > a > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--banner-obj-pos, top) center;
+}
+
+/* Flip card full height */
+.qr-flip-outer.banner-full-height {
+  height: 100vh;
+  height: 100dvh;
+}
+.qr-flip-outer.banner-full-height .qr-flip-inner,
+.qr-flip-outer.banner-full-height .qr-flip-front {
+  height: 100%;
+}
+.qr-flip-outer.banner-full-height .qr-flip-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--banner-obj-pos, top) center;
+}
 
 /* Inner clip wrapper — sits around the <img>, NOT the avatar */
 .banner-img-wrap {
