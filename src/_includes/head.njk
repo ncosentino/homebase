@@ -438,7 +438,7 @@
   window.addEventListener("scroll", function () {
     var pct = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100;
     [25, 50, 75, 100].forEach(function (m) {
-      if (!_sdFired[m] && pct >= m) { _sdFired[m] = true; gtag("event", "scroll_depth", { percent: m }); }
+      if (!_sdFired[m] && pct >= m) { _sdFired[m] = true; gtag("event", "scroll_depth", { percent_scrolled: m }); }
     });
   }, { passive: true });
 
@@ -446,7 +446,7 @@
   var _tabHidden = false;
   document.addEventListener("visibilitychange", function () { _tabHidden = document.hidden; });
   [30, 60, 120, 300].forEach(function (s) {
-    setTimeout(function () { if (!_tabHidden) gtag("event", "time_on_page", { seconds: s }); }, s * 1000);
+    setTimeout(function () { if (!_tabHidden) gtag("event", "time_on_page", { time_on_page_sec: s }); }, s * 1000);
   });
 
   // First interaction: time from page load to first click/key/touch

@@ -198,9 +198,9 @@ Fires once per page visit at each scroll depth milestone.
 
 | Parameter | Type | Values |
 |---|---|---|
-| `percent` | number | `25`, `50`, `75`, `100` |
+| `percent_scrolled` | number | `25`, `50`, `75`, `100` |
 
-Use this to see whether visitors are reading to the bottom of your page or bouncing early. Build an exploration filtered to `scroll_depth` with `percent` as a dimension.
+Use this to see whether visitors are reading to the bottom of your page or bouncing early. Build an exploration filtered to `scroll_depth` with `percent_scrolled` as a dimension.
 
 ### `time_on_page`
 
@@ -208,9 +208,9 @@ Fires once per milestone while the tab is in focus (pauses if the user switches 
 
 | Parameter | Type | Values |
 |---|---|---|
-| `seconds` | number | `30`, `60`, `120`, `300` |
+| `time_on_page_sec` | number | `30`, `60`, `120`, `300` |
 
-A `seconds: 300` event means the visitor spent at least 5 active minutes on the page — a strong quality signal.
+A `time_on_page_sec: 300` event means the visitor spent at least 5 active minutes on the page — a strong quality signal.
 
 ### `first_interaction`
 
@@ -227,8 +227,8 @@ Open **Admin → Custom definitions → Create custom dimension** and add:
 
 | Display name | Scope | Event parameter |
 |---|---|---|
-| Scroll Depth % | Event | `percent` |
-| Time on Page (s) | Event | `seconds` |
+| Scroll Depth % | Event | `percent_scrolled` |
+| Time on Page (s) | Event | `time_on_page_sec` |
 | First Interaction Element | Event | `element_type` |
 | Time to First Interaction | Event | `time_to_first_interaction_ms` |
 
