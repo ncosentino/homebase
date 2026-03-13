@@ -211,6 +211,37 @@
       });
     });
   };
+
+  /* ── Full-bleed hero banner ─────────────────────────────────────────────── */
+  HB.initBannerHero = function () {
+    var heroes = document.querySelectorAll('.banner-hero');
+    if (!heroes.length) return;
+
+    function apply() {
+      heroes.forEach(function (el) {
+        // Reset inline dimensions to get the natural DOM position
+        el.style.marginLeft = '';
+        el.style.width = '';
+        el.style.height = '';
+
+        var rect = el.getBoundingClientRect();
+        // clientWidth excludes scrollbar — the true visual viewport width
+        var vw = document.documentElement.clientWidth;
+
+        // Parse aspect ratio from inline CSS var (e.g. "2/1", "16/9")
+        var aspectRaw = el.style.getPropertyValue('--banner-aspect') || '2/1';
+        var parts = aspectRaw.split('/');
+        var ratio = parseFloat(parts[0]) / parseFloat(parts[1] || 1);
+
+        el.style.marginLeft = (-rect.left) + 'px';
+        el.style.width      = vw + 'px';
+        el.style.height     = Math.round(vw / ratio) + 'px';
+      });
+    }
+
+    apply();
+    window.addEventListener('resize', apply, { passive: true });
+  };
 
   /* ── Banner parallax scroll ─────────────────────────────────────────────── */
   HB.initBannerParallax = function () {
@@ -303,6 +334,7 @@
     HB.initQrFlip();
     HB.initQrSticky();
     HB.initBannerParallax();
+    HB.initBannerHero();
   });
 
 }(window.HB = window.HB || {}));

@@ -34,16 +34,25 @@
 }
 
 /* ── Full-bleed hero mode ── */
-/* Breaks out of the 680px content column to fill the full viewport width */
+/* JS (HB.initBannerHero) measures DOM position and sets width/height/margin-left */
+/* dynamically to handle flex centering, scrollbar width, and any future layout changes. */
 .banner-img-wrap.banner-hero,
 .qr-flip-outer.banner-hero {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
   border-radius: 0;
-  aspect-ratio: var(--banner-aspect, 2/1);
+  /* width/height/margin-left set by JS */
 }
 
-/* Hero image fills the container with object-fit */
+/* Flip card: prevent flex column's align-items:center from re-centering after JS sets width */
+.qr-flip-outer.banner-hero {
+  align-self: flex-start;
+}
+
+/* Remove parent border-radius too when child is hero */
+.profile-banner-wrap:has(.banner-hero) {
+  border-radius: 0;
+}
+
+/* Hero image fills the JS-set container */
 .banner-img-wrap.banner-hero img,
 .banner-img-wrap.banner-hero > a > img {
   width: 100%;
@@ -53,7 +62,7 @@
   display: block;
 }
 
-/* Flip card internals must fill the aspect-ratio container */
+/* Flip card internals fill the JS-set outer height */
 .qr-flip-outer.banner-hero .qr-flip-inner,
 .qr-flip-outer.banner-hero .qr-flip-front {
   height: 100%;
@@ -65,9 +74,8 @@
   object-position: var(--banner-obj-pos, top) center;
 }
 
-/* Flatten border-radius on fade overlay in hero mode */
-.banner-img-wrap.banner-hero.banner-fade::after,
-.banner-img-wrap.banner-hero::after,
+/* No border-radius on fade overlays in hero mode */
+.banner-fade .banner-img-wrap.banner-hero::after,
 .qr-flip-outer.banner-hero.banner-fade .qr-flip-front::after {
   border-radius: 0;
 }
