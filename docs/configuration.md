@@ -235,7 +235,7 @@ integrations:
 
 ### Newsletter Signup
 
-Captures email addresses and sends them to your newsletter backend. Supports 6 backends including Formspree, ConvertKit/Kit, Web3Forms, Mailchimp, Beehiiv, and Substack.
+Captures email addresses and sends them to your newsletter backend. The `backend` value determines what actually renders on the page — some collect email inline, others redirect to a hosted page.
 
 ```yaml
 integrations:
@@ -252,9 +252,20 @@ integrations:
     gdpr_note: "No spam. Unsubscribe anytime."
 ```
 
-| Field | Description |
+| `backend` value | What it renders | Email captured on-page? |
+|-----------------|-----------------|------------------------|
+| `formspree` | Email input + submit button. POSTs to Formspree via AJAX. | ✅ Yes |
+| `convertkit` | Email input + submit button. POSTs to Kit/ConvertKit public form endpoint via AJAX. | ✅ Yes |
+| `web3forms` | Email input + submit button. POSTs to Web3Forms via AJAX. | ✅ Yes |
+| `mailchimp_embed` | Renders Mailchimp's own hosted form (POSTs to Mailchimp directly). | ✅ Yes |
+| `beehiiv_embed` | Renders a Beehiiv-hosted subscribe iframe. | ✅ Yes |
+| `substack` | **Renders a styled button link only.** Clicking opens `{substack_url}/subscribe` in a new tab. No email input, no form — the user subscribes on Substack's own page. | ❌ No |
+
+!!! note "Substack limitation"
+    Substack blocks direct API calls and iframe embeds from external domains. The `substack` backend is therefore just a styled CTA button — it is functionally identical to adding a Substack subscribe link in your regular link sections, with the addition of the newsletter widget card styling and GA4 `widget_view` tracking. If you want to capture emails inline on your page, use `beehiiv_embed` or one of the AJAX backends instead.
+
+| Other fields | Description |
 |-------|-------------|
-| `backend` | Which service receives the submission. `formspree`, `convertkit`, and `web3forms` use AJAX. `mailchimp_embed`, `beehiiv_embed` render their own hosted form. `substack` renders a link button. |
 | `formspree_id` | Your Formspree form ID (last segment of the form action URL). |
 | `convertkit_form_id` | Your public Kit/ConvertKit form ID. |
 | `web3forms_key` | Your Web3Forms access key ([web3forms.com](https://web3forms.com)). |
