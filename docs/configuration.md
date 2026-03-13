@@ -233,6 +233,290 @@ integrations:
 !!! tip "Rich results eligibility"
     Google may display your FAQ answers as expandable rich results in search, showing your Q&A pairs directly on the results page. Content must be pre-written (not user-generated) and answers must be visible in the page's HTML. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/faqpage)
 
+### Newsletter Signup
+
+Captures email addresses and sends them to your newsletter backend. Supports 6 backends including Formspree, ConvertKit/Kit, Web3Forms, Mailchimp, Beehiiv, and Substack.
+
+```yaml
+integrations:
+  newsletter:
+    enabled: true
+    position: after_profile         # after_profile | after_videos | after_links | bottom
+    heading: "Join the Newsletter"
+    subheading: "Weekly insights. No spam, ever."
+    placeholder: "your@email.com"
+    cta_label: "Subscribe"
+    backend: formspree              # formspree | convertkit | web3forms | mailchimp_embed | beehiiv_embed | substack
+    formspree_id: "xabc1234"        # Sign up at formspree.io (free tier available)
+    success_message: "You're in! Check your inbox to confirm."
+    gdpr_note: "No spam. Unsubscribe anytime."
+```
+
+| Field | Description |
+|-------|-------------|
+| `backend` | Which service receives the submission. `formspree`, `convertkit`, and `web3forms` use AJAX. `mailchimp_embed`, `beehiiv_embed` render their own hosted form. `substack` renders a link button. |
+| `formspree_id` | Your Formspree form ID (last segment of the form action URL). |
+| `convertkit_form_id` | Your public Kit/ConvertKit form ID. |
+| `web3forms_key` | Your Web3Forms access key ([web3forms.com](https://web3forms.com)). |
+| `mailchimp_embed_url` | The `action` URL from your Mailchimp embedded form. |
+| `beehiiv_publication_id` | Your Beehiiv publication ID (format: `pub_xxxxx`). |
+| `substack_url` | Your Substack base URL (e.g. `https://yourname.substack.com`). |
+| `gdpr_note` | Optional privacy note rendered below the form. |
+
+### Social Follow Buttons
+
+Platform-branded follow buttons with optional subscriber counts. Renders a clean list of follow buttons styled with each platform's icon.
+
+```yaml
+integrations:
+  social_follow:
+    enabled: true
+    position: after_profile
+    heading: "Follow Along"
+    buttons:
+      - platform: youtube
+        label: "Subscribe on YouTube"
+        url: "https://youtube.com/@yourname?sub_confirmation=1"
+        count: "32K"
+      - platform: github
+        label: "Follow on GitHub"
+        url: "https://github.com/yourname"
+      - platform: twitter
+        label: "Follow on X"
+        url: "https://x.com/yourhandle"
+```
+
+Supported `platform` values: `youtube`, `github`, `twitter`/`x`, `linkedin`, `discord`, `twitch`, `instagram`, `tiktok`, `bluesky`, `mastodon`.
+
+### Support / Monetization Buttons
+
+Ko-fi, GitHub Sponsors, Buy Me a Coffee, Patreon — or any custom link. Renders a flex row of branded buttons.
+
+```yaml
+integrations:
+  support_buttons:
+    enabled: true
+    position: bottom
+    heading: "Support the Content"
+    buttons:
+      - platform: kofi
+        label: "Buy Me a Coffee"
+        url: "https://ko-fi.com/yourname"
+      - platform: github_sponsors
+        label: "Sponsor on GitHub"
+        url: "https://github.com/sponsors/yourname"
+```
+
+Supported `platform` values: `kofi`, `github_sponsors`, `buymeacoffee`, `patreon`.
+
+### Booking Widget
+
+A calendar booking CTA. Renders either a full inline iframe embed or a simple button link.
+
+```yaml
+integrations:
+  booking:
+    enabled: true
+    position: after_links
+    heading: "Book a Session"
+    provider: tidycal               # tidycal | calendly | cal
+    embed: false                    # true = inline iframe, false = button link only
+    url: "https://tidycal.com/yourhandle/30-mins"
+    cta_label: "Book a Call"
+    embed_height: 600               # iframe height in px when embed: true
+```
+
+### Poll Widget
+
+Embed a [Tally.so](https://tally.so) form or define a custom YAML poll backed by Formspree or Web3Forms.
+
+```yaml
+# Tally.so embed
+integrations:
+  poll:
+    enabled: true
+    provider: tally
+    heading: "Quick Poll"
+    tally_form_id: "wMeKBz"
+    tally_height: 250
+
+# Custom radio-button poll
+integrations:
+  poll:
+    enabled: true
+    provider: custom
+    heading: "Quick Poll"
+    question: "What's your primary .NET version?"
+    options:
+      - label: ".NET 8"
+        value: "net8"
+      - label: ".NET 9"
+        value: "net9"
+      - label: "Still on .NET Framework"
+        value: "netfx"
+    backend: formspree
+    formspree_id: "xabc1234"
+    success_message: "Thanks for your vote!"
+```
+
+### Contact Form
+
+A name / email / message form. Submissions route to Formspree or Web3Forms.
+
+```yaml
+integrations:
+  contact_form:
+    enabled: true
+    position: after_links
+    heading: "Get in Touch"
+    show_name: true
+    show_subject: false
+    backend: formspree
+    formspree_id: "xabc1234"
+    cta_label: "Send Message"
+    success_message: "Message sent! I'll get back to you soon."
+```
+
+### Lead Magnet
+
+Collect an email, then reveal a resource URL (PDF, template, guide). Supports all AJAX backends.
+
+```yaml
+integrations:
+  lead_magnet:
+    enabled: true
+    position: after_links
+    heading: "Free Resource"
+    subheading: "Enter your email to get instant access."
+    resource_title: "The C# Performance Checklist"
+    resource_description: "A 2-page quick-reference guide covering the most common .NET performance pitfalls."
+    resource_image: "https://example.com/checklist-preview.png"
+    cta_label: "Send Me the Checklist"
+    backend: formspree
+    formspree_id: "xabc1234"
+    resource_url: "https://your-cdn.com/checklist.pdf"
+    success_message: "Check your inbox! Your resource is on its way."
+```
+
+### Social Proof Counters
+
+Display audience reach numbers as a stat grid. Values are static — update them in `site.yaml` as your numbers grow.
+
+```yaml
+integrations:
+  social_proof:
+    enabled: true
+    position: after_profile
+    counters:
+      - label: "YouTube subscribers"
+        value: "32K+"
+      - label: "Newsletter readers"
+        value: "4,500+"
+      - label: "GitHub followers"
+        value: "1,200+"
+```
+
+### Discord Community Widget
+
+Embeds the official Discord server widget. Requires **Widget** to be enabled in your server settings (Server Settings → Widget).
+
+```yaml
+integrations:
+  discord:
+    enabled: true
+    position: after_links
+    server_id: "1234567890"         # Your Discord server's numeric ID
+    heading: "Join the Community"
+```
+
+### Achievement Badges
+
+Display Credly badges, Stack Overflow user flair, [shields.io](https://shields.io) badges, or custom images.
+
+```yaml
+integrations:
+  badges:
+    enabled: true
+    position: after_links
+    heading: "Certifications & Achievements"
+    items:
+      - type: credly
+        badge_id: "xxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        label: "AWS Certified Developer"
+      - type: stackoverflow
+        user_id: "1234567"
+      - type: shields
+        url: "https://img.shields.io/github/stars/user/repo"
+        alt: "GitHub Stars"
+        link: "https://github.com/user/repo"
+      - type: image
+        image_url: "https://example.com/mvp-badge.png"
+        label: "Microsoft MVP"
+        link: "https://mvp.microsoft.com/yourprofile"
+```
+
+### Testimonials
+
+A grid of quotes from your audience, collaborators, or press coverage.
+
+```yaml
+integrations:
+  testimonials:
+    enabled: true
+    position: after_links
+    heading: "What People Say"
+    items:
+      - quote: "This content changed how I think about software architecture."
+        author: "Jane D."
+        handle: "@janed"
+        url: "https://x.com/janed/status/..."
+      - quote: "The best C# newsletter I've read this year."
+        author: "Alex K."
+        handle: "@alexk"
+```
+
+### Live Code / Demo Embeds
+
+Embed interactive code demos from CodePen, GitHub Gist, StackBlitz, or Replit.
+
+```yaml
+integrations:
+  code_embeds:
+    enabled: true
+    position: after_links
+    heading: "Featured Projects"
+    items:
+      - provider: codepen
+        embed_id: "xxxxx"
+        user: "yourname"
+        title: "CSS Grid Demo"
+        height: 400
+      - provider: gist
+        gist_id: "yourusername/xxxxxxxxxxxx"
+        title: "Useful Extension Methods"
+      - provider: stackblitz
+        project_id: "xxxxx"
+        title: "Live .NET Demo"
+        height: 500
+```
+
+Supported `provider` values: `codepen`, `gist`, `stackblitz`, `replit`.
+
+### Position Slots
+
+Every widget has a `position` key that controls where it appears on the page:
+
+| Value | Renders after |
+|-------|---------------|
+| `after_profile` | Profile card and social icons |
+| `after_videos` | Featured YouTube videos |
+| `after_links` | Link sections *(default for most widgets)* |
+| `bottom` | All other content *(default for `support_buttons`)* |
+
+### Asset loading
+
+`integrations.css` and `integrations.js` are only loaded when at least one interactive widget (`newsletter`, `social_follow`, `support_buttons`, `booking`, `poll`, `contact_form`, `lead_magnet`, `social_proof`, `discord`, `badges`, `testimonials`, or `code_embeds`) is enabled. The FAQ widget uses its own CSS in `base.css` and requires no JS.
+
 
 
 ```yaml
