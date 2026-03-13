@@ -43,6 +43,11 @@ body {
   gap: 0;
 }
 
+/* Hero banner flush-top: remove page-wrap top padding when full-bleed hero is active */
+.banner-hero-active .page-wrap {
+  padding-top: 0;
+}
+
 /* ── Profile ─────────────────────────────────────────────────────────────── */
 .profile {
   display: flex;

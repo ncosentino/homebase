@@ -6,7 +6,7 @@ permalink: /index.html
 <head>
   {% include "head.njk" %}
 </head>
-<body>
+<body{% if site.profile.banner_hero %} class="banner-hero-active"{% endif %}>
   <main class="page-wrap">
     <div class="content-col">
 
