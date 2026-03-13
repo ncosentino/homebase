@@ -23,6 +23,64 @@
   text-align: center;
 }
 
+/* ── Banner fade + parallax ───────────────────────────────────────────────── */
+
+/* Inner clip wrapper — sits around the <img>, NOT the avatar */
+.banner-img-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+}
+
+/* The image scrolls at a fraction of normal speed via JS-driven CSS var */
+.banner-parallax-clip > img,
+.banner-parallax-clip > a > img {
+  display: block;
+  width: 100%;
+  transform: translateY(var(--hb-parallax, 0px));
+  will-change: transform;
+  transition: none;
+}
+
+/* Whole flip card moves slower (image is inside preserve-3d context) */
+.qr-flip-outer.banner-parallax {
+  transform: translateY(var(--hb-parallax, 0px));
+  will-change: transform;
+}
+
+/* Gradient fade overlay — standard banner modes */
+.banner-fade .banner-img-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent 0%, var(--bg-color, #f5f5f5) 100%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 0 0 16px 16px;
+}
+
+/* Gradient fade overlay — flip card front face only */
+.qr-flip-outer.banner-fade .qr-flip-front {
+  position: relative;
+}
+.qr-flip-outer.banner-fade .qr-flip-front::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent 0%, var(--bg-color, #f5f5f5) 100%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 0 0 16px 16px;
+}
+
+/* Sidebyside: fade applies to the banner half */
+.qr-sidebyside-banner.banner-fade .banner-img-wrap::after {
+  border-radius: 0 0 16px 16px;
+}
+
 .hb-widget-subheading {
   font-size: 0.875rem;
   color: var(--color-text-muted, rgba(255,255,255,0.7));

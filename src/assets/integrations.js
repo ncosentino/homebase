@@ -212,6 +212,38 @@
     });
   };
 
+  /* ── Banner parallax scroll ─────────────────────────────────────────────── */
+  HB.initBannerParallax = function () {
+    // Flip mode: translate the whole .qr-flip-outer (image is inside preserve-3d)
+    var flipEl  = document.querySelector('.qr-flip-outer.banner-parallax');
+    // Standard modes: translate the image inside .banner-parallax-clip
+    var clipEl  = document.querySelector('.banner-parallax-clip');
+    if (!flipEl && !clipEl) return;
+
+    var target  = flipEl || clipEl;
+    var factor  = parseFloat(target.dataset.parallaxFactor || '0.3');
+    var lastY   = 0;
+    var ticking = false;
+
+    window.addEventListener('scroll', function () {
+      lastY = window.scrollY;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var offset = lastY * factor;
+        if (flipEl) {
+          flipEl.style.setProperty('--hb-parallax', offset + 'px');
+        }
+        if (clipEl) {
+          // Image moves down relative to its clipping container → appears to scroll slower
+          var img = clipEl.querySelector('img');
+          if (img) img.style.setProperty('--hb-parallax', offset + 'px');
+        }
+        ticking = false;
+      });
+    }, { passive: true });
+  };
+
   /* ── QR flip card ──────────────────────────────────────────────────────── */
   HB.initQrFlip = function () {
     var outer = document.querySelector('.qr-flip-outer');
@@ -270,6 +302,7 @@
     HB.initPoll();
     HB.initQrFlip();
     HB.initQrSticky();
+    HB.initBannerParallax();
   });
 
 }(window.HB = window.HB || {}));
