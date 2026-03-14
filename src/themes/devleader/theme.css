@@ -1,8 +1,9 @@
 /* ─────────────────────────────────────────────────────────────────────────
    theme: devleader
    Solid blue — matches the Dev Leader Linktree aesthetic.
+   Font: loaded async via site.font_url in head.njk (not @imported here to
+   avoid render-blocking chain: theme.css → fonts.googleapis.com).
    ───────────────────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;600;700&display=swap');
 
 :root {
   /* Background — solid medium blue */

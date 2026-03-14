@@ -396,12 +396,27 @@
 <script>(function(){var vw=window.innerWidth;var cw=Math.min(680,vw-32);document.documentElement.style.setProperty('--hero-w',vw+'px');document.documentElement.style.setProperty('--hero-ml',(-(vw-cw)/2)+'px');})()</script>
 {%- endif %}
 
-{# ── Theme CSS ────────────────────────────────────────────────────────────── #}
+{# ── Theme CSS — inlined to eliminate network round-trip and avoid FOUC ─────── #}
+{# Fonts are NOT @imported in theme.css (would create a blocking chain).        #}
+{# They are async-loaded below via site.font_url with preconnect hints.         #}
 <link rel="stylesheet" href="/assets/base.css" />
 {%- if site.shop and site.shop.enabled %}
-<link rel="stylesheet" href="/assets/shop.css" />
+{# Async-load shop.css — tab nav is below-fold so async is safe here            #}
+<link rel="preload" href="/assets/shop.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="/assets/shop.css" /></noscript>
 {%- endif %}
-<link rel="stylesheet" href="/themes/{{ site.theme }}/theme.css" />
+{%- if site.theme %}
+{%- set _themePath = "src/themes/" + site.theme + "/theme.css" %}
+<style>{% inlineFile _themePath %}</style>
+{%- endif %}
+{# ── Google Fonts (or custom font_url) — async with preconnect hints ─────────── #}
+{# Loaded separately from theme.css to avoid render-blocking @import chain.      #}
+{%- if site.font_url %}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" href="{{ site.font_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="{{ site.font_url }}" /></noscript>
+{%- endif %}
 
 {# ── Integrations assets (loaded when any interactive widget is enabled) ──── #}
 {%- set _igs = site.integrations if site.integrations else {} %}

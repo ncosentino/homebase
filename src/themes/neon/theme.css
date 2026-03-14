@@ -1,8 +1,8 @@
 /* ─────────────────────────────────────────────────────────────────────────
    theme: neon
    Dark background with vibrant neon accent colors.
+   Font: loaded async via site.font_url in head.njk.
    ───────────────────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;600;700&display=swap');
 
 :root {
   /* Background */
