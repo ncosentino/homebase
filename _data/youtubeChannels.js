@@ -36,6 +36,8 @@ module.exports = async function () {
         const entry = match[1];
         const videoIdMatch = entry.match(/<yt:videoId>(.*?)<\/yt:videoId>/);
         const titleMatch = entry.match(/<title>(.*?)<\/title>/);
+        const publishedMatch = entry.match(/<published>(.*?)<\/published>/);
+        const descMatch = entry.match(/<media:description>([\s\S]*?)<\/media:description>/);
         if (videoIdMatch && titleMatch) {
           results.push({
             youtube_id: videoIdMatch[1],
@@ -45,6 +47,14 @@ module.exports = async function () {
               .replace(/&gt;/g, ">")
               .replace(/&quot;/g, '"')
               .replace(/&#39;/g, "'"),
+            published: publishedMatch ? publishedMatch[1].split("T")[0] : null,
+            description: descMatch ? descMatch[1].trim()
+              .replace(/&amp;/g, "&")
+              .replace(/&lt;/g, "<")
+              .replace(/&gt;/g, ">")
+              .replace(/&quot;/g, '"')
+              .replace(/&#39;/g, "'")
+              .slice(0, 300) : null,
             _channel_name: name,
           });
           count++;

@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
+    "@napi-rs/canvas": "^0.1.68",
     "js-yaml": "^4.1.0",
     "qrcode": "^1.5.4"
   },

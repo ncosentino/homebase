@@ -1,6 +1,7 @@
 <meta charset="UTF-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+{%- set _ogImg = (site.seo.canonical + "/assets/og-image-auto.png") if site.seo.og_image_auto else site.seo.og_image %}
 
 {# ── Primary SEO ──────────────────────────────────────────────────────────── #}
 {%- if shopPage %}
@@ -22,10 +23,10 @@
 <meta property="og:title" content="{{ site.shop.title }} — {{ site.seo.title }}" />
 <meta property="og:description" content="{{ site.shop.description }}" />
 <meta property="og:url" content="{{ site.seo.canonical }}/{{ site.shop.path }}/" />
-<meta property="og:image" content="{{ site.shop.og_image if site.shop.og_image else site.seo.og_image }}" />
-<meta property="og:image:width" content="600" />
-<meta property="og:image:height" content="600" />
-<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image" content="{{ site.shop.og_image if site.shop.og_image else _ogImg }}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/png" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:site_name" content="{{ site.seo.site_name if site.seo.site_name else site.seo.title }}" />
 <meta property="og:updated_time" content="{{ buildMeta.unix }}" />
@@ -34,10 +35,10 @@
 <meta property="og:title" content="{{ site.seo.title }}" />
 <meta property="og:description" content="{{ site.seo.description }}" />
 <meta property="og:url" content="{{ site.seo.canonical }}" />
-<meta property="og:image" content="{{ site.seo.og_image }}" />
-<meta property="og:image:width" content="600" />
-<meta property="og:image:height" content="600" />
-<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image" content="{{ _ogImg }}" />
+<meta property="og:image:width" content="{{ "1200" if site.seo.og_image_auto else "600" }}" />
+<meta property="og:image:height" content="{{ "630" if site.seo.og_image_auto else "600" }}" />
+<meta property="og:image:type" content="{{ "image/png" if site.seo.og_image_auto else "image/jpeg" }}" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:site_name" content="{{ site.seo.site_name if site.seo.site_name else site.seo.title }}" />
 <meta property="og:updated_time" content="{{ buildMeta.unix }}" />
@@ -52,11 +53,11 @@
 {%- if shopPage %}
 <meta name="twitter:title" content="{{ site.shop.title }} — {{ site.seo.title }}" />
 <meta name="twitter:description" content="{{ site.shop.description }}" />
-<meta name="twitter:image" content="{{ site.shop.og_image if site.shop.og_image else site.seo.og_image }}" />
+<meta name="twitter:image" content="{{ site.shop.og_image if site.shop.og_image else _ogImg }}" />
 {%- else %}
 <meta name="twitter:title" content="{{ site.seo.title }}" />
 <meta name="twitter:description" content="{{ site.seo.description }}" />
-<meta name="twitter:image" content="{{ site.seo.og_image }}" />
+<meta name="twitter:image" content="{{ _ogImg }}" />
 {%- endif %}
 
 {# ── Author & Identity Meta Tags ─────────────────────────────────────────── #}
@@ -81,8 +82,8 @@
       "name": "{{ site.seo.title }}",
       "url": "{{ site.seo.canonical }}",
       "description": "{{ site.seo.description }}",
-      "image": "{{ site.seo.og_image }}",
-      "thumbnailUrl": "{{ site.seo.og_image }}",
+      "image": "{{ _ogImg }}",
+      "thumbnailUrl": "{{ _ogImg }}",
       "significantLink": "{{ site.seo.canonical }}"
       {%- if site.seo.keywords %},
       "keywords": "{{ site.seo.keywords | join(', ') }}"
@@ -100,7 +101,7 @@
           "@type": "Article",
           "headline": "{{ article.headline | jsonEscape }}",
           "url": "{{ article.url }}",
-          "image": "{{ article.image if article.image else site.seo.og_image }}"
+          "image": "{{ article.image if article.image else _ogImg }}"
           {%- if article.datePublished %},
           "datePublished": "{{ article.datePublished }}"
           {%- endif %},
@@ -117,13 +118,16 @@
       "alternateName": "{{ site.profile.username }}",
       "identifier": "{{ site.profile.username }}",
       "description": "{{ site.profile.tagline if site.profile.tagline else site.seo.description }}",
-      "image": "{{ site.seo.og_image }}",
+      "image": "{{ _ogImg }}",
       "url": "{{ site.seo.canonical }}"
-      {%- if site.socials %},
+      {%- if site.socials or (site.seo.person and site.seo.person.wikidata_id) %},
       "sameAs": [
         {%- for social in site.socials %}
-        "{{ social.url.split('?') | first }}"{% if not loop.last %},{% endif %}
+        "{{ social.url.split('?') | first }}"{% if not loop.last or (site.seo.person and site.seo.person.wikidata_id) %},{% endif %}
         {%- endfor %}
+        {%- if site.seo.person and site.seo.person.wikidata_id %}
+        "https://www.wikidata.org/wiki/{{ site.seo.person.wikidata_id }}"
+        {%- endif %}
       ]
       {%- endif %}
       {%- if site.seo.person and site.seo.person.roles %},
@@ -189,6 +193,26 @@
       {%- endif %}
       {%- if site.profile.contact_url %},
       "contactPoint": {"@type": "ContactPoint", "contactType": "Work inquiries", "url": "{{ site.profile.contact_url }}"}
+      {%- endif %}
+      {%- if site.integrations and site.integrations.testimonials and site.integrations.testimonials.enabled and site.integrations.testimonials.items and site.integrations.testimonials.items.length %},
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "bestRating": "5",
+        "worstRating": "1",
+        "reviewCount": "{{ site.integrations.testimonials.items | length }}"
+      },
+      "review": [
+        {%- for t in site.integrations.testimonials.items %}
+        {%- if not loop.first %},{%- endif %}
+        {
+          "@type": "Review",
+          "author": {"@type": "Person", "name": "{{ t.author | jsonEscape }}"},
+          "reviewBody": "{{ t.quote | jsonEscape }}",
+          "reviewRating": {"@type": "Rating", "ratingValue": "{{ t.rating if t.rating else 5 }}", "bestRating": "5", "worstRating": "1"}
+        }
+        {%- endfor %}
+      ]
       {%- endif %}
     }
     {%- if site.sections and not shopPage %},
@@ -376,6 +400,29 @@
   }
 }
 </script>
+{%- endif %}
+
+{# ── VideoObject structured data — enables video rich results in Google Search ── #}
+{#   Source: developers.google.com/search/docs/appearance/structured-data/video   #}
+{%- set _allVideos = youtubeChannels if (youtubeChannels and youtubeChannels.length) else (site.featured_videos if site.featured_videos else []) %}
+{%- if not shopPage and _allVideos and _allVideos.length %}
+{%- for video in _allVideos %}
+{%- if video.youtube_id and video.title %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "{{ video.title | jsonEscape }}",
+  "description": "{{ (video.description if video.description else video.title) | jsonEscape }}",
+  "thumbnailUrl": "https://i.ytimg.com/vi/{{ video.youtube_id }}/hqdefault.jpg",
+  "uploadDate": "{{ video.upload_date if video.upload_date else (video.published if video.published else buildMeta.iso) }}",
+  "contentUrl": "https://www.youtube.com/watch?v={{ video.youtube_id }}",
+  "embedUrl": "https://www.youtube.com/embed/{{ video.youtube_id }}",
+  "creator": { "@id": "{{ site.seo.canonical }}#person" }
+}
+</script>
+{%- endif %}
+{%- endfor %}
 {%- endif %}
 
 {# ── LCP preload — banner image (fetched ASAP, before CSS blocks rendering) ── #}

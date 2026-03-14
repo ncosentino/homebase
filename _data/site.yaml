@@ -67,6 +67,11 @@ seo:
   description: "Principal Software Engineering Manager at Microsoft. Content creator, educator, and software engineering enthusiast."
   canonical: "https://github.devleader.ca"
   og_image: "https://github.com/ncosentino.png"
+  # Set og_image_auto: true to use a build-time generated OG image (1200×630 PNG).
+  # Requires @napi-rs/canvas installed and scripts/generate-og-image.js.
+  # When true, the static og_image above is ignored for meta tags and JSON-LD.
+  og_image_auto: false
+  # og_image_brand_color: "#1E2330"  # background color for generated OG image; defaults to #1E2330
   locale: "en-US"
   # Custom domain for GitHub Pages CNAME. Set to your domain (e.g. "links.yoursite.com").
   # Leave blank if using the default youruser.github.io URL (no custom domain).
@@ -100,6 +105,10 @@ seo:
   date_created: "2024-01-01T00:00:00.000Z"
 
   person:
+    # Wikidata entity ID — highest-trust sameAs signal for Google Knowledge Graph.
+    # Google resolves Wikidata Q-IDs directly to verify real-world entity identity.
+    # Find or create your entry at https://www.wikidata.org
+    # wikidata_id: "Q12345678"
     roles:
       - job_title: "Principal Software Engineering Manager"
         works_for: "Microsoft"
@@ -201,6 +210,15 @@ embeds:
 
 # Option B — Hard-code specific videos. Used as fallback if embeds.youtube_channels
 # is empty or omitted. Leave both empty to hide the video section entirely.
+# Fields: youtube_id (required), title (required), description (recommended for VideoObject
+# schema — Google requires a description for video rich results), upload_date (YYYY-MM-DD,
+# required for VideoObject schema).
+# Example:
+# featured_videos:
+#   - youtube_id: "abc123"
+#     title: "My Video Title"
+#     description: "What this video covers in 1–2 sentences."
+#     upload_date: "2026-01-15"
 featured_videos: []
 
 # ── Socials ───────────────────────────────────────────────────────────────────
@@ -933,6 +951,7 @@ integrations:
     #     handle: "@janed"
     #     platform: twitter
     #     url: "https://x.com/janed/status/..."
+    #     rating: 5   # optional (1-5, defaults to 5); used in Review JSON-LD schema
 
   # ── Live Code / Demo Embeds ──────────────────────────────────────────────
   # Embed interactive code demos from CodePen, GitHub Gist, StackBlitz, or Replit.

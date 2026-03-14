@@ -3,6 +3,16 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = function (eleventyConfig) {
+  // Generate OG image before each build when seo.og_image_auto: true
+  eleventyConfig.on("eleventy.before", async () => {
+    try {
+      const generateOgImage = require("./scripts/generate-og-image");
+      await generateOgImage();
+    } catch (err) {
+      console.warn("[og-image] Generation failed:", err.message);
+    }
+  });
+
   // Support YAML data files
   eleventyConfig.addDataExtension("yaml", (contents) =>
     yaml.load(contents)
