@@ -3,7 +3,7 @@
  * Build-time OG image generator. Composites a 1200×630 PNG for social sharing cards.
  * Triggered via Eleventy's eleventy.before event when seo.og_image_auto: true.
  *
- * Requires: @napi-rs/canvas (npm install --save-dev @napi-rs/canvas)
+ * Requires: canvas (npm install --save-dev canvas)
  */
 
 "use strict";
@@ -25,46 +25,12 @@ async function generateOgImage() {
 
   if (!site.seo || !site.seo.og_image_auto) return;
 
-  let createCanvas, loadImage, GlobalFonts;
+  let createCanvas, loadImage;
   try {
-    ({ createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas"));
+    ({ createCanvas, loadImage } = require("canvas"));
   } catch {
-    console.warn("[og-image] @napi-rs/canvas not installed — skipping OG image generation.");
+    console.warn("[og-image] canvas not installed — skipping OG image generation.");
     return;
-  }
-
-  // Register fonts explicitly — @napi-rs/canvas does NOT auto-discover fonts.
-  // Try known paths across Ubuntu CI / macOS / Windows, register under one alias.
-  const FONT_FAMILY = "OGSans";
-  const regularCandidates = [
-    "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-    "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
-    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    "/usr/share/fonts/opentype/linux-libertine/LinLibertineR.otf",
-    "/System/Library/Fonts/Helvetica.ttc",
-    "C:\\Windows\\Fonts\\arial.ttf",
-    "C:\\Windows\\Fonts\\segoeui.ttf",
-  ];
-  const boldCandidates = [
-    "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-    "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf",
-    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-    "C:\\Windows\\Fonts\\arialbd.ttf",
-    "C:\\Windows\\Fonts\\segoeuib.ttf",
-  ];
-  for (const fp of regularCandidates) {
-    if (fs.existsSync(fp)) {
-      GlobalFonts.registerFromPath(fp, FONT_FAMILY);
-      console.log(`[og-image] Registered regular font: ${fp}`);
-      break;
-    }
-  }
-  for (const fp of boldCandidates) {
-    if (fs.existsSync(fp)) {
-      GlobalFonts.registerFromPath(fp, FONT_FAMILY);
-      console.log(`[og-image] Registered bold font: ${fp}`);
-      break;
-    }
   }
 
   const canvas = createCanvas(W, H);
@@ -164,7 +130,7 @@ async function generateOgImage() {
   // Name
   const name = site.profile.name || "";
   ctx.fillStyle = "#ffffff";
-  ctx.font = `bold 80px '${FONT_FAMILY}', sans-serif`;
+  ctx.font = "bold 80px sans-serif";
   ctx.textBaseline = "alphabetic";
   ctx.fillText(name, textX, 210, maxW);
 
@@ -172,7 +138,7 @@ async function generateOgImage() {
   const firstRole = site.seo && site.seo.person && site.seo.person.roles && site.seo.person.roles[0];
   if (firstRole) {
     const roleText = `${firstRole.job_title}  ·  ${firstRole.works_for}`;
-    ctx.font = `bold 22px '${FONT_FAMILY}', sans-serif`;
+    ctx.font = "bold 22px sans-serif";
     const pillMetrics = ctx.measureText(roleText);
     const pillW = pillMetrics.width + 36;
     const pillH = 40;
@@ -198,7 +164,7 @@ async function generateOgImage() {
   // Tagline
   const tagline = site.profile.tagline || site.seo.description || "";
   ctx.fillStyle = "rgba(255,255,255,0.78)";
-  ctx.font = `32px '${FONT_FAMILY}', sans-serif`;
+  ctx.font = "32px sans-serif";
   wrapText(ctx, tagline, textX, 328, maxW, 46);
 
   // URL bar at bottom
@@ -206,7 +172,7 @@ async function generateOgImage() {
   ctx.fillStyle = hexAlpha(accent, 0.12);
   ctx.fillRect(0, H - 68, W, 68);
   ctx.fillStyle = accent;
-  ctx.font = `bold 24px '${FONT_FAMILY}', sans-serif`;
+  ctx.font = "bold 24px sans-serif";
   ctx.textBaseline = "middle";
   ctx.fillText("🔗  " + displayUrl, textX, H - 34, maxW);
 
