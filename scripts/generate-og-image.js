@@ -33,8 +33,39 @@ async function generateOgImage() {
     return;
   }
 
-  // Load system fonts so canvas can render text on all platforms (Linux CI, Windows, macOS)
-  GlobalFonts.loadSystemFonts();
+  // Register fonts explicitly — @napi-rs/canvas does NOT auto-discover fonts.
+  // Try known paths across Ubuntu CI / macOS / Windows, register under one alias.
+  const FONT_FAMILY = "OGSans";
+  const regularCandidates = [
+    "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+    "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "/usr/share/fonts/opentype/linux-libertine/LinLibertineR.otf",
+    "/System/Library/Fonts/Helvetica.ttc",
+    "C:\\Windows\\Fonts\\arial.ttf",
+    "C:\\Windows\\Fonts\\segoeui.ttf",
+  ];
+  const boldCandidates = [
+    "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+    "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    "C:\\Windows\\Fonts\\arialbd.ttf",
+    "C:\\Windows\\Fonts\\segoeuib.ttf",
+  ];
+  for (const fp of regularCandidates) {
+    if (fs.existsSync(fp)) {
+      GlobalFonts.registerFromPath(fp, FONT_FAMILY);
+      console.log(`[og-image] Registered regular font: ${fp}`);
+      break;
+    }
+  }
+  for (const fp of boldCandidates) {
+    if (fs.existsSync(fp)) {
+      GlobalFonts.registerFromPath(fp, FONT_FAMILY);
+      console.log(`[og-image] Registered bold font: ${fp}`);
+      break;
+    }
+  }
 
   const canvas = createCanvas(W, H);
   const ctx = canvas.getContext("2d");
@@ -133,7 +164,7 @@ async function generateOgImage() {
   // Name
   const name = site.profile.name || "";
   ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 80px sans-serif";
+  ctx.font = `bold 80px '${FONT_FAMILY}', sans-serif`;
   ctx.textBaseline = "alphabetic";
   ctx.fillText(name, textX, 210, maxW);
 
@@ -141,7 +172,7 @@ async function generateOgImage() {
   const firstRole = site.seo && site.seo.person && site.seo.person.roles && site.seo.person.roles[0];
   if (firstRole) {
     const roleText = `${firstRole.job_title}  ·  ${firstRole.works_for}`;
-    ctx.font = "bold 22px sans-serif";
+    ctx.font = `bold 22px '${FONT_FAMILY}', sans-serif`;
     const pillMetrics = ctx.measureText(roleText);
     const pillW = pillMetrics.width + 36;
     const pillH = 40;
@@ -167,7 +198,7 @@ async function generateOgImage() {
   // Tagline
   const tagline = site.profile.tagline || site.seo.description || "";
   ctx.fillStyle = "rgba(255,255,255,0.78)";
-  ctx.font = "32px sans-serif";
+  ctx.font = `32px '${FONT_FAMILY}', sans-serif`;
   wrapText(ctx, tagline, textX, 328, maxW, 46);
 
   // URL bar at bottom
@@ -175,7 +206,7 @@ async function generateOgImage() {
   ctx.fillStyle = hexAlpha(accent, 0.12);
   ctx.fillRect(0, H - 68, W, 68);
   ctx.fillStyle = accent;
-  ctx.font = "bold 24px sans-serif";
+  ctx.font = `bold 24px '${FONT_FAMILY}', sans-serif`;
   ctx.textBaseline = "middle";
   ctx.fillText("🔗  " + displayUrl, textX, H - 34, maxW);
 
