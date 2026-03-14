@@ -40,8 +40,8 @@ module.exports = async function () {
 
   if (!cfg || !cfg.enabled) return null;
 
-  // Resolve base URL
-  const baseUrl = (cfg.url && cfg.url.trim()) || (site.seo && site.seo.canonical) || "";
+  // Resolve base URL — prefer display_url (friendly public URL) over canonical (infra URL)
+  const baseUrl = (cfg.url && cfg.url.trim()) || (site.seo && (site.seo.display_url || site.seo.canonical)) || "";
   if (!baseUrl) return null;
 
   // Build UTM-appended URL

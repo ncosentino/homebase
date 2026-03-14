@@ -168,7 +168,7 @@ async function generateOgImage() {
   wrapText(ctx, tagline, textX, 328, maxW, 46);
 
   // URL bar at bottom
-  const displayUrl = (site.seo.canonical || "").replace(/^https?:\/\//, "");
+  const displayUrl = ((site.seo.display_url || site.seo.canonical) || "").replace(/^https?:\/\//, "");
   ctx.fillStyle = hexAlpha(accent, 0.12);
   ctx.fillRect(0, H - 68, W, 68);
   ctx.fillStyle = accent;
