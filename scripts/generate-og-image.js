@@ -25,13 +25,16 @@ async function generateOgImage() {
 
   if (!site.seo || !site.seo.og_image_auto) return;
 
-  let createCanvas, loadImage;
+  let createCanvas, loadImage, GlobalFonts;
   try {
-    ({ createCanvas, loadImage } = require("@napi-rs/canvas"));
+    ({ createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas"));
   } catch {
     console.warn("[og-image] @napi-rs/canvas not installed — skipping OG image generation.");
     return;
   }
+
+  // Load system fonts so canvas can render text on all platforms (Linux CI, Windows, macOS)
+  GlobalFonts.loadSystemFonts();
 
   const canvas = createCanvas(W, H);
   const ctx = canvas.getContext("2d");
