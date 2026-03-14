@@ -379,8 +379,13 @@
 {%- endif %}
 
 {# ── LCP preload — banner image (fetched ASAP, before CSS blocks rendering) ── #}
+{# When banner_webp/srcset configured, preloads WebP with imagesrcset for responsive hints ── #}
 {%- if site.profile.banner %}
+{%- if site.profile.banner_webp and site.profile.banner_srcset_webp %}
+<link rel="preload" as="image" href="{{ site.profile.banner_webp }}" imagesrcset="{{ site.profile.banner_srcset_webp }}" imagesizes="100vw" fetchpriority="high" type="image/webp" />
+{%- else %}
 <link rel="preload" as="image" href="{{ site.profile.banner }}" fetchpriority="high" />
+{%- endif %}
 {%- endif %}
 
 {# ── Hero sizing — set CSS vars before first paint to eliminate CLS ─────────── #}

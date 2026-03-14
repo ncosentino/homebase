@@ -12,6 +12,8 @@ profile:
   avatar: "https://github.com/ncosentino.png"
   avatar_url: "https://www.linkedin.com/in/nickcosentino"
   banner: "/assets/thumbnails/banner.jpg"
+  banner_webp: "/assets/thumbnails/banner.webp"
+  banner_srcset_webp: "/assets/thumbnails/banner-480w.webp 480w, /assets/thumbnails/banner-800w.webp 800w, /assets/thumbnails/banner.webp 1125w"
   banner_url: "https://www.devleader.ca"
   tagline: "Simplifying software engineering concepts for you."
   show_tagline: false
