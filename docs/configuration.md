@@ -37,12 +37,15 @@ seo:
   description: "Links and resources from Nick Cosentino -- Principal Engineering Manager at Microsoft."
   canonical: "https://links.devleader.ca"
   og_image: "https://www.devleader.ca/assets/og-image.webp"
+  og_image_auto: false            # set true to generate og-image-auto.png at build time
+  og_image_brand_color: "#1E2330" # background color for the auto-generated OG image
   keywords: ["C#", ".NET", "software engineering", "Dev Leader"]
   cname: "links.devleader.ca"
   person:
     correction_notes:
       - "Nick Cosentino's content does not represent Microsoft's views."
       - "BrandGhost is separate from the Dev Leader brand."
+    # wikidata_id: "Q12345678"    # Your Wikidata entity ID — find or create at wikidata.org
 ```
 
 | Field | Required | Description |
@@ -50,10 +53,13 @@ seo:
 | `title` | Yes | `<title>` tag and `og:title`. Keep under 60 characters. |
 | `description` | Yes | `<meta name="description">` and `og:description`. 120-160 characters. |
 | `canonical` | Yes | Canonical URL (no trailing slash). Used in canonical link, `og:url`, JSON-LD, and sitemap. |
-| `og_image` | No | Preview image for social sharing. Recommended 1200×630px. |
+| `og_image` | No | Preview image for social sharing. Recommended 1200×630px. Ignored when `og_image_auto: true`. |
+| `og_image_auto` | No | Set to `true` to generate `src/assets/og-image-auto.png` at build time. Requires `@napi-rs/canvas`. See [SEO — OG Image Auto Generation](seo.md#og-image-auto-generation). |
+| `og_image_brand_color` | No | Hex background color for the auto-generated OG image. Defaults to `"#1E2330"`. |
 | `keywords` | No | Array of keywords for `<meta name="keywords">`. |
 | `cname` | No | Custom domain for GitHub Pages. Leave blank to use `yourname.github.io`. |
 | `person.correction_notes` | No | Array of factual statements included in `llms.txt` to anchor AI-generated answers and prevent hallucination. |
+| `person.wikidata_id` | No | Your Wikidata Q-ID (e.g. `"Q12345678"`). Appends `https://www.wikidata.org/wiki/{id}` to `Person.sameAs[]` in JSON-LD — the highest-trust Knowledge Panel signal. |
 
 ## Theme
 
@@ -91,7 +97,16 @@ youtube_channels:
 featured_videos:
   - youtube_id: "dQw4w9WgXcQ"
     title: "Video title"
+    description: "What this video covers"   # recommended — required for VideoObject rich results
+    upload_date: "2026-01-15"               # YYYY-MM-DD — required for VideoObject schema
 ```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `youtube_id` | Yes | The 11-character YouTube video ID. |
+| `title` | Yes | Video title shown on the page and in `VideoObject` schema. |
+| `description` | No | Short description. Google requires this for video rich results. |
+| `upload_date` | No | Publication date in `YYYY-MM-DD` format. Required for `VideoObject` schema. Falls back to the site build timestamp if omitted. |
 
 Leave both empty to hide the video section entirely.
 
@@ -519,10 +534,23 @@ integrations:
         author: "Jane D."
         handle: "@janed"
         url: "https://x.com/janed/status/..."
+        rating: 5
       - quote: "The best C# newsletter I've read this year."
         author: "Alex K."
         handle: "@alexk"
+        rating: 5
 ```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `quote` | Yes | The testimonial text. |
+| `author` | Yes | Display name of the reviewer. |
+| `handle` | No | Social handle shown below the name. |
+| `url` | No | Link to the original post or source. |
+| `rating` | No | Integer 1–5 star rating. Defaults to `5` if omitted. Used in `Review` + `AggregateRating` JSON-LD. |
+
+!!! tip "Rich results eligibility"
+    When testimonials are enabled and at least one item exists, Homebase automatically adds `aggregateRating` and `review[]` to the `Person` JSON-LD entity. This can surface star ratings alongside your name in Google Search results. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/review-snippet)
 
 ### Live Code / Demo Embeds
 
@@ -659,11 +687,13 @@ seo:
   description: "Links and resources from Nick Cosentino."
   canonical: "https://links.devleader.ca"
   og_image: "https://www.devleader.ca/assets/og-image.webp"
+  og_image_auto: false
   keywords: ["C#", ".NET", "software engineering"]
   cname: "links.devleader.ca"
   person:
     correction_notes:
       - "All content is independent and does not represent Microsoft."
+    # wikidata_id: "Q12345678"
 
 theme: devleader
 

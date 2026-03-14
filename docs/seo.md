@@ -34,6 +34,24 @@ seo:
 
 Open Graph image URL. Shown as the preview image when shared on social media. Recommended size: 1200×630px.
 
+### `seo.og_image_auto` / `seo.og_image_brand_color`
+
+When `og_image_auto: true`, Homebase generates a 1200×630 PNG at build time and uses it for all `og:image`, `twitter:image`, and JSON-LD image references. The image composites your brand color background, a circular avatar (from `profile.avatar`), your name, tagline, and site URL.
+
+```yaml
+seo:
+  og_image_auto: false            # set true to enable; false by default
+  og_image_brand_color: "#1E2330" # optional background color override
+```
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `og_image_auto` | `false` | Set to `true` to generate `src/assets/og-image-auto.png` before each build. |
+| `og_image_brand_color` | `"#1E2330"` | Hex background color for the generated image. |
+
+!!! note "Requires `@napi-rs/canvas`"
+    The generator uses `@napi-rs/canvas` (a devDependency with prebuilt native bindings). It is triggered by Eleventy's `eleventy.before` event and works in GitHub Actions without extra setup. When auto mode is active, `og:image` dimensions are reported as 1200×630 (PNG).
+
 ### `seo.keywords`
 
 Array of keywords for `<meta name="keywords">`. Not heavily weighted by modern search engines but still included.
@@ -50,6 +68,19 @@ seo:
       - "My SaaS product is separate from my personal brand."
 ```
 
+### `seo.person.wikidata_id`
+
+Your [Wikidata](https://www.wikidata.org) entity ID (e.g. `"Q12345678"`). When set, appends `https://www.wikidata.org/wiki/{wikidata_id}` to the `Person.sameAs[]` array in your JSON-LD.
+
+```yaml
+seo:
+  person:
+    # wikidata_id: "Q12345678"   # Find or create your entity at wikidata.org
+```
+
+!!! tip "Highest-trust Knowledge Panel signal"
+    Wikidata is the primary source Google's Knowledge Graph uses to verify real-world entities. Adding your Wikidata Q-ID is the highest-trust `sameAs` signal for triggering or enriching a Google Knowledge Panel. Most users will not have a Wikidata entry — this field is commented out by default. If you do have one, it is the single highest-value SEO addition you can make here.
+
 ## What Gets Generated
 
 | Tag / File | Source |
@@ -61,14 +92,18 @@ seo:
 | `<link rel="me">` | All entries in `socials` (IndieAuth / Mastodon identity) |
 | `og:title` | `seo.title` |
 | `og:description` | `seo.description` |
-| `og:image` | `seo.og_image` |
+| `og:image` | `seo.og_image` (or auto-generated PNG when `seo.og_image_auto: true`) |
+| `og:image` dimensions | 1200×630 when `seo.og_image_auto: true` |
 | `og:url` | `seo.canonical` |
 | `og:type` | `profile` (hardcoded) |
 | `twitter:card` | `summary_large_image` (hardcoded) |
+| `twitter:image` | Same as `og:image` |
 | Schema.org JSON-LD | `ProfilePage` + `Person` + `ItemList` |
 | `FAQPage` JSON-LD | `integrations.faq.items` (when enabled) |
 | `BreadcrumbList` JSON-LD | Auto-generated for home and shop pages |
 | `Speakable` JSON-LD | Marks profile bio and FAQ answers for voice assistants |
+| `VideoObject` JSON-LD | One per video from `youtube_channels` feed or `featured_videos` |
+| `aggregateRating` + `review[]` on Person | `integrations.testimonials` (when enabled and items exist) |
 | `/sitemap.xml` | `seo.canonical` + all page URLs |
 | `/robots.txt` | Auto-generated (see below) |
 | `/llms.txt` | Auto-generated from `site.yaml` (see below) |
@@ -108,6 +143,44 @@ Marks the profile bio (`.profile-bio`) and FAQ answers (`.integration-faq-answer
 
 !!! note "Speakable is in beta"
     Google's Speakable feature is currently in beta and primarily targets English-language news content. It is included because it is harmless to emit and may benefit future implementations. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/speakable)
+
+### VideoObject
+
+Emitted automatically — one `VideoObject` block per video from your `youtube_channels` live feed or `featured_videos` fallback. Includes all fields required for [Google video rich results](https://developers.google.com/search/docs/appearance/structured-data/video): `name`, `description`, `thumbnailUrl`, `uploadDate`, `contentUrl`, and `embedUrl`.
+
+`thumbnailUrl`, `contentUrl`, and `embedUrl` are auto-derived from the video's `youtube_id`. The `uploadDate` is extracted from the YouTube Atom feed (Option A) or from the `upload_date` field you supply on each `featured_videos` entry (Option B). Falls back to the site build timestamp if neither is available.
+
+See [Configuration — Featured Videos](configuration.md#featured-videos) for the `description` and `upload_date` fields.
+
+### Review + AggregateRating
+
+Emitted automatically when `integrations.testimonials.enabled: true` and at least one testimonial item exists. Adds two things to the `Person` entity:
+
+- `aggregateRating` — `ratingValue: "5"`, `reviewCount: N` (count of testimonial items)
+- `review[]` — one `Review` entry per testimonial, using the `quote`, `author`, and optional `rating` fields
+
+This can surface star ratings alongside your name in Google Search results for personal brand pages. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/review-snippet)
+
+## OG Image Auto Generation
+
+When `seo.og_image_auto: true`, Homebase generates `src/assets/og-image-auto.png` (1200×630) before each build using `scripts/generate-og-image.js`. The image is then used everywhere `og:image`, `twitter:image`, and JSON-LD image references appear — you do not need to set `seo.og_image` separately.
+
+The generated image composites:
+
+- Brand color background (`seo.og_image_brand_color`, default `#1E2330`)
+- Circular avatar from `profile.avatar`
+- Display name from `profile.name`
+- Tagline / bio text
+- Site URL from `seo.canonical`
+
+```yaml
+seo:
+  og_image_auto: false            # set true to enable
+  og_image_brand_color: "#1E2330" # optional background color override
+```
+
+!!! note "Build-time only"
+    The image is regenerated on every build. To preview it locally, run `npm run build` and open `src/assets/og-image-auto.png`. The generator runs as part of Eleventy's `eleventy.before` event, so it is always up to date before pages are rendered.
 
 ## llms.txt (AEO/GEO)
 
