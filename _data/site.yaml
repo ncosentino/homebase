@@ -71,7 +71,7 @@ seo:
   # Requires @napi-rs/canvas installed and scripts/generate-og-image.js.
   # When true, the static og_image above is ignored for meta tags and JSON-LD.
   og_image_auto: true
-  # og_image_brand_color: "#1E2330"  # background color for generated OG image; defaults to #1E2330
+  # og_image_brand_color: "#4B8FDB"  # accent color for generated OG image; defaults to #4B8FDB
   locale: "en-US"
   # Custom domain for GitHub Pages CNAME. Set to your domain (e.g. "links.yoursite.com").
   # Leave blank if using the default youruser.github.io URL (no custom domain).

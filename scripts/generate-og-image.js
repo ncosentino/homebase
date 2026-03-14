@@ -36,40 +36,76 @@ async function generateOgImage() {
   const canvas = createCanvas(W, H);
   const ctx = canvas.getContext("2d");
 
-  // Background
-  const bgColor = site.seo.og_image_brand_color || "#1E2330";
-  ctx.fillStyle = bgColor;
+  const accent = site.seo.og_image_brand_color || "#4B8FDB";
+  const bg = "#0D1117";
+
+  // ── Background ────────────────────────────────────────────────────────────
+  ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Subtle gradient overlay for depth
-  const gradient = ctx.createLinearGradient(0, 0, W, H);
-  gradient.addColorStop(0, "rgba(255,255,255,0.06)");
-  gradient.addColorStop(1, "rgba(0,0,0,0.25)");
-  ctx.fillStyle = gradient;
+  // Subtle radial glow behind avatar area
+  const glowX = 280;
+  const glowGrad = ctx.createRadialGradient(glowX, H / 2, 0, glowX, H / 2, 320);
+  glowGrad.addColorStop(0, hexAlpha(accent, 0.18));
+  glowGrad.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = glowGrad;
   ctx.fillRect(0, 0, W, H);
 
-  // Avatar (circular, left side)
-  const avatarUrl = site.profile.avatar;
-  const avatarSize = 180;
-  const avatarX = 80;
-  const avatarY = (H - avatarSize) / 2;
+  // Dot grid pattern (subtle texture)
+  ctx.fillStyle = "rgba(255,255,255,0.045)";
+  const dot = 1.5;
+  const gap = 32;
+  for (let gy = gap; gy < H; gy += gap) {
+    for (let gx = gap; gx < W; gx += gap) {
+      ctx.beginPath();
+      ctx.arc(gx, gy, dot, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
 
+  // ── Left accent stripe ────────────────────────────────────────────────────
+  ctx.fillStyle = accent;
+  ctx.fillRect(0, 0, 7, H);
+
+  // ── Top + bottom hairlines ────────────────────────────────────────────────
+  ctx.fillStyle = hexAlpha(accent, 0.35);
+  ctx.fillRect(0, 0, W, 2);
+  ctx.fillRect(0, H - 2, W, 2);
+
+  // ── Avatar ────────────────────────────────────────────────────────────────
+  const avatarR = 116;
+  const avatarCX = 260;
+  const avatarCY = H / 2 - 10;
+
+  // Outer glow ring
+  ctx.save();
+  ctx.strokeStyle = hexAlpha(accent, 0.5);
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(avatarCX, avatarCY, avatarR + 10, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+
+  // Avatar image
+  const avatarUrl = (site.profile.avatar || "").split("?")[0];
   if (avatarUrl) {
     try {
       const avatarImg = await loadImage(avatarUrl);
       ctx.save();
       ctx.beginPath();
-      ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
+      ctx.arc(avatarCX, avatarCY, avatarR, 0, Math.PI * 2);
       ctx.clip();
-      ctx.drawImage(avatarImg, avatarX, avatarY, avatarSize, avatarSize);
+      ctx.drawImage(avatarImg,
+        avatarCX - avatarR, avatarCY - avatarR,
+        avatarR * 2, avatarR * 2);
       ctx.restore();
 
-      // Thin white ring around avatar
+      // Bright ring over avatar
       ctx.save();
-      ctx.strokeStyle = "rgba(255,255,255,0.3)";
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2 + 4, 0, Math.PI * 2);
+      ctx.arc(avatarCX, avatarCY, avatarR + 3, 0, Math.PI * 2);
       ctx.stroke();
       ctx.restore();
     } catch (err) {
@@ -77,33 +113,94 @@ async function generateOgImage() {
     }
   }
 
-  const textX = avatarX + avatarSize + 60;
-  const maxTextWidth = W - textX - 60;
+  // ── Vertical divider ──────────────────────────────────────────────────────
+  const divX = 420;
+  const linGrad = ctx.createLinearGradient(divX, 80, divX, H - 80);
+  linGrad.addColorStop(0, "rgba(255,255,255,0)");
+  linGrad.addColorStop(0.3, hexAlpha(accent, 0.4));
+  linGrad.addColorStop(0.7, hexAlpha(accent, 0.4));
+  linGrad.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = linGrad;
+  ctx.fillRect(divX, 0, 1, H);
+
+  // ── Text block ────────────────────────────────────────────────────────────
+  const textX = divX + 52;
+  const maxW = W - textX - 52;
 
   // Name
   const name = site.profile.name || "";
   ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 68px sans-serif";
+  ctx.font = "bold 80px sans-serif";
   ctx.textBaseline = "alphabetic";
-  ctx.fillText(name, textX, H / 2 - 10, maxTextWidth);
+  ctx.fillText(name, textX, 210, maxW);
 
-  // Tagline / description
+  // Role pill (first role from seo.person.roles)
+  const firstRole = site.seo && site.seo.person && site.seo.person.roles && site.seo.person.roles[0];
+  if (firstRole) {
+    const roleText = `${firstRole.job_title}  ·  ${firstRole.works_for}`;
+    ctx.font = "bold 22px sans-serif";
+    const pillMetrics = ctx.measureText(roleText);
+    const pillW = pillMetrics.width + 36;
+    const pillH = 40;
+    const pillX = textX;
+    const pillY = 232;
+
+    // Pill background
+    ctx.fillStyle = hexAlpha(accent, 0.22);
+    roundRect(ctx, pillX, pillY, pillW, pillH, 20);
+    ctx.fill();
+
+    // Pill border
+    ctx.strokeStyle = hexAlpha(accent, 0.6);
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, pillX, pillY, pillW, pillH, 20);
+    ctx.stroke();
+
+    // Pill text
+    ctx.fillStyle = accent;
+    ctx.fillText(roleText, pillX + 18, pillY + 27, maxW - 36);
+  }
+
+  // Tagline
   const tagline = site.profile.tagline || site.seo.description || "";
-  ctx.fillStyle = "rgba(255,255,255,0.72)";
-  ctx.font = "30px sans-serif";
-  wrapText(ctx, tagline, textX, H / 2 + 45, maxTextWidth, 44);
+  ctx.fillStyle = "rgba(255,255,255,0.78)";
+  ctx.font = "32px sans-serif";
+  wrapText(ctx, tagline, textX, 328, maxW, 46);
 
-  // Site URL at bottom-right
+  // URL bar at bottom
   const displayUrl = (site.seo.canonical || "").replace(/^https?:\/\//, "");
-  ctx.fillStyle = "rgba(255,255,255,0.45)";
-  ctx.font = "24px sans-serif";
-  ctx.textBaseline = "alphabetic";
-  ctx.fillText(displayUrl, textX, H - 52, maxTextWidth);
+  ctx.fillStyle = hexAlpha(accent, 0.12);
+  ctx.fillRect(0, H - 68, W, 68);
+  ctx.fillStyle = accent;
+  ctx.font = "bold 24px sans-serif";
+  ctx.textBaseline = "middle";
+  ctx.fillText("🔗  " + displayUrl, textX, H - 34, maxW);
 
   const buf = canvas.toBuffer("image/png");
   fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
   fs.writeFileSync(OUT_PATH, buf);
   console.log(`[og-image] Generated ${W}×${H} → ${OUT_PATH}`);
+}
+
+function hexAlpha(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
 }
 
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
