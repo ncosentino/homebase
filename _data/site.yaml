@@ -730,22 +730,23 @@ integrations:
   # Capture emails and send to your newsletter backend of choice.
   # backend options: formspree | convertkit | web3forms | mailchimp_embed | beehiiv_embed | substack
   newsletter:
-    enabled: false
+    enabled: true
     position: after_profile         # after_profile | after_videos | after_links | bottom
-    heading: "Join the Newsletter"
-    subheading: "Weekly insights. No spam, ever."
+    heading: "Subscribe to Dev Leader Weekly"
+    subheading: "Weekly Software Engineering Insights"
     placeholder: "your@email.com"
-    cta_label: "Subscribe"
-    backend: formspree
+    cta_label: "Subscribe for FREE"
+    backend: web3forms
     formspree_id: ""                # Formspree form ID — sign up at formspree.io (free tier)
     convertkit_form_id: ""          # Kit (ConvertKit) public form ID
-    web3forms_key: ""               # Web3Forms access key — web3forms.com (free tier)
+    web3forms_key: "3b1168c8-b15f-4f56-92d9-80c82c01cefc"
     mailchimp_embed_url: ""         # Mailchimp embedded form action URL
     mailchimp_honey_field: ""       # Mailchimp anti-bot honeypot field name (e.g. b_xxxxxx)
     beehiiv_publication_id: ""      # Beehiiv publication ID (e.g. pub_xxxxx)
     substack_url: ""                # Substack base URL (e.g. https://yourname.substack.com)
-    success_message: "You're in! Check your inbox to confirm."
-    gdpr_note: ""                   # e.g. "No spam. Unsubscribe anytime."
+    redirect_url: "https://weekly.devleader.ca" # redirect here after successful subscribe
+    success_message: "You're in! Taking you to the newsletter…"
+    gdpr_note: "No spam. Unsubscribe anytime."
 
   # ── Social Follow Buttons ────────────────────────────────────────────────
   # Platform-branded follow buttons with optional subscriber counts.

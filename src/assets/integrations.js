@@ -100,12 +100,17 @@
     var successMsg = d.successMsg || "You're subscribed!";
     var gaWidget = d.gaWidget || 'newsletter';
 
+    var redirectUrl = d.redirectUrl || '';
+
     p.then(function (result) {
       // Server may return a custom message; fall back to configured success_message
       var msg = (result && result.message) || successMsg;
       HB.setState(widget, 'success', msg);
       HB.track('newsletter_subscribe', { method: backend, widget: gaWidget });
       if (opts.onSuccess) opts.onSuccess(result || {});
+      if (redirectUrl) {
+        setTimeout(function () { window.location.href = redirectUrl; }, 1500);
+      }
     }).catch(function (err) {
       HB.setState(widget, 'error', 'Something went wrong. Please try again.');
       console.error('[HB newsletter]', err);
