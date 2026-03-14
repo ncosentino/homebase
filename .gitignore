@@ -3,6 +3,9 @@ node_modules/
 .DS_Store
 Thumbs.db
 
+# Build-time generated assets (regenerated on every build)
+src/assets/og-image-auto.png
+
 # Prevent accidentally committing local screenshots or personal config overrides
 screenshot*.png
 screenshot*.jpg
