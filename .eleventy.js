@@ -95,6 +95,15 @@ module.exports = function (eleventyConfig) {
     });
   });
 
+  // md filter — renders inline Markdown to HTML (supports [text](url), **bold**, _italic_,
+  // and bare URL auto-linking). Used for FAQ answers and other user-facing text fields
+  // that benefit from lightweight markup without full block-level Markdown processing.
+  const markdownIt = require("markdown-it")({ html: false, linkify: false, typographer: false });
+  eleventyConfig.addFilter("md", function (content) {
+    if (!content) return "";
+    return markdownIt.renderInline(String(content));
+  });
+
   // shopItems filter — flattens shop.collections[].items[] into a single array with 1-based
   // positions and collection_id. Used to build ItemList JSON-LD on the shop page.
   eleventyConfig.addFilter("shopItems", function (collections) {

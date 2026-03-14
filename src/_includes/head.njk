@@ -393,7 +393,7 @@
 
 {# ── Theme CSS ────────────────────────────────────────────────────────────── #}
 <link rel="stylesheet" href="/assets/base.css" />
-{%- if site.shop and site.shop.enabled and (page.url == '/shop/' or page.url == '/shop') %}
+{%- if site.shop and site.shop.enabled %}
 <link rel="stylesheet" href="/assets/shop.css" />
 {%- endif %}
 <link rel="stylesheet" href="/themes/{{ site.theme }}/theme.css" />
