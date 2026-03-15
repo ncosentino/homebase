@@ -443,10 +443,10 @@
 <script>(function(){var vw=window.innerWidth;var cw=Math.min(680,vw-32);document.documentElement.style.setProperty('--hero-w',vw+'px');document.documentElement.style.setProperty('--hero-ml',(-(vw-cw)/2)+'px');})()</script>
 {%- endif %}
 
-{# ── Theme CSS — inlined to eliminate network round-trip and avoid FOUC ─────── #}
-{# Fonts are NOT @imported in theme.css (would create a blocking chain).        #}
-{# They are async-loaded below via site.font_url with preconnect hints.         #}
-<link rel="stylesheet" href="/assets/base.css" />
+{# ── Base CSS — inlined to eliminate render-blocking network chain ───────────── #}
+{# Theme CSS below is also inlined. Both arrive with the HTML in a single round-  #}
+{# trip; no parser-blocking link elements remain in the critical path.            #}
+<style>{% inlineFile "src/assets/base.css" %}</style>
 {%- if site.shop and site.shop.enabled %}
 {%- if page.url == '/shop/' %}
 {# On /shop/ shop.css is critical for above-fold product grid — load sync #}
