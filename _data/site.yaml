@@ -148,6 +148,22 @@ seo:
     theme_color: "#1a1a2e"
     background_color: "#1a1a2e"
 
+# ── Favicon ───────────────────────────────────────────────────────────────────
+# Build-time favicon generation. Four sizes are written to src/assets/:
+#   favicon.png (512×512), favicon-32x32.png, favicon-16x16.png, apple-touch-icon.png (180×180)
+#
+# mode: "avatar"   — resize profile.avatar (or seo.og_image as fallback)
+# mode: "url"      — download and resize a custom image URL (set favicon.url)
+# mode: "initials" — render a branded circle icon with auto-derived initials
+# mode: "none"     — skip generation entirely (manage favicon files manually)
+favicon:
+  mode: "avatar"
+  # url: "https://example.com/my-logo.png"   # only used when mode: "url"
+  # For mode "initials":
+  # initials: "DL"          # auto-derived from profile.name if omitted
+  # bg_color: "#4B8FDB"     # background color; defaults to og_image_brand_color or #4B8FDB
+  # text_color: "#FFFFFF"   # text color; defaults to white
+
 # ── UTM Tracking ─────────────────────────────────────────────────────────────
 # Page-wide UTM defaults appended to every outbound link.
 # Leave utm_source blank to disable UTM tracking entirely.

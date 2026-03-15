@@ -13,6 +13,16 @@ module.exports = function (eleventyConfig) {
     }
   });
 
+  // Generate favicons before each build when favicon.mode is set
+  eleventyConfig.on("eleventy.before", async () => {
+    try {
+      const generateFavicon = require("./scripts/generate-favicon");
+      await generateFavicon();
+    } catch (err) {
+      console.warn("[favicon] Generation failed:", err.message);
+    }
+  });
+
   // Support YAML data files
   eleventyConfig.addDataExtension("yaml", (contents) =>
     yaml.load(contents)

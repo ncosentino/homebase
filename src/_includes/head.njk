@@ -588,6 +588,10 @@
 </script>
 
 {# ── Favicons ─────────────────────────────────────────────────────────────── #}
-<link rel="icon" type="image/png" href="/assets/favicon.png" />
-<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+{% if site.favicon and site.favicon.mode and site.favicon.mode != "none" %}
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+{% endif %}
 <meta name="theme-color" content="#1E2330" />
