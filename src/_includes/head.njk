@@ -477,10 +477,10 @@
   {%- if _igs[_k] and _igs[_k].enabled %}{%- set _hasWidget = true %}{%- endif %}
 {%- endfor %}
 {%- if _hasWidget %}
-{# Async-load integrations.css — above-fold banner/flip CSS is already in base.css  #}
-{# rel=preload fetches immediately without blocking render; onload applies styles    #}
-<link rel="preload" href="/assets/integrations.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-<noscript><link rel="stylesheet" href="/assets/integrations.css" /></noscript>
+{# Inline integrations.css — async loading caused FOUC and CLS for widgets that    #}
+{# render in the initial HTML (e.g. newsletter). Inlining costs ~4KB but eliminates #}
+{# the layout shift from unstyled-then-styled widget containers.                    #}
+<style>{% inlineFile "src/assets/integrations.css" %}</style>
 <script src="/assets/integrations.js" defer></script>
 {%- endif %}
 
