@@ -792,6 +792,7 @@ body {
 .qr-flip-back {
   position: absolute;
   inset: 0;  /* avoids height:100% percentage resolution race → eliminates CLS */
+  visibility: hidden;  /* CLS: hidden elements excluded from shift measurement; flip JS restores visibility */
   transform: rotateY(180deg);
   background: var(--btn-bg, #fff);
   display: flex;
@@ -801,6 +802,10 @@ body {
   gap: 10px;
   padding: 20px;
   box-shadow: var(--btn-shadow, 0 2px 8px rgba(0,0,0,0.15));
+}
+
+.qr-flip-outer.qr-flipped .qr-flip-back {
+  visibility: visible;
 }
 
 .qr-flip-back .hb-qr-svg svg {
