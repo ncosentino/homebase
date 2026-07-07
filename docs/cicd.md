@@ -1,61 +1,65 @@
 ---
-description: Set up GitHub Actions to build and deploy your Homebase landing page automatically. Includes personal access token setup, custom domain, analytics, and scheduled rebuilds.
+description: Set up Cloudflare Pages to build and deploy your Homebase landing page automatically. Includes API token setup, custom domain, analytics, and scheduled rebuilds.
 ---
 
 # CI/CD Setup
 
-The deploy workflow builds the site and pushes the output to your GitHub Pages repository.
+The deploy workflow builds the site and uploads it directly to Cloudflare Pages using Wrangler.
 
 ## How It Works
 
 1. You push to `main` in your forked `homebase` repo
 2. GitHub Actions runs `.github/workflows/deploy.yml`
-3. It installs deps, builds the site with 11ty, and force-pushes `_site/` to your Pages repo
+3. It installs deps, builds the site with 11ty, and uploads `_site/` to Cloudflare Pages as a production deployment
+4. Every pull request also gets its own live preview deployment, separate from the production URL
 
 ## Setup Steps
 
-### 1. Create a GitHub Personal Access Token
+### 1. Create a Cloudflare Pages project
 
-1. Go to GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens
-2. Click **Generate new token**
-3. Set **Repository access** → Only select repositories → choose your Pages repo (e.g. `yourname/yourname.github.io`)
-4. Under **Permissions → Repository permissions**, set **Contents** to **Read and write**
-5. Generate and copy the token
+This must exist once before the first upload. Either use the dashboard (**Workers & Pages →
+Create → Pages → Connect to Git**, then disconnect Git afterward since deploys come from this
+workflow instead) or run this once from your machine:
 
-### 2. Add the Token as a Secret
-
-1. In your `homebase` fork, go to Settings → Secrets and variables → Actions
-2. Click **New repository secret**
-3. Name: `GH_DEPLOY_TOKEN`
-4. Value: paste the token from step 1
-
-### 3. Update the Workflow
-
-Edit `.github/workflows/deploy.yml` and change `DEPLOY_REPO` at the top to your own Pages repo:
-
-```yaml
-env:
-  DEPLOY_REPO: youruser/youruser.github.io
+```sh
+npx wrangler pages project create your-project-name --production-branch main
 ```
 
-### 4. Configure GitHub Pages
+Then set `name` in `wrangler.toml` to match the project name you chose.
 
-In your Pages repo (e.g. `yourname.github.io`):
+### 2. Create an API Token
 
-- Go to Settings → Pages
-- Set Source: **Deploy from a branch** → `main` → `/ (root)`
+1. Cloudflare dashboard → **My Profile → API Tokens → Create Token → Custom token**
+2. Grant **Account → Cloudflare Pages → Edit**
+3. Copy the token
+
+### 3. Find your Account ID
+
+Cloudflare dashboard → **Workers & Pages** — your account ID is shown in the right-hand sidebar.
+
+### 4. Add Repository Secrets
+
+In your `homebase` fork, go to Settings → Secrets and variables → Actions, and add:
+
+| Secret | Value |
+|--------|-------|
+| `CLOUDFLARE_API_TOKEN` | The token from step 2 |
+| `CLOUDFLARE_ACCOUNT_ID` | The account ID from step 3 |
 
 ### 5. Custom Domain (Optional)
 
-Set `seo.cname` in `_data/site.yaml` to your custom domain:
+Set `seo.cname` in `_data/site.yaml` — this only generates a reference `CNAME` file; the actual
+domain is attached in Cloudflare, not GitHub:
 
 ```yaml
 seo:
   cname: "links.yourdomain.com"
 ```
 
-Leave it blank (or remove the field) to use the default `yourname.github.io` URL.
-Also configure your DNS to point to GitHub Pages (CNAME to `yourname.github.io`).
+Then, in the Cloudflare dashboard: your Pages project → **Custom domains → Set up a custom
+domain**. If the domain's DNS already lives on Cloudflare, the record and free TLS certificate
+are provisioned automatically. Leave `seo.cname` blank to use the default
+`your-project-name.pages.dev` URL.
 
 ### 6. Analytics (Optional)
 
@@ -89,4 +93,10 @@ video at build time.
 
 !!! warning
     GitHub automatically disables scheduled workflows in repos with no activity (pushes, PRs, etc.) for 60 days. If this happens, re-enable it via the Actions tab.
+
+## Limits (Cloudflare free plan)
+
+- Unlimited requests and bandwidth
+- Direct-upload deployments (what this workflow does) do not count toward Cloudflare's monthly build quota
+- 100 custom domains per project; up to 20,000 files per deployment; 25 MiB per file
 

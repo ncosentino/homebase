@@ -1,5 +1,5 @@
 ---
-description: Get your Homebase personal landing page live in under 10 minutes. Fork the repo, edit site.yaml, configure your GitHub Pages deploy token, and push.
+description: Get your Homebase personal landing page live in under 10 minutes. Fork the repo, edit site.yaml, configure Cloudflare Pages, and push.
 ---
 
 # Getting Started
@@ -42,14 +42,13 @@ sections:
 
 See the [Configuration](configuration.md) page for the full reference.
 
-## Step 3 -- Set Up GitHub Pages
+## Step 3 -- Set Up Cloudflare Pages
 
-Homebase pushes the built site to a separate GitHub Pages repository.
+Homebase uploads the built site directly to Cloudflare Pages -- no separate hosting repo needed.
 
-1. **Create your Pages repo** if you don't have one -- it must be named `<youruser>.github.io`
-2. **Create a Personal Access Token** with write access to that repo (see [CI/CD](cicd.md) for exact steps)
-3. **Add `GH_DEPLOY_TOKEN`** as a secret in your homebase fork (Settings → Secrets and variables → Actions)
-4. **Update `DEPLOY_REPO`** in `.github/workflows/deploy.yml` to your Pages repo name
+1. **Create a Cloudflare Pages project** (one-time): `npx wrangler pages project create your-project-name --production-branch main`, then set `name` in `wrangler.toml` to match
+2. **Create an API token** with Cloudflare Pages Edit permission (see [CI/CD](cicd.md) for exact steps)
+3. **Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`** as secrets in your homebase fork (Settings → Secrets and variables → Actions)
 
 ## Step 4 -- Push to main
 
@@ -57,8 +56,8 @@ Commit any change to `_data/site.yaml` and push to `main`. GitHub Actions will:
 
 1. Install dependencies
 2. Build the site with Eleventy
-3. Push `_site/` to your Pages repo
-4. Your site goes live at `https://<youruser>.github.io`
+3. Upload `_site/` to Cloudflare Pages as a production deployment
+4. Your site goes live at `https://your-project-name.pages.dev` (or your custom domain)
 
 ## Custom Domain (Optional)
 

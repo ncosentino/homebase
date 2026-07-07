@@ -77,8 +77,8 @@ seo:
   og_image_auto: true
   # og_image_brand_color: "#4B8FDB"  # accent color for generated OG image; defaults to #4B8FDB
   locale: "en-US"
-  # Custom domain for GitHub Pages CNAME. Set to your domain (e.g. "links.yoursite.com").
-  # Leave blank if using the default youruser.github.io URL (no custom domain).
+  # Custom domain, attached in the Cloudflare Pages dashboard (see docs/cicd.md).
+  # Leave blank if using the default your-project-name.pages.dev URL (no custom domain).
   cname: "github.devleader.ca"
   keywords:
     - software engineering

@@ -25,7 +25,7 @@ A fully config-driven, SEO-optimized linktree-style landing page powered by [Ele
 
 1. **Fork this repo** on GitHub
 2. **Edit `_data/site.yaml`** -- change your profile, links, theme, and SEO fields
-3. **Set up the deploy token** -- see [CI/CD](cicd.md) for instructions
+3. **Set up Cloudflare Pages** -- see [CI/CD](cicd.md) for instructions
 4. **Push to `main`** -- GitHub Actions builds and deploys automatically
 
 That's it. No code changes needed.
@@ -48,7 +48,7 @@ homebase/
 ├── .eleventy.js           ← 11ty configuration
 ├── package.json
 └── .github/workflows/
-    ├── deploy.yml              ← CI/CD (builds + pushes to Pages repo)
+    ├── deploy.yml              ← CI/CD (builds + deploys to Cloudflare Pages)
     └── scheduled-rebuild.yml  ← Periodic rebuild (keeps YouTube feed fresh)
 ```
 

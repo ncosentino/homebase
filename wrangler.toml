@@ -1,0 +1,10 @@
+# Cloudflare Pages project configuration.
+# https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+#
+# `name` is your Cloudflare Pages project name (lowercase letters, numbers, hyphens).
+# It must match a project you've already created, e.g.:
+#   npx wrangler pages project create your-project-name --production-branch main
+# See docs/cicd.md for the full one-time setup.
+name = "homebase"
+pages_build_output_dir = "_site"
+compatibility_date = "2026-07-07"

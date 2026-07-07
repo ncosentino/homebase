@@ -57,7 +57,7 @@ seo:
 | `og_image_auto` | No | Set to `true` to generate `src/assets/og-image-auto.png` at build time. Requires `@napi-rs/canvas`. See [SEO — OG Image Auto Generation](seo.md#og-image-auto-generation). |
 | `og_image_brand_color` | No | Hex background color for the auto-generated OG image. Defaults to `"#1E2330"`. |
 | `keywords` | No | Array of keywords for `<meta name="keywords">`. |
-| `cname` | No | Custom domain for GitHub Pages. Leave blank to use `yourname.github.io`. |
+| `cname` | No | Custom domain, attached in the Cloudflare Pages dashboard (see [CI/CD](cicd.md)). Leave blank to use `your-project-name.pages.dev`. |
 | `person.correction_notes` | No | Array of factual statements included in `llms.txt` to anchor AI-generated answers and prevent hallucination. |
 | `person.wikidata_id` | No | Your Wikidata Q-ID (e.g. `"Q12345678"`). Appends `https://www.wikidata.org/wiki/{id}` to `Person.sameAs[]` in JSON-LD — the highest-trust Knowledge Panel signal. |
 

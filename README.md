@@ -13,13 +13,13 @@ A fully config-driven, SEO-optimized, linktree-style landing page powered by [El
 - 🤖 **AEO/GEO-optimized** — `llms.txt` for AI answer engines (Perplexity, ChatGPT Browse, etc.)
 - 🎬 **YouTube embed** — lite-youtube thumbnail → iframe (zero perf cost until clicked)
 - 📄 **sitemap.xml + robots.txt** — auto-generated from config
-- 🔒 **No secrets in repo** — deploy token is a GitHub Actions secret only
+- 🔒 **No secrets in repo** — Cloudflare credentials live in GitHub Actions secrets only
 
 ## 🚀 Quick Start (Fork & Customize)
 
 1. **Fork this repo** on GitHub
 2. **Edit `_data/site.yaml`** — change the profile, links, theme, and SEO fields to your own
-3. **Set up the deploy token** — see [docs/cicd.md](docs/cicd.md)
+3. **Set up Cloudflare Pages** — see [docs/cicd.md](docs/cicd.md)
 4. **Push to `main`** — GitHub Actions builds and deploys automatically
 
 That's it. No code changes needed.
@@ -43,7 +43,7 @@ homebase/
 ├── .eleventy.js           ← 11ty configuration
 ├── package.json
 └── .github/workflows/
-    ├── deploy.yml              ← CI/CD (builds + pushes to Pages repo; manual trigger also builds docs)
+    ├── deploy.yml              ← CI/CD (builds + deploys to Cloudflare Pages; manual trigger also builds docs)
     └── scheduled-rebuild.yml  ← periodic rebuild (keeps YouTube feed fresh)
 ```
 
@@ -133,7 +133,7 @@ npm run build   # production build to _site/
 
 See [docs/cicd.md](docs/cicd.md) for full setup instructions.
 
-The workflow in `.github/workflows/deploy.yml` builds the site and force-pushes `_site/` to your GitHub Pages repo on every push to `main`.
+The workflow in `.github/workflows/deploy.yml` builds the site and uploads `_site/` to Cloudflare Pages via Wrangler on every push to `main`.
 
 A second `docs` job in the same workflow builds and publishes the MkDocs documentation site. It runs on **push to main and manual dispatch**, but is skipped on the scheduled cron rebuild to avoid unnecessary doc regeneration.
 
