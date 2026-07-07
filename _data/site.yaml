@@ -65,11 +65,7 @@ profile:
 seo:
   title: "Dev Leader | @devleader"
   description: "Principal Software Engineering Manager at Microsoft. Content creator, educator, and software engineering enthusiast."
-  canonical: "https://github.devleader.ca"
-  # display_url: URL shown to users in the OG image, QR code, and other visible contexts.
-  # Keep canonical above as the technical/infra URL (used for canonical tags, JSON-LD, sitemap).
-  # Set display_url to the friendly public-facing URL if they differ.
-  display_url: "https://links.devleader.ca"
+  canonical: "https://links.devleader.ca"
   og_image: "https://github.com/ncosentino.png"
   # Set og_image_auto: true to use a build-time generated OG image (1200×630 PNG).
   # Requires @napi-rs/canvas installed and scripts/generate-og-image.js.
@@ -79,7 +75,7 @@ seo:
   locale: "en-US"
   # Custom domain, attached in the Cloudflare Pages dashboard (see docs/cicd.md).
   # Leave blank if using the default your-project-name.pages.dev URL (no custom domain).
-  cname: "github.devleader.ca"
+  cname: "links.devleader.ca"
   keywords:
     - software engineering
     - dotnet
