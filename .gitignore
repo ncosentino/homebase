@@ -17,4 +17,5 @@ screenshot*.jpg
 
 # MkDocs build output
 site/
+.wrangler/
 __pycache__/
