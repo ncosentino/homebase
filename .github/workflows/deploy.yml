@@ -104,7 +104,7 @@ jobs:
     # anyway) or the scheduled-rebuild workflow (a separate file entirely).
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -122,14 +122,6 @@ jobs:
 
       - name: Build documentation
         run: python -m mkdocs build
-
-      - name: Deploy documentation (GitHub Pages)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
-          keep_files: true
 
       - name: Deploy documentation (Cloudflare Pages)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
