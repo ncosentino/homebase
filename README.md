@@ -2,7 +2,7 @@
 
 A fully config-driven, SEO-optimized, linktree-style landing page powered by [Eleventy (11ty)](https://www.11ty.dev/).
 
-**[Live demo →](https://github.devleader.ca)**
+**[Live demo →](https://links.devleader.ca)**
 
 ## ✨ Features
 

@@ -46,9 +46,9 @@ def on_post_build(config) -> None:
     def _page_line(url: str) -> str:
         url_clean = url.strip('/')
         if url_clean:
-            full_url = f'{site_url}/{url_clean}/'
+            full_url = f'{site_url}/{url_clean}'
         else:
-            full_url = f'{site_url}/'
+            full_url = site_url
         title, desc = _PAGE_DESCRIPTIONS.get(url, (url, ''))
         if desc:
             return f'- [{title}]({full_url}) -- {desc}\n'
