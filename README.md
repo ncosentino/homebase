@@ -4,9 +4,12 @@
 
 # homebase
 
-A fully config-driven, SEO-optimized, linktree-style landing page powered by [Eleventy (11ty)](https://www.11ty.dev/).
+A fully config-driven, SEO-optimized, linktree-style landing page template powered by [Eleventy (11ty)](https://www.11ty.dev/).
 
-**[Live demo →](https://links.devleader.ca)**
+**[Use this template →](https://github.com/ncosentino/homebase/generate) · [Live demo →](https://links.devleader.ca) · [Documentation →](https://www.devleader.ca/projects/homebase/)**
+
+> [!NOTE]
+> This repository is both the reusable template and the configuration that powers the live demo. `_data/site.yaml` intentionally contains a complete working example; replace its profile, links, and integrations with your own.
 
 ## ✨ Features
 
@@ -19,11 +22,11 @@ A fully config-driven, SEO-optimized, linktree-style landing page powered by [El
 - 📄 **sitemap.xml + robots.txt** — auto-generated from config
 - 🔒 **No secrets in repo** — Cloudflare credentials live in GitHub Actions secrets only
 
-## 🚀 Quick Start (Fork & Customize)
+## 🚀 Quick Start
 
-1. **Fork this repo** on GitHub
+1. **[Create a repository from this template](https://github.com/ncosentino/homebase/generate)**
 2. **Edit `_data/site.yaml`** — change the profile, links, theme, and SEO fields to your own
-3. **Set up Cloudflare Pages** — see [docs/cicd.md](docs/cicd.md)
+3. **Set up Cloudflare Pages and enable deployment** — see [docs/cicd.md](docs/cicd.md)
 4. **Push to `main`** — GitHub Actions builds and deploys automatically
 
 That's it. No code changes needed.
@@ -39,7 +42,7 @@ homebase/
 │   ├── llms.txt.njk       ← AI/LLM crawler file
 │   ├── robots.txt.njk     ← search engine crawler file
 │   ├── sitemap.xml.njk    ← sitemap
-│   ├── CNAME              ← custom domain (edit or delete)
+│   ├── CNAME.njk          ← custom domain output generated from site.yaml
 │   ├── _includes/         ← Nunjucks partials
 │   ├── assets/            ← base CSS + lite-youtube.js
 │   ├── themes/            ← theme CSS files
@@ -137,12 +140,16 @@ npm run build   # production build to _site/
 
 See [docs/cicd.md](docs/cicd.md) for full setup instructions.
 
-The workflow in `.github/workflows/deploy.yml` builds the site and uploads `_site/` to Cloudflare Pages via Wrangler on every push to `main`.
+The workflow in `.github/workflows/deploy.yml` builds the site on pushes and pull requests. Cloudflare deployment is enabled by setting the `HOMEBASE_DEPLOY_ENABLED` repository variable to `true`.
 
-A second `docs` job in the same workflow builds and publishes the MkDocs documentation site. It runs on **push to main and manual dispatch**, but is skipped on the scheduled cron rebuild to avoid unnecessary doc regeneration.
+A second `docs` job builds the MkDocs documentation site. It publishes only when `HOMEBASE_DOCS_PROJECT_NAME` is configured, which keeps documentation deployment disabled in repositories generated from this template.
 
 ## 📖 Documentation
 
 - [docs/themes.md](docs/themes.md) — using and creating themes
 - [docs/cicd.md](docs/cicd.md) — deploy token setup and workflow configuration
 - [docs/seo.md](docs/seo.md) — SEO fields reference and best practices
+
+## 📄 License
+
+Homebase is available under the [MIT License](LICENSE).

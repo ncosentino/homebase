@@ -1,7 +1,9 @@
 {
   "name": "homebase",
   "version": "1.0.0",
-  "description": "Config-driven, SEO-optimized linktree-style landing page powered by Eleventy.",
+  "private": true,
+  "description": "Config-driven, SEO-optimized personal landing page template powered by Eleventy.",
+  "license": "MIT",
   "scripts": {
     "build": "eleventy --input=src --output=_site",
     "start": "eleventy --input=src --output=_site --serve",

@@ -1,18 +1,22 @@
 ---
-description: Get your Homebase personal landing page live in under 10 minutes. Fork the repo, edit site.yaml, configure Cloudflare Pages, and push.
+description: Get your Homebase personal landing page live in under 10 minutes. Use the template, edit site.yaml, configure Cloudflare Pages, and push.
 ---
 
 # Getting Started
 
 Get your personal landing page live in under 10 minutes.
 
-## Step 1 -- Fork the Repository
+## Step 1 -- Create a Repository from the Template
 
 1. Go to [https://github.com/ncosentino/homebase](https://github.com/ncosentino/homebase)
-2. Click **Fork** in the top-right corner
-3. Choose your GitHub account as the destination
+2. Click **Use this template**, then **Create a new repository**
+3. Choose an owner, repository name, and visibility
+4. Click **Create repository**
 
-You now own a copy of the repo. All changes go in your fork.
+You now own an independent repository with Homebase's files and a new commit history. Changes made to the Homebase template later are not applied to your repository automatically.
+
+!!! note "Working example"
+    The template also powers the Homebase live demo, so `_data/site.yaml` initially contains the complete Dev Leader configuration. Replace the profile, links, and integrations with your own rather than treating those values as defaults.
 
 ## Step 2 -- Edit site.yaml
 
@@ -48,7 +52,8 @@ Homebase uploads the built site directly to Cloudflare Pages -- no separate host
 
 1. **Create a Cloudflare Pages project** (one-time): `npx wrangler pages project create your-project-name --production-branch main`, then set `name` in `wrangler.toml` to match
 2. **Create an API token** with Cloudflare Pages Edit permission (see [CI/CD](cicd.md) for exact steps)
-3. **Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`** as secrets in your homebase fork (Settings → Secrets and variables → Actions)
+3. **Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`** as repository secrets (Settings → Secrets and variables → Actions)
+4. **Add `HOMEBASE_DEPLOY_ENABLED` with value `true`** as a repository variable
 
 ## Step 4 -- Push to main
 
