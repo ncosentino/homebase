@@ -4,14 +4,15 @@ description: Set up Cloudflare Pages to build and deploy your Homebase landing p
 
 # CI/CD Setup
 
-The deploy workflow builds the site and uploads it directly to Cloudflare Pages using Wrangler.
+The deploy workflow builds the site and, when deployment is enabled, uploads it directly to Cloudflare Pages using Wrangler.
 
 ## How It Works
 
-1. You push to `main` in your forked `homebase` repo
+1. You push to `main` in your repository generated from the Homebase template
 2. GitHub Actions runs `.github/workflows/deploy.yml`
-3. It installs deps, builds the site with 11ty, and uploads `_site/` to Cloudflare Pages as a production deployment
-4. Every pull request also gets its own live preview deployment, separate from the production URL
+3. It installs dependencies and builds the site with Eleventy
+4. When `HOMEBASE_DEPLOY_ENABLED` is `true`, it uploads `_site/` to Cloudflare Pages
+5. Same-repository pull requests receive separate preview deployments when deployment is enabled
 
 ## Setup Steps
 
@@ -39,14 +40,26 @@ Cloudflare dashboard → **Workers & Pages** — your account ID is shown in the
 
 ### 4. Add Repository Secrets
 
-In your `homebase` fork, go to Settings → Secrets and variables → Actions, and add:
+In your generated repository, go to **Settings → Secrets and variables → Actions**, and add:
 
 | Secret | Value |
 |--------|-------|
 | `CLOUDFLARE_API_TOKEN` | The token from step 2 |
 | `CLOUDFLARE_ACCOUNT_ID` | The account ID from step 3 |
 
-### 5. Custom Domain (Optional)
+Repository secrets and variables are not copied from the Homebase template, so each generated repository must configure its own deployment credentials.
+
+### 5. Enable Deployment
+
+Under **Settings → Secrets and variables → Actions → Variables**, add:
+
+| Variable | Value |
+|----------|-------|
+| `HOMEBASE_DEPLOY_ENABLED` | `true` |
+
+Without this variable, pushes and pull requests still build successfully, but Cloudflare deployment steps are skipped and the scheduled rebuild job does not run.
+
+### 6. Custom Domain (Optional)
 
 Set `seo.cname` in `_data/site.yaml` — this only generates a reference `CNAME` file; the actual
 domain is attached in Cloudflare, not GitHub:
@@ -61,11 +74,11 @@ domain**. If the domain's DNS already lives on Cloudflare, the record and free T
 are provisioned automatically. Leave `seo.cname` blank to use the default
 `your-project-name.pages.dev` URL.
 
-### 6. Analytics (Optional)
+### 7. Analytics (Optional)
 
 To enable Google Analytics 4:
 
-1. In your `homebase` fork, go to Settings → Secrets and variables → Actions
+1. In your generated repository, go to **Settings → Secrets and variables → Actions**
 2. Add a secret named `GOOGLE_ANALYTICS_ID` with your `G-XXXXXXXXXX` measurement ID
 
 !!! note
@@ -75,11 +88,15 @@ To enable Google Analytics 4:
 
 You can trigger a deploy without pushing by going to **Actions → Build and Deploy → Run workflow**.
 
+## Documentation Deployment
+
+The workflow always builds the bundled Homebase documentation, but it only publishes that site when the `HOMEBASE_DOCS_PROJECT_NAME` repository variable contains a Cloudflare Pages project name. Generated repositories should normally leave this variable unset.
+
 ## Scheduled Rebuilds
 
-`scheduled-rebuild.yml` automatically rebuilds the site daily at 8am UTC. This keeps
-time-sensitive content fresh -- notably the YouTube channel feed, which fetches the latest
-video at build time.
+When deployment is enabled, `scheduled-rebuild.yml` automatically rebuilds the site daily at
+8am UTC. This keeps time-sensitive content fresh -- notably the YouTube channel feed, which
+fetches the latest video at build time.
 
 **To change the frequency**, edit the `cron` expression in `.github/workflows/scheduled-rebuild.yml`:
 
@@ -99,4 +116,3 @@ video at build time.
 - Unlimited requests and bandwidth
 - Direct-upload deployments (what this workflow does) do not count toward Cloudflare's monthly build quota
 - 100 custom domains per project; up to 20,000 files per deployment; 25 MiB per file
-

@@ -1,6 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # homebase — site configuration
-# Fork this repo and edit THIS file to personalize your landing page.
+# Create a repository from this template and edit THIS file to personalize your landing page.
 # No code changes needed.
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -462,7 +462,7 @@ sections:
       - title: "Homebase"
         url: "https://www.devleader.ca/projects/homebase"
         github_url: "https://github.com/ncosentino/homebase"
-        description: "A config-driven, self-hosted Linktree alternative built with Eleventy. Fork it, edit one YAML file, and deploy your own landing page to Cloudflare Pages with full SEO, JSON-LD structured data, PWA manifest, UTM tracking, and auto-fetched social stats."
+        description: "A config-driven, self-hosted Linktree alternative built with Eleventy. Use the template, edit one YAML file, and deploy your own landing page to Cloudflare Pages with full SEO, JSON-LD structured data, PWA manifest, UTM tracking, and auto-fetched social stats."
 
 # ── Shop ─────────────────────────────────────────────────────────────────────
 # Optional storefront tab. Set enabled: true to activate.
@@ -733,7 +733,7 @@ shop:
 
 # ── Integrations ─────────────────────────────────────────────────────────────
 # Each integration is enabled independently. All are opt-in (disabled by default
-# in a fresh fork). Configure the ones you want and set enabled: true.
+# in a repository generated from the template). Configure the ones you want and set enabled: true.
 integrations:
   faq:
     enabled: true

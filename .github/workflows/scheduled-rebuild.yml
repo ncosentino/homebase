@@ -3,7 +3,8 @@ name: Scheduled Rebuild
 # Rebuilds the site on a schedule so time-sensitive content (e.g. latest YouTube
 # videos fetched via RSS at build time) stays fresh without a manual push.
 #
-# ── FORK CONFIGURATION ────────────────────────────────────────────────────────
+# ── TEMPLATE CONFIGURATION ────────────────────────────────────────────────────
+# Set HOMEBASE_DEPLOY_ENABLED=true as a repository variable to enable this job.
 # Change the cron expression to your preferred rebuild frequency.
 # Standard intervals:
 #   '0 */6 * * *'   — every 6 hours
@@ -22,6 +23,7 @@ on:
 
 jobs:
   build-and-deploy:
+    if: vars.HOMEBASE_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
 
     steps:

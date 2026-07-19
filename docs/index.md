@@ -1,5 +1,5 @@
 ---
-description: Config-driven Eleventy template for your personal landing page. Fork it, edit one YAML file to set your profile, links, and theme -- GitHub Actions handles the rest.
+description: Config-driven Eleventy template for your personal landing page. Create a repository from the template, edit one YAML file, and deploy with GitHub Actions.
 ---
 
 <p align="center">
@@ -8,9 +8,12 @@ description: Config-driven Eleventy template for your personal landing page. For
 
 # Homebase
 
-A fully config-driven, SEO-optimized linktree-style landing page powered by [Eleventy (11ty)](https://www.11ty.dev/). Fork it, edit one YAML file, and have a personal landing page deployed automatically via GitHub Actions.
+A fully config-driven, SEO-optimized linktree-style landing page template powered by [Eleventy (11ty)](https://www.11ty.dev/). Create a repository from the template, edit one YAML file, and deploy a personal landing page with GitHub Actions.
 
-**[Live demo →](https://links.devleader.ca)**
+**[Use this template →](https://github.com/ncosentino/homebase/generate) · [Live demo →](https://links.devleader.ca)**
+
+!!! note "Template and live example"
+    This repository also powers the live demo. `_data/site.yaml` contains a complete Dev Leader configuration as a working example; replace its profile, links, and integrations with your own.
 
 ## Features
 
@@ -27,9 +30,9 @@ A fully config-driven, SEO-optimized linktree-style landing page powered by [Ele
 
 ## Quick Start
 
-1. **Fork this repo** on GitHub
+1. **[Create a repository from this template](https://github.com/ncosentino/homebase/generate)**
 2. **Edit `_data/site.yaml`** -- change your profile, links, theme, and SEO fields
-3. **Set up Cloudflare Pages** -- see [CI/CD](cicd.md) for instructions
+3. **Set up Cloudflare Pages and enable deployment** -- see [CI/CD](cicd.md) for instructions
 4. **Push to `main`** -- GitHub Actions builds and deploys automatically
 
 That's it. No code changes needed.

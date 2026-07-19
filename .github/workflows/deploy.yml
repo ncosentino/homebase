@@ -7,10 +7,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# ── FORK CONFIGURATION ────────────────────────────────────────────────────────
+# ── TEMPLATE CONFIGURATION ────────────────────────────────────────────────────
 # Deploys to Cloudflare Pages via Wrangler direct upload (see docs/cicd.md).
 # Add CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, and GOOGLE_ANALYTICS_ID as repo
-# secrets, and set `name` in wrangler.toml to your own Cloudflare Pages project.
+# secrets, set `name` in wrangler.toml, and set HOMEBASE_DEPLOY_ENABLED=true as
+# a repository variable.
 # ──────────────────────────────────────────────────────────────────────────────
 
 concurrency:
@@ -48,6 +49,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to Cloudflare Pages (production)
+        if: vars.HOMEBASE_DEPLOY_ENABLED == 'true'
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -85,9 +87,11 @@ jobs:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
         run: npm run build
 
-      # Previews publish ungated to a per-PR URL. gitHubToken lets Wrangler attach
-      # the preview URL to the pull request.
+      # gitHubToken lets Wrangler attach the preview URL to the pull request.
       - name: Deploy to Cloudflare Pages (preview)
+        if: >-
+          vars.HOMEBASE_DEPLOY_ENABLED == 'true' &&
+          github.event.pull_request.head.repo.full_name == github.repository
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -100,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [production]
     # Pull requests build docs independently because production is intentionally
-    # skipped there. Main/manual docs wait for the landing-page deploy to pass.
+    # skipped there. Main/manual docs wait for the production build job to pass.
     if: >-
       always() &&
       (github.event_name == 'pull_request' || needs.production.result == 'success')
@@ -131,9 +135,12 @@ jobs:
           test "$(grep -Fxc '  X-Robots-Tag: noindex' site/_headers)" -eq 2
 
       - name: Deploy documentation (Cloudflare Pages)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: >-
+          github.ref == 'refs/heads/main' &&
+          github.event_name == 'push' &&
+          vars.HOMEBASE_DOCS_PROJECT_NAME != ''
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy site --project-name=homebase-docs --branch=main
+          command: pages deploy site --project-name=${{ vars.HOMEBASE_DOCS_PROJECT_NAME }} --branch=main

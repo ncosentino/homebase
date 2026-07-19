@@ -1,6 +1,6 @@
 site_name: Homebase
 site_url: https://www.devleader.ca/projects/homebase
-site_description: Config-driven Eleventy template for your personal landing page. Fork it, edit a single YAML file to set your profile, links, and theme -- GitHub Actions handles the rest.
+site_description: Config-driven Eleventy template for your personal landing page. Create a repository from the template, edit one YAML file, and deploy with GitHub Actions.
 repo_url: https://github.com/ncosentino/homebase
 repo_name: ncosentino/homebase
 strict: true
