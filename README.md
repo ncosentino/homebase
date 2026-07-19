@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/homebase-logo.png" alt="Homebase logo" width="320">
+</p>
+
 # homebase
 
 A fully config-driven, SEO-optimized, linktree-style landing page powered by [Eleventy (11ty)](https://www.11ty.dev/).
