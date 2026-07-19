@@ -2,6 +2,10 @@
 description: Config-driven Eleventy template for your personal landing page. Fork it, edit one YAML file to set your profile, links, and theme -- GitHub Actions handles the rest.
 ---
 
+<p align="center">
+  <img src="assets/homebase-logo.png" alt="Homebase logo" width="320">
+</p>
+
 # Homebase
 
 A fully config-driven, SEO-optimized linktree-style landing page powered by [Eleventy (11ty)](https://www.11ty.dev/). Fork it, edit one YAML file, and have a personal landing page deployed automatically via GitHub Actions.

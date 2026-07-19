@@ -8,6 +8,7 @@ strict: true
 theme:
   name: material
   custom_dir: docs/overrides
+  logo: assets/homebase-logo.png
   favicon: assets/favicon.png
   features:
     - navigation.tabs
