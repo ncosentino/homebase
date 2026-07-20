@@ -10,7 +10,7 @@ Homebase supports an optional **Shop tab** that adds a configurable storefront a
 - Configurable collections of cards (courses, services, ebooks, merch, etc.)
 - SEO-optimized structured data (`Product`, `Course`, `Service` JSON-LD + `ItemList`)
 - Full GA4 analytics: click events **and** impression tracking via `IntersectionObserver`
-- Sitemap and `llms.txt` entries so search engines and AI crawlers discover it
+- Sitemap and `llms.txt` entries for canonical discovery and optional machine-readable consumption
 
 The shop is **disabled by default** — existing Homebase sites are unaffected until you opt in.
 
@@ -91,8 +91,9 @@ shop:
 ## Item Types and JSON-LD
 
 The `type` field on each item drives which structured-data entity is emitted.
-The entities preserve the meaning of visible offerings independently from any
-consumer-specific presentation.
+This preserves the meaning of courses, services, books, and products for
+Schema.org-compatible consumers. Search presentation depends on each
+consumer's current feature support and page requirements.
 
 | `type` value | JSON-LD `@type` | Consumer-specific status |
 |---|---|---|

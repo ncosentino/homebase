@@ -7,6 +7,7 @@
 const fs   = require("fs");
 const path = require("path");
 const yaml = require("js-yaml");
+const { buildTrackedUrl } = require("../scripts/url-builder");
 
 async function buildQrSvg(url, opts = {}) {
   const QRCode = require("qrcode");
@@ -49,12 +50,11 @@ module.exports = async function () {
   const src   = (cfg.utm_source   && cfg.utm_source.trim())   || utm.source   || "";
   const med   = (cfg.utm_medium   && cfg.utm_medium.trim())   || "qr";
   const camp  = (cfg.utm_campaign && cfg.utm_campaign.trim()) || utm.campaign || "";
-  let qrUrl   = baseUrl;
-  if (src) {
-    const sep = qrUrl.includes("?") ? "&" : "?";
-    qrUrl += `${sep}utm_source=${encodeURIComponent(src)}&utm_medium=${encodeURIComponent(med)}`;
-    if (camp) qrUrl += `&utm_campaign=${encodeURIComponent(camp)}`;
-  }
+  const qrUrl = buildTrackedUrl(
+    baseUrl,
+    { source: utm.source, medium: "qr", campaign: utm.campaign },
+    { source: src, medium: med, campaign: camp }
+  );
 
   const opts = {
     size:                 cfg.size             || 200,

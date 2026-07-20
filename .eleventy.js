@@ -7,6 +7,10 @@ const {
   flattenShopItems,
   serializeJsonLd,
 } = require("./scripts/structured-data");
+const {
+  addTrackingToHtml,
+  buildTrackedUrl,
+} = require("./scripts/url-builder");
 
 module.exports = function (eleventyConfig) {
   // Generate OG image before each build when seo.og_image_auto: true
@@ -74,6 +78,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("shopItems", flattenShopItems);
   eleventyConfig.addFilter("structuredData", buildStructuredData);
   eleventyConfig.addFilter("serializeJsonLd", serializeJsonLd);
+  eleventyConfig.addFilter("trackedUrl", buildTrackedUrl);
 
   // jsonEscape filter — escapes a string for safe embedding inside a JSON string literal.
   // Does NOT add surrounding quotes.
@@ -87,23 +92,7 @@ module.exports = function (eleventyConfig) {
       .replace(/\t/g, "\\t");
   });
 
-  // addUTM filter — appends UTM params to every href in an HTML string.
-  // Skips hrefs that already contain utm_source, and skips #anchors/mailto/tel.
-  // Idempotent: safe to call on bio content that already has baked-in UTM params.
-  eleventyConfig.addFilter("addUTM", function (content, utmConfig) {
-    if (!content || !utmConfig || !utmConfig.source) return content || "";
-    return String(content).replace(/href=(["'])([^"']+)\1/gi, function (match, q, url) {
-      if (!url || url.startsWith("#") || url.startsWith("mailto:") || url.startsWith("tel:")) return match;
-      if (url.includes("utm_source=")) return match;
-      const sep = url.includes("?") ? "&" : "?";
-      let qs = "utm_source=" + utmConfig.source;
-      if (utmConfig.medium)   qs += "&utm_medium="   + utmConfig.medium;
-      if (utmConfig.campaign) qs += "&utm_campaign=" + utmConfig.campaign;
-      if (utmConfig.content)  qs += "&utm_content="  + utmConfig.content;
-      if (utmConfig.term)     qs += "&utm_term="     + utmConfig.term;
-      return "href=" + q + url + sep + qs + q;
-    });
-  });
+  eleventyConfig.addFilter("addUTM", addTrackingToHtml);
 
   // md filter — renders inline Markdown to HTML (supports [text](url), **bold**, _italic_,
   // and bare URL auto-linking). Used for FAQ answers and other user-facing text fields

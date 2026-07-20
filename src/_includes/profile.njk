@@ -1,25 +1,4 @@
 <div class="profile">
-  {# ── UTM helpers for profile links ── #}
-  {%- set _utm = site.utm if site.utm else {} -%}
-  {%- set _utmSource   = _utm.source -%}
-  {%- set _utmMedium   = _utm.medium -%}
-  {%- set _utmCampaign = _utm.campaign -%}
-  {%- set _utmContent  = _utm.content -%}
-  {%- set _utmTerm     = _utm.term -%}
-
-  {%- macro utmHref(url) -%}
-    {%- if _utmSource and url -%}
-      {%- set _sep = "?" if "?" not in url else "&" -%}
-      {{- url + _sep + "utm_source=" + _utmSource
-        + ("&utm_medium="   + _utmMedium   if _utmMedium)
-        + ("&utm_campaign=" + _utmCampaign if _utmCampaign)
-        + ("&utm_content="  + _utmContent  if _utmContent)
-        + ("&utm_term="     + _utmTerm     if _utmTerm) -}}
-    {%- else -%}
-      {{- url -}}
-    {%- endif -%}
-  {%- endmacro -%}
-
   {%- set _qrCfg = site.integrations.qr_code if site.integrations else null %}
   {%- set _qrDisplay = (_qrCfg.display or "widget") if (_qrCfg and _qrCfg.enabled and qrCode and qrCode.svg) else "widget" %}
   {%- set _qrHasBanner = true if site.profile.banner else false %}
@@ -63,7 +42,7 @@
       </div>
     </div>
     <div class="avatar-over-banner">
-      {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+      {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
       <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
       {% if site.profile.avatar_url %}</a>{% endif %}
     </div>
@@ -74,12 +53,12 @@
   <div class="qr-sidebyside-row">
     <div class="qr-sidebyside-banner{% if _bannerFade %} banner-fade{% endif %}">
       <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}{% if _bannerHero %} banner-hero{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}{% if _bannerHero %} style="--banner-aspect:{{ _bannerAspect }};--banner-obj-pos:{{ _bannerObjPos }}"{% endif %}>
-        {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
+        {% if site.profile.banner_url %}<a href="{{ site.profile.banner_url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
         {{ bannerImg() }}
         {% if site.profile.banner_url %}</a>{% endif %}
       </div>
       <div class="avatar-over-banner">
-        {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+        {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
         <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
         {% if site.profile.avatar_url %}</a>{% endif %}
       </div>
@@ -108,13 +87,13 @@
   {%- set _badgeCorner = _qrCfg.badge_corner or "bottom_right" %}
   <div class="profile-banner-wrap{% if _bannerFade %} banner-fade{% endif %}">
     <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}{% if _bannerHero %} banner-hero{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}{% if _bannerHero %} style="--banner-aspect:{{ _bannerAspect }};--banner-obj-pos:{{ _bannerObjPos }}"{% endif %}>
-      {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
+      {% if site.profile.banner_url %}<a href="{{ site.profile.banner_url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
       {{ bannerImg() }}
       {% if site.profile.banner_url %}</a>{% endif %}
     </div>
     <div class="hb-qr-badge hb-qr-badge--{{ _badgeCorner | replace("_", "-") }}" aria-label="QR code">{{ qrCode.badgeSvg | safe }}</div>
     <div class="avatar-over-banner">
-      {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+      {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
       <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
       {% if site.profile.avatar_url %}</a>{% endif %}
     </div>
@@ -124,12 +103,12 @@
   {%- else %}
   <div class="profile-banner-wrap{% if _bannerFade %} banner-fade{% endif %}">
     <div class="banner-img-wrap{% if _bannerParallax %} banner-parallax-clip{% endif %}{% if _bannerHero %} banner-hero{% endif %}"{% if _bannerParallax %} data-parallax-factor="{{ _parallaxFactor }}"{% endif %}{% if _bannerHero %} style="--banner-aspect:{{ _bannerAspect }};--banner-obj-pos:{{ _bannerObjPos }}"{% endif %}>
-      {% if site.profile.banner_url %}<a href="{{ utmHref(site.profile.banner_url) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
+      {% if site.profile.banner_url %}<a href="{{ site.profile.banner_url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="Visit {{ site.profile.name }} website">{% endif %}
       {{ bannerImg() }}
       {% if site.profile.banner_url %}</a>{% endif %}
     </div>
     <div class="avatar-over-banner">
-      {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+      {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
       <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="80" height="80" loading="eager" />
       {% if site.profile.avatar_url %}</a>{% endif %}
     </div>
@@ -138,7 +117,7 @@
 
   {% else %}
   <div class="avatar-wrap">
-    {% if site.profile.avatar_url %}<a href="{{ utmHref(site.profile.avatar_url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
+    {% if site.profile.avatar_url %}<a href="{{ site.profile.avatar_url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ site.profile.name }} profile">{% endif %}
     <img class="avatar" src="{{ site.profile.avatar }}" alt="{{ site.profile.name }} profile picture" width="96" height="96" loading="eager" />
     {% if site.profile.avatar_url %}</a>{% endif %}
   </div>
@@ -191,7 +170,7 @@
       {%- endif %}
     {%- endif %}
     <span class="social-icon-wrap">
-    <a class="social-icon-link" href="{{ utmHref(item.url) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.icon }}" role="listitem"
+    <a class="social-icon-link" href="{{ item.url | trackedUrl(site.utm) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.icon }}" role="listitem"
        data-ga-label="{{ item.icon }}" data-ga-type="social_icon" data-ga-section="social_icons">
       {% icon item.icon %}
     </a>

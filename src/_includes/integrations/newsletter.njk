@@ -62,7 +62,7 @@
   aria-label="{{ _nl.heading or 'Newsletter Signup' }}">
   {%- if _nl.heading %}<h2 class="hb-widget-heading">{{ _nl.heading }}</h2>{%- endif %}
   {%- if _nl.subheading %}<p class="hb-widget-subheading">{{ _nl.subheading }}</p>{%- endif %}
-  <form class="hb-form" novalidate>
+  <form class="hb-form" data-homebase-ajax novalidate>
     <div class="hb-form-row">
       <input type="email" class="hb-input"
         placeholder="{{ _nl.placeholder or 'your@email.com' }}"

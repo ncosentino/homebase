@@ -152,14 +152,16 @@
   /* ── Widget initializers ────────────────────────────────────────────────── */
 
   HB.initNewsletter = function () {
-    document.querySelectorAll('.hb-widget-newsletter form').forEach(function (form) {
-      var widget = form.closest('.hb-widget-newsletter');
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var emailEl = form.querySelector('[type="email"]');
-        HB.submitEmail(widget, emailEl ? emailEl.value : '');
+    document
+      .querySelectorAll('.hb-widget-newsletter form[data-homebase-ajax]')
+      .forEach(function (form) {
+        var widget = form.closest('.hb-widget-newsletter');
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var emailEl = form.querySelector('[type="email"]');
+          HB.submitEmail(widget, emailEl ? emailEl.value : '');
+        });
       });
-    });
   };
 
   HB.initContactForm = function () {

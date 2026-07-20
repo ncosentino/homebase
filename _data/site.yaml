@@ -106,8 +106,7 @@ seo:
   date_modified: "2026-07-19T17:46:21.000Z"
 
   person:
-    # Wikidata entity ID — highest-trust sameAs signal for Google Knowledge Graph.
-    # Google resolves Wikidata Q-IDs directly to verify real-world entity identity.
+    # Wikidata entity ID — optional sameAs signal for cross-source entity disambiguation.
     # Find or create your entry at https://www.wikidata.org
     # wikidata_id: "Q12345678"
     roles:
@@ -227,9 +226,8 @@ embeds:
 
 # Option B — Hard-code specific videos. Used as fallback if embeds.youtube_channels
 # is empty or omitted. Leave both empty to hide the video section entirely.
-# Fields: youtube_id (required), title (required), description (recommended for VideoObject
-# schema — Google requires a description for video rich results), upload_date (YYYY-MM-DD,
-# required for VideoObject schema).
+# Fields: youtube_id (required), title (required), description (recommended for people and
+# machine consumers), upload_date (YYYY-MM-DD, emitted only when accurate).
 # Example:
 # featured_videos:
 #   - youtube_id: "abc123"

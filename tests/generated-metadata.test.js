@@ -67,6 +67,13 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
         { quote: "Clear and practical.", author: "Casey" },
       ],
     };
+    site.integrations.newsletter = {
+      enabled: true,
+      position: "after_profile",
+      heading: "Subscribe",
+      backend: "web3forms",
+      web3forms_key: "fixture-key",
+    };
   });
   t.after(() => fixture.cleanup());
 
@@ -107,6 +114,7 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
     fixture.read("_site/llms.txt"),
     /- Content last modified: 2026-01-20T10:30:00.000Z/
   );
+  assert.match(html, /<form class="hb-form" data-homebase-ajax novalidate>/);
 });
 
 test("shop fixture emits parseable metadata with a shop canonical", (t) => {
@@ -196,6 +204,31 @@ test("unrated testimonials remain reviews without an aggregate rating", (t) => {
   assert.equal(findEntity(documents, "AggregateRating"), null);
   assert.equal(reviews[0].reviewRating, undefined);
   assert.equal(reviews[2].reviewRating, undefined);
+});
+
+test("Mailchimp hosted forms retain native submission behavior", (t) => {
+  const fixture = buildFixture("mailchimp-newsletter", (site) => {
+    site.integrations.newsletter = {
+      enabled: true,
+      position: "after_profile",
+      heading: "Subscribe",
+      backend: "mailchimp_embed",
+      mailchimp_embed_url: "https://example.us1.list-manage.com/subscribe/post",
+      mailchimp_honey_field: "b_fixture",
+    };
+  });
+  t.after(() => fixture.cleanup());
+
+  const html = fixture.read("_site/index.html");
+
+  assert.match(
+    html,
+    /<form action="https:\/\/example\.us1\.list-manage\.com\/subscribe\/post" method="post" target="_blank" novalidate>/
+  );
+  assert.doesNotMatch(
+    html,
+    /<form(?=[^>]*list-manage)(?=[^>]*data-homebase-ajax)[^>]*>/
+  );
 });
 
 test("hidden shop prices are omitted from HTML and structured data", (t) => {

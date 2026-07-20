@@ -3,24 +3,7 @@
    Uses: site.utm for page-level UTM defaults; site.shop.* for config
    ───────────────────────────────────────────────────────────────────────── #}
 
-{# UTM: merge page-wide defaults with per-item overrides #}
-{%- set _utm = site.utm if site.utm else {} -%}
-{%- set _u = item.utm if item.utm else {} -%}
-{%- set utmSource   = _u.source   if _u.source   else _utm.source -%}
-{%- set utmMedium   = _u.medium   if _u.medium   else _utm.medium -%}
-{%- set utmCampaign = _u.campaign if _u.campaign else _utm.campaign -%}
-{%- set utmContent  = _u.content  if _u.content  else _utm.content -%}
-{%- set utmTerm     = _u.term     if _u.term     else _utm.term -%}
-
-{%- set _href = item.url -%}
-{%- if utmSource -%}
-  {%- set _sep = "?" if "?" not in item.url else "&" -%}
-  {%- set _href = item.url + _sep + "utm_source=" + utmSource -%}
-  {%- if utmMedium   %}{%- set _href = _href + "&utm_medium="   + utmMedium -%}{%- endif -%}
-  {%- if utmCampaign %}{%- set _href = _href + "&utm_campaign=" + utmCampaign -%}{%- endif -%}
-  {%- if utmContent  %}{%- set _href = _href + "&utm_content="  + utmContent -%}{%- endif -%}
-  {%- if utmTerm     %}{%- set _href = _href + "&utm_term="     + utmTerm -%}{%- endif -%}
-{%- endif -%}
+{%- set _href = item.url | trackedUrl(site.utm, item.utm) -%}
 
 {%- set _showPrices = site.shop.show_prices != false -%}
 {%- set _gaLabel = item.ga_label if item.ga_label else item.id -%}

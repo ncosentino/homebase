@@ -63,7 +63,7 @@ seo:
 | `date_created` | No | ISO 8601 timestamp for the original profile-page publication date. |
 | `date_modified` | No | ISO 8601 timestamp for the last meaningful profile-page content change. Omit it when unknown; build time is tracked separately. |
 | `person.correction_notes` | No | Array of factual statements included in `llms.txt` to anchor AI-generated answers and prevent hallucination. |
-| `person.wikidata_id` | No | Your Wikidata Q-ID (e.g. `"Q12345678"`). Appends `https://www.wikidata.org/wiki/{id}` to `Person.sameAs[]` in JSON-LD — the highest-trust Knowledge Panel signal. |
+| `person.wikidata_id` | No | Your Wikidata Q-ID (e.g. `"Q12345678"`). Appends the entity URL to `Person.sameAs[]` for cross-source identity disambiguation. |
 
 ## Theme
 
@@ -227,7 +227,9 @@ The `integrations:` block enables optional interactive widgets on your page. Eac
 
 ### FAQ Widget
 
-Renders a collapsible FAQ section on the page and automatically emits a `FAQPage` JSON-LD schema (eligible for Google rich results). FAQ items are also included in your `/llms.txt` and `/llms-full.txt` for AI answer engines.
+Renders a collapsible FAQ section and emits matching `FAQPage` JSON-LD.
+FAQ items are also included in `/llms.txt` and `/llms-full.txt` for tools that
+consume those formats.
 
 ```yaml
 integrations:
@@ -249,8 +251,10 @@ integrations:
 | `heading` | No | Section heading displayed above the items. Defaults to `"Frequently Asked Questions"`. |
 | `items` | Yes (if enabled) | Array of `{ question, answer }` pairs. Google requires the answers to be visible on the page. |
 
-!!! tip "Rich results eligibility"
-    Google may display your FAQ answers as expandable rich results in search, showing your Q&A pairs directly on the results page. Content must be pre-written (not user-generated) and answers must be visible in the page's HTML. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/faqpage)
+!!! note "Consumer support"
+    Google removed FAQ rich results in May 2026. Homebase preserves `FAQPage`
+    because it remains valid structured Q&A for Schema.org-compatible
+    consumers. Questions and answers must remain visible in the page HTML.
 
 ### Newsletter Signup
 
