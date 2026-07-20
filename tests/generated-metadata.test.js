@@ -70,7 +70,8 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
   });
   t.after(() => fixture.cleanup());
 
-  const documents = parseJsonLd(fixture.read("_site/index.html"));
+  const html = fixture.read("_site/index.html");
+  const documents = parseJsonLd(html);
   const videos = findEntities(documents, "VideoObject");
   const reviews = findEntities(documents, "Review");
   const aggregateRating = findEntity(documents, "AggregateRating");
@@ -96,6 +97,8 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
     findEntity(documents, "FAQPage").mainEntity[0].acceptedAnswer.text,
     "Useful </script> example content & guidance."
   );
+  assert.match(html, /aria-label="5 out of 5 stars">5\/5<\/p>/);
+  assert.match(html, /aria-label="4 out of 5 stars">4\/5<\/p>/);
   assert.match(
     fixture.read("_site/sitemap.xml"),
     /<lastmod>2026-01-20T10:30:00.000Z<\/lastmod>/
@@ -193,6 +196,24 @@ test("unrated testimonials remain reviews without an aggregate rating", (t) => {
   assert.equal(findEntity(documents, "AggregateRating"), null);
   assert.equal(reviews[0].reviewRating, undefined);
   assert.equal(reviews[2].reviewRating, undefined);
+});
+
+test("hidden shop prices are omitted from HTML and structured data", (t) => {
+  const fixture = buildFixture("hidden-shop-prices", (site) => {
+    site.shop.enabled = true;
+    site.shop.path = "shop";
+    site.shop.show_prices = false;
+  });
+  t.after(() => fixture.cleanup());
+
+  const html = fixture.read("_site/shop/index.html");
+  const documents = parseJsonLd(html);
+  const offers = findNestedEntities(documents, "Offer");
+
+  assert.ok(offers.length > 0);
+  assert.ok(offers.every((offer) => offer.price === undefined));
+  assert.doesNotMatch(html, /data-ga-item-price="[0-9]/);
+  assert.doesNotMatch(html, /class="shop-price"/);
 });
 
 function parseJsonLd(html) {

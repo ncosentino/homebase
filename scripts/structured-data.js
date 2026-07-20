@@ -445,12 +445,17 @@ function buildShopItemList(site, shopUrl, itemListId, personId) {
     itemListElement: flattenShopItems(site.shop.collections).map((item) => ({
       "@type": "ListItem",
       position: item.position,
-      item: buildShopItem(item, site.shop.currency, personId),
+      item: buildShopItem(
+        item,
+        site.shop.currency,
+        personId,
+        site.shop.show_prices !== false
+      ),
     })),
   };
 }
 
-function buildShopItem(item, defaultCurrency, personId) {
+function buildShopItem(item, defaultCurrency, personId, showPrices) {
   const common = compact({
     "@id": item.url,
     name: item.title,
@@ -458,7 +463,7 @@ function buildShopItem(item, defaultCurrency, personId) {
     image: item.image,
     url: item.url,
   });
-  const offer = buildOffer(item, defaultCurrency);
+  const offer = buildOffer(item, defaultCurrency, showPrices);
 
   if (item.type === "course") {
     return compact({
@@ -503,13 +508,15 @@ function buildShopItem(item, defaultCurrency, personId) {
   });
 }
 
-function buildOffer(item, defaultCurrency) {
+function buildOffer(item, defaultCurrency, showPrices) {
   if (typeof item.price !== "number") return null;
 
   return compact({
     "@type": "Offer",
-    price: item.price,
-    priceCurrency: item.currency || defaultCurrency,
+    price: showPrices ? item.price : undefined,
+    priceCurrency: showPrices
+      ? item.currency || defaultCurrency
+      : undefined,
     availability: item.availability,
     url: item.url,
   });

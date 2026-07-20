@@ -183,7 +183,7 @@ shop:
 | `og_image` | No | site `og_image` | Override the Open Graph image on the shop page. |
 | `layout` | No | `"grid"` | Card layout: `"grid"` (multi-column) or `"list"` (single column). |
 | `currency` | No | `"USD"` | Default currency shown next to prices. |
-| `show_prices` | No | `true` | Global toggle to hide all prices. Per-item `price` is unaffected. |
+| `show_prices` | No | `true` | Global toggle to hide prices from rendered cards, analytics attributes, and structured offers. Per-item `price` remains in configuration. |
 | `ga_event_name` | No | `"shop_item_click"` | GA4 event name for CTA clicks. Set once; never change after launch. |
 | `collections` | No | `[]` | Array of collection objects. |
 
@@ -553,8 +553,8 @@ integrations:
 | `url` | No | Link to the original post or source. |
 | `rating` | No | Numeric 1–5 star rating. Omitted or invalid ratings remain unrated reviews and do not contribute to `AggregateRating`. |
 
-!!! tip "Rich results eligibility"
-    When testimonials are enabled, Homebase adds visible testimonials as `review[]` on the `Person` entity. When at least one testimonial has a numeric rating, it also calculates `aggregateRating` from the rated testimonials. Consumer-specific review presentation support is documented in [Structured Data Contract](structured-data.md).
+!!! tip "Structured review metadata"
+    When testimonials are enabled, Homebase emits standalone `Review` entities whose `itemReviewed` references the creator. When at least one visible testimonial has a numeric rating, it also emits a standalone `AggregateRating` calculated from the rated testimonials. Consumer-specific review presentation support is documented in [Structured Data Contract](structured-data.md).
 
 ### Live Code / Demo Embeds
 

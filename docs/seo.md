@@ -103,7 +103,7 @@ seo:
 | `BreadcrumbList` JSON-LD | Auto-generated for home and shop pages |
 | `Speakable` JSON-LD | Marks profile bio and FAQ answers for voice assistants |
 | `VideoObject` JSON-LD | One per video from `youtube_channels` feed or `featured_videos` |
-| `aggregateRating` + `review[]` on Person | `integrations.testimonials` (when enabled and items exist) |
+| Standalone `Review` + `AggregateRating` entities referencing `Person` | Visible `integrations.testimonials` items and ratings |
 | `/sitemap.xml` | `seo.canonical` + all page URLs |
 | `/robots.txt` | Auto-generated (see below) |
 | `/llms.txt` | Auto-generated from `site.yaml` (see below) |

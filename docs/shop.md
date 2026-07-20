@@ -141,7 +141,8 @@ items:
 | omitted / `null` | No price shown |
 | `original_price: 197` and `price: 97` | ~~`$197`~~ `$97` |
 
-Set `shop.show_prices: false` to hide all prices globally.
+Set `shop.show_prices: false` to hide prices from cards, analytics attributes,
+and structured offers while retaining the configured values for later use.
 
 ---
 

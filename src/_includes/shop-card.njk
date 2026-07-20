@@ -23,7 +23,7 @@
 {%- endif -%}
 
 {%- set _gaLabel = item.ga_label if item.ga_label else item.id -%}
-{%- set _cta = item.cta_label if item.cta_label else ("Get It Free" if (item.price is number and item.price == 0) else "Get It") -%}
+{%- set _cta = item.cta_label if item.cta_label else ("Get It Free" if (site.shop.show_prices and item.price is number and item.price == 0) else "Get It") -%}
 {%- set _currencyCode = item.currency if item.currency else (site.shop.currency if site.shop.currency else "USD") -%}
 {%- set _currencySymbols = {"USD": "$", "EUR": "€", "GBP": "£", "CAD": "CA$", "AUD": "A$", "JPY": "¥"} -%}
 {%- set _currency = _currencySymbols[_currencyCode] if _currencySymbols[_currencyCode] else _currencyCode -%}
@@ -33,7 +33,7 @@
   data-ga-item-title="{{ item.title | jsonEscape }}"
   data-ga-collection-id="{{ collection.id }}"
   data-ga-item-type="{{ item.type if item.type else 'link' }}"
-  data-ga-item-price="{{ item.price if item.price is number else '' }}"
+  data-ga-item-price="{{ item.price if site.shop.show_prices and item.price is number else '' }}"
   data-ga-destination="{{ item.url }}">
 
   {%- if item.image %}
