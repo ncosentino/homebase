@@ -78,8 +78,11 @@ seo:
     # wikidata_id: "Q12345678"   # Find or create your entity at wikidata.org
 ```
 
-!!! tip "Highest-trust Knowledge Panel signal"
-    Wikidata is the primary source Google's Knowledge Graph uses to verify real-world entities. Adding your Wikidata Q-ID is the highest-trust `sameAs` signal for triggering or enriching a Google Knowledge Panel. Most users will not have a Wikidata entry — this field is commented out by default. If you do have one, it is the single highest-value SEO addition you can make here.
+!!! tip "Cross-source identity"
+    A valid Wikidata entity can strengthen identity disambiguation by linking
+    the creator to an independently maintained entity URL. It is one of many
+    possible `sameAs` signals and does not guarantee a Knowledge Panel or
+    ranking change.
 
 ## What Gets Generated
 
@@ -141,7 +144,10 @@ page-scoped `ItemList` and breadcrumb.
 
 ### FAQPage
 
-Emitted when `integrations.faq.enabled: true`. Eligible for expandable FAQ rich results in Google Search. Each `question`/`answer` pair in `site.yaml` becomes a `Question` + `acceptedAnswer` in the schema. See [Configuration — FAQ Widget](configuration.md#faq-widget).
+Emitted when `integrations.faq.enabled: true`. Each visible
+`question`/`answer` pair becomes a `Question` + `acceptedAnswer`. Google
+removed FAQ rich results in May 2026, but the schema remains valid structured
+Q&A for other compatible consumers.
 
 ### BreadcrumbList
 
@@ -149,10 +155,15 @@ Always present. Provides structured navigation hints (Home → Shop) to search e
 
 ### Speakable
 
-Marks the profile bio (`.profile-bio`) and FAQ answers (`.integration-faq-answer`) as the most voice-assistant-friendly content on the page. Used by Google Assistant and similar systems.
+Marks the profile bio (`.profile-bio`) and FAQ answers
+(`.integration-faq-answer`) as concise text-to-speech candidates for consumers
+that support `SpeakableSpecification`.
 
 !!! note "Speakable is in beta"
-    Google's Speakable feature is currently in beta and primarily targets English-language news content. It is included because it is harmless to emit and may benefit future implementations. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/speakable)
+    Google's documented Speakable implementation is a beta for US
+    English-language topical news. Homebase preserves the valid semantic
+    property as experimental interoperability metadata without promising
+    Google Assistant presentation. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/speakable)
 
 ### VideoObject
 
@@ -205,10 +216,16 @@ seo:
 
 ## llms.txt (AEO/GEO)
 
-`llms.txt` is a plain-text file (analogous to `robots.txt`) that AI crawlers and LLM-based answer engines read to understand your identity and content. It is auto-generated and served at `/llms.txt`.
+`llms.txt` is an emerging plain-text interoperability convention served at
+`/llms.txt`. Some documentation and developer tools consume the format, while
+major search and AI providers do not universally document support.
 
 !!! tip "What is AEO/GEO?"
-    Answer Engine Optimization (AEO) and Generative Engine Optimization (GEO) are practices for ensuring your content appears in AI-generated answers from Perplexity, ChatGPT Browse, Bing Copilot, and similar tools. `llms.txt` is the emerging convention for signaling structured identity to these systems. [Spec: llmstxt.org](https://llmstxt.org)
+    AEO and GEO describe efforts to improve machine understanding and
+    visibility in answer-oriented experiences. Google treats this work as SEO
+    and explicitly states that it ignores `llms.txt`. Homebase keeps the file
+    for other and future consumers without claiming ranking or citation
+    benefits. [Spec: llmstxt.org](https://llmstxt.org)
 
 The generated `llms.txt` includes these sections, all driven by `site.yaml`:
 
@@ -240,7 +257,10 @@ The `## Correction Notes`, `## Canonical Identity`, and `## Frequently Asked Que
 
 ## robots.txt
 
-Auto-generated. Allows all standard crawlers and explicitly allows 14 AI-specific crawlers by name so they are never accidentally blocked by wildcard deny rules:
+Auto-generated. The wildcard rule already allows all crawlers. Named entries
+make the current policy explicit and document the different search, training,
+and user-triggered agents that creators may choose to configure differently in
+future versions:
 
 | Crawler | Operator |
 |---|---|

@@ -56,7 +56,7 @@ npm run clean
 | `src/assets/` | Base CSS and lite-youtube.js |
 | `src/themes/` | Theme CSS files |
 | `src/icons/` | SVG brand icon files |
-| `src/llms.txt.njk` | Auto-generated `/llms.txt` for AI crawlers |
+| `src/llms.txt.njk` | Auto-generated `/llms.txt` interoperability summary |
 | `src/llms-full.txt.njk` | Auto-generated `/llms-full.txt` full-text companion |
 | `src/robots.txt.njk` | Auto-generated `/robots.txt` |
 | `.eleventy.js` | Eleventy configuration |

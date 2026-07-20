@@ -16,24 +16,7 @@
 {% set _stars = _gh.stars if _gh and _gh.stars else 0 %}
 {% set _lang  = _gh.language if _gh else "" %}
 
-{# UTM: same pattern as link-button.njk #}
-{%- set _utm = site.utm if site.utm else {} -%}
-{%- set _u = link.utm if link.utm else {} -%}
-{%- set utmSource   = _u.source   if _u.source   else _utm.source -%}
-{%- set utmMedium   = _u.medium   if _u.medium   else _utm.medium -%}
-{%- set utmCampaign = _u.campaign if _u.campaign else _utm.campaign -%}
-{%- set utmContent  = _u.content  if _u.content  else _utm.content -%}
-{%- set utmTerm     = _u.term     if _u.term     else _utm.term -%}
-
-{%- set _href = link.url -%}
-{%- if utmSource -%}
-  {%- set _sep = "?" if "?" not in link.url else "&" -%}
-  {%- set _href = link.url + _sep + "utm_source=" + utmSource -%}
-  {%- if utmMedium   %}{%- set _href = _href + "&utm_medium="   + utmMedium -%}{%- endif -%}
-  {%- if utmCampaign %}{%- set _href = _href + "&utm_campaign=" + utmCampaign -%}{%- endif -%}
-  {%- if utmContent  %}{%- set _href = _href + "&utm_content="  + utmContent -%}{%- endif -%}
-  {%- if utmTerm     %}{%- set _href = _href + "&utm_term="     + utmTerm -%}{%- endif -%}
-{%- endif -%}
+{%- set _href = link.url | trackedUrl(site.utm, link.utm) -%}
 
 <a class="portfolio-card" href="{{ _href }}" target="_blank" rel="noopener noreferrer"
    data-ga-label="{{ link.ga_label if link.ga_label else link.title }}"
