@@ -41,6 +41,7 @@ nav:
   - Themes: themes.md
   - CI/CD: cicd.md
   - SEO & Discoverability: seo.md
+  - Structured Data Contract: structured-data.md
   - Analytics: analytics.md
   - Shop: shop.md
   - Local Development: building.md
