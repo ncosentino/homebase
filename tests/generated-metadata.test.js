@@ -71,8 +71,9 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
   t.after(() => fixture.cleanup());
 
   const documents = parseJsonLd(fixture.read("_site/index.html"));
-  const person = findEntity(documents, "Person");
   const videos = findEntities(documents, "VideoObject");
+  const reviews = findEntities(documents, "Review");
+  const aggregateRating = findEntity(documents, "AggregateRating");
   assert.ok(findEntity(documents, "FAQPage"));
   assert.equal(
     findEntity(documents, "ProfilePage").dateModified,
@@ -81,11 +82,16 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
   assert.equal(videos.length, 2);
   assert.equal(videos[0].uploadDate, "2026-01-15");
   assert.equal(videos[1].uploadDate, undefined);
-  assert.equal(person.review.length, 3);
-  assert.equal(person.review[2].reviewRating, undefined);
-  assert.equal(person.aggregateRating.ratingValue, 4.5);
-  assert.equal(person.aggregateRating.ratingCount, 2);
-  assert.equal(person.aggregateRating.reviewCount, 3);
+  assert.equal(reviews.length, 3);
+  assert.equal(reviews[2].reviewRating, undefined);
+  assert.equal(reviews[0].itemReviewed["@id"], "https://example.com#person");
+  assert.equal(aggregateRating.ratingValue, 4.5);
+  assert.equal(aggregateRating.ratingCount, 2);
+  assert.equal(aggregateRating.reviewCount, 3);
+  assert.equal(
+    aggregateRating.itemReviewed["@id"],
+    "https://example.com#person"
+  );
   assert.equal(
     findEntity(documents, "FAQPage").mainEntity[0].acceptedAnswer.text,
     "Useful </script> example content & guidance."
@@ -133,8 +139,8 @@ test("shop fixture emits parseable metadata with a shop canonical", (t) => {
   assert.ok(findEntity(documents, "WebSite"));
   assert.ok(collectionPage);
   assert.ok(findEntity(documents, "Person"));
-  assert.equal(findEntity(documents, "Person").review, undefined);
-  assert.equal(findEntity(documents, "Person").aggregateRating, undefined);
+  assert.equal(findEntity(documents, "Review"), null);
+  assert.equal(findEntity(documents, "AggregateRating"), null);
   assert.ok(findEntity(documents, "ItemList"));
   assert.equal(collectionPage.url, "https://example.com/shop/");
   assert.equal(collectionPage.mainEntity["@id"], "https://example.com/shop/#items");
@@ -180,15 +186,13 @@ test("unrated testimonials remain reviews without an aggregate rating", (t) => {
   });
   t.after(() => fixture.cleanup());
 
-  const person = findEntity(
-    parseJsonLd(fixture.read("_site/index.html")),
-    "Person"
-  );
+  const documents = parseJsonLd(fixture.read("_site/index.html"));
+  const reviews = findEntities(documents, "Review");
 
-  assert.equal(person.review.length, 3);
-  assert.equal(person.aggregateRating, undefined);
-  assert.equal(person.review[0].reviewRating, undefined);
-  assert.equal(person.review[2].reviewRating, undefined);
+  assert.equal(reviews.length, 3);
+  assert.equal(findEntity(documents, "AggregateRating"), null);
+  assert.equal(reviews[0].reviewRating, undefined);
+  assert.equal(reviews[2].reviewRating, undefined);
 });
 
 function parseJsonLd(html) {

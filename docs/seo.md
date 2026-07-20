@@ -169,12 +169,18 @@ See [Configuration — Featured Videos](configuration.md#featured-videos) for th
 
 ### Review + AggregateRating
 
-Emitted automatically when `integrations.testimonials.enabled: true` and at least one testimonial item exists. Adds two things to the `Person` entity:
+Emitted automatically when `integrations.testimonials.enabled: true` and at
+least one testimonial item exists:
 
-- `review[]` — one `Review` entry per visible testimonial, using its `quote`, `author`, and optional `rating`
-- `aggregateRating` — emitted only when at least one testimonial has a numeric rating, calculated from the visible rated testimonials
+- one standalone `Review` entity per visible testimonial, with
+  `itemReviewed` referencing the stable `Person`;
+- one standalone `AggregateRating` when at least one testimonial has a numeric
+  rating, calculated from the visible rated testimonials and referencing the
+  same reviewed `Person`.
 
-This can surface star ratings alongside your name in Google Search results for personal brand pages. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/review-snippet)
+This preserves the review relationship without attaching properties whose
+Schema.org domain excludes `Person`. Google does not support `Person` review
+snippets.
 
 ## OG Image Auto Generation
 

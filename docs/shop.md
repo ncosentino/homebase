@@ -90,16 +90,19 @@ shop:
 
 ## Item Types and JSON-LD
 
-The `type` field on each item drives which structured-data schema is emitted — which in turn influences how search engines display your content in rich results.
+The `type` field on each item drives which structured-data entity is emitted.
+The entities preserve the meaning of visible offerings independently from any
+consumer-specific presentation.
 
-| `type` value | JSON-LD `@type` | Google Rich Result |
+| `type` value | JSON-LD `@type` | Consumer-specific status |
 |---|---|---|
-| `course` | `Course` + `CourseInstance` + `Offer` | Course rich result (title, provider, price, mode) |
-| `service` | `Service` + `Offer` | Service listing |
-| `consultation` | `Service` + `Offer` | Service listing |
-| `ebook`, `merch`, `download`, `link` *(default)* | `Product` + `Offer` | Product rich result (price, availability, image) |
+| `course` | `Course` + `CourseInstance` + `Offer` | Google phased out Course Info presentation in 2025; the semantic entities remain valid |
+| `service` | `Service` + `Offer` | No dedicated Google Service rich result; useful to compatible consumers |
+| `consultation` | `Service` + `Offer` | No dedicated Google Service rich result; useful to compatible consumers |
+| `ebook`, `merch`, `download`, `link` *(default)* | `Product` + `Offer` | Google product features require visible policy-compliant data and may require additional fields |
 
-All items are wrapped in a top-level `ItemList` schema so Google can display the collection as a list entry.
+All items are wrapped in `ItemList` to preserve their visible order and
+relationship to the shop collection. No list presentation is guaranteed.
 
 !!! note "Open enum"
     `type` is an open string — you can use any value. Unknown types fall back to `Product + Offer` and show a generic badge icon on the card.

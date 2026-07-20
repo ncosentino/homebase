@@ -101,15 +101,15 @@ youtube_channels:
 featured_videos:
   - youtube_id: "dQw4w9WgXcQ"
     title: "Video title"
-    description: "What this video covers"   # recommended — required for VideoObject rich results
-    upload_date: "2026-01-15"               # YYYY-MM-DD — required for VideoObject schema
+    description: "What this video covers"   # recommended for people and machine consumers
+    upload_date: "2026-01-15"               # required only for consumer features that mandate it
 ```
 
 | Field | Required | Description |
 |-------|----------|-------------|
 | `youtube_id` | Yes | The 11-character YouTube video ID. |
 | `title` | Yes | Video title shown on the page and in `VideoObject` schema. |
-| `description` | No | Short description. Google requires this for video rich results. |
+| `description` | No | Short visible description used by the page and `VideoObject`. Consumer-specific video feature requirements may be stricter. |
 | `upload_date` | No | Publication date in `YYYY-MM-DD` format. Included in `VideoObject` when accurate; omitted from structured data when unknown. |
 
 Leave both empty to hide the video section entirely.

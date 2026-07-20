@@ -42,7 +42,7 @@ function buildStructuredData(
         breadcrumbId,
         ogImage
       ),
-      buildPerson(site, personId, ogImage, socialStats, false),
+      buildPerson(site, personId, ogImage, socialStats),
       buildShopItemList(site, shopUrl, itemListId, personId),
       buildBreadcrumb(site, canonical, shopUrl, breadcrumbId)
     );
@@ -72,7 +72,12 @@ function buildStructuredData(
 
     graph.push(
       profilePage,
-      buildPerson(site, personId, ogImage, socialStats, true)
+      buildPerson(site, personId, ogImage, socialStats),
+      ...buildReviewEntities(
+        site.integrations?.testimonials,
+        canonical,
+        personId
+      )
     );
 
     const links = buildLinkItemList(site, canonical);
@@ -240,7 +245,7 @@ function buildCollectionPage(
   });
 }
 
-function buildPerson(site, personId, ogImage, socialStats, includeReviews) {
+function buildPerson(site, personId, ogImage, socialStats) {
   const personConfig = site.seo.person || {};
   const person = compact({
     "@type": "Person",
@@ -319,9 +324,6 @@ function buildPerson(site, personId, ogImage, socialStats, includeReviews) {
     };
   }
 
-  if (includeReviews) {
-    addReviews(person, site.integrations?.testimonials);
-  }
   return person;
 }
 
@@ -357,15 +359,17 @@ function buildInteractionStatistics(manualStats, socialStats) {
   return result;
 }
 
-function addReviews(person, testimonials) {
-  if (!testimonials?.enabled || !testimonials.items?.length) return;
+function buildReviewEntities(testimonials, canonical, personId) {
+  if (!testimonials?.enabled || !testimonials.items?.length) return [];
 
   const reviews = testimonials.items
     .filter((testimonial) => testimonial?.quote)
-    .map((testimonial) => {
+    .map((testimonial, index) => {
       const rating = normalizeRating(testimonial.rating);
       const review = compact({
         "@type": "Review",
+        "@id": `${canonical}#review-${index + 1}`,
+        itemReviewed: { "@id": personId },
         author: testimonial.author
           ? { "@type": "Person", name: testimonial.author }
           : undefined,
@@ -384,13 +388,13 @@ function addReviews(person, testimonials) {
       return review;
     });
 
-  if (!reviews.length) return;
-  person.review = reviews;
+  if (!reviews.length) return [];
 
   const ratings = reviews
     .map((review) => review.reviewRating?.ratingValue)
     .filter((rating) => typeof rating === "number");
 
+  const result = [...reviews];
   if (ratings.length) {
     const average =
       Math.round(
@@ -399,15 +403,19 @@ function addReviews(person, testimonials) {
           100
       ) / 100;
 
-    person.aggregateRating = {
+    result.push({
       "@type": "AggregateRating",
+      "@id": `${canonical}#aggregate-rating`,
+      itemReviewed: { "@id": personId },
       ratingValue: average,
       bestRating: 5,
       worstRating: 1,
       ratingCount: ratings.length,
       reviewCount: reviews.length,
-    };
+    });
   }
+
+  return result;
 }
 
 function buildLinkItemList(site, canonical) {
