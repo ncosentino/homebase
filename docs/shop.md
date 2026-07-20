@@ -26,6 +26,7 @@ shop:
   title: "Shop"
   description: "Courses, guides, and resources for software engineers."
   path: "shop"        # URL path: /shop/ — change to "store", "products", etc.
+  date_modified: "2026-07-19T17:46:21.000Z"
   layout: "grid"      # "grid" or "list"
   currency: "USD"
   show_prices: true
@@ -196,7 +197,7 @@ When the shop is enabled, Homebase emits:
 - **Open Graph**: Full `og:title`, `og:description`, `og:url`, `og:image` (uses `shop.og_image` if set, otherwise falls back to `seo.og_image`)
 - **Twitter Card**: summary card with shop title, description, and image
 - **JSON-LD**: `ItemList` wrapping typed `Product`/`Course`/`Service` + `Offer` nodes per item
-- **Sitemap**: `/{shop.path}/` entry added with build-time `lastmod`
+- **Sitemap**: `/{shop.path}/` entry uses `shop.date_modified` for `lastmod` when configured
 - **llms.txt**: Shop collections section listing all item titles, types, and URLs
 
 ### Setting a shop-specific OG image

@@ -73,8 +73,11 @@ A: {{ item.answer }}
 ## Social Profiles
 {% for social in site.socials %}{%- if social.show_icon != false %}- {{ social.name if social.name else social.icon }}: {{ social.url }}{% if social.followers %} ({{ social.followers }} followers){% endif %}
 {% endif %}{%- endfor %}
-## Content Freshness
-- Last updated: {{ buildMeta.iso }}
+## Content Metadata
+{% if site.seo.date_modified %}
+- Content last modified: {{ site.seo.date_modified }}
+{% endif %}
+- File generated: {{ buildMeta.generatedAt }}
 {%- if site.shop.enabled and site.shop.collections %}
 
 ## Products & Services

@@ -202,7 +202,7 @@ The generated `llms.txt` includes these sections, all driven by `site.yaml`:
 | `## Frequently Asked Questions` | `integrations.faq.items[]` (when enabled) |
 | `## Links` | All links from `sections` |
 | `## Social Profiles` | All visible entries in `socials` |
-| `## Content Freshness` | `buildMeta.iso` (build timestamp) |
+| `## Content Metadata` | `seo.date_modified` (when configured) + generated-file timestamp |
 | `## Shop` | `shop.collections` (when shop is enabled) |
 
 ## llms-full.txt (Full Content Companion)
@@ -252,4 +252,3 @@ Set `analytics.google_analytics_id` in `site.yaml`. Leave blank to disable (no t
 analytics:
   google_analytics_id: "G-XXXXXXXXXX"
 ```
-

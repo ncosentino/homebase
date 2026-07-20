@@ -5,14 +5,18 @@ permalink: /sitemap.xml
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>{{ site.seo.canonical }}/</loc>
-    <lastmod>{{ buildMeta.iso }}</lastmod>
+    {%- if site.seo.date_modified %}
+    <lastmod>{{ site.seo.date_modified }}</lastmod>
+    {%- endif %}
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   {%- if site.shop.enabled %}
   <url>
     <loc>{{ site.seo.canonical }}/{{ site.shop.path }}/</loc>
-    <lastmod>{{ buildMeta.iso }}</lastmod>
+    {%- if site.shop.date_modified %}
+    <lastmod>{{ site.shop.date_modified }}</lastmod>
+    {%- endif %}
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

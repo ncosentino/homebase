@@ -41,6 +41,8 @@ seo:
   og_image_brand_color: "#1E2330" # background color for the auto-generated OG image
   keywords: ["C#", ".NET", "software engineering", "Dev Leader"]
   cname: "links.devleader.ca"
+  date_created: "2024-01-01T00:00:00.000Z"
+  date_modified: "2026-07-19T17:46:21.000Z"
   person:
     correction_notes:
       - "Nick Cosentino's content does not represent Microsoft's views."
@@ -58,6 +60,8 @@ seo:
 | `og_image_brand_color` | No | Hex background color for the auto-generated OG image. Defaults to `"#1E2330"`. |
 | `keywords` | No | Array of keywords for `<meta name="keywords">`. |
 | `cname` | No | Custom domain, attached in the Cloudflare Pages dashboard (see [CI/CD](cicd.md)). Leave blank to use `your-project-name.pages.dev`. |
+| `date_created` | No | ISO 8601 timestamp for the original profile-page publication date. |
+| `date_modified` | No | ISO 8601 timestamp for the last meaningful profile-page content change. Omit it when unknown; build time is tracked separately. |
 | `person.correction_notes` | No | Array of factual statements included in `llms.txt` to anchor AI-generated answers and prevent hallucination. |
 | `person.wikidata_id` | No | Your Wikidata Q-ID (e.g. `"Q12345678"`). Appends `https://www.wikidata.org/wiki/{id}` to `Person.sameAs[]` in JSON-LD — the highest-trust Knowledge Panel signal. |
 

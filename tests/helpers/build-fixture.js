@@ -92,10 +92,12 @@ function normalizeFixture(site) {
   site.seo.og_image_auto = false;
   site.seo.recent_content = { max_items: 0, items: [] };
   site.seo.person.stats.auto_fetch = false;
+  delete site.seo.date_modified;
 
   site.favicon.mode = "none";
   site.embeds.youtube_channels = [];
   site.shop.enabled = false;
+  delete site.shop.date_modified;
 
   for (const integration of Object.values(site.integrations || {})) {
     if (integration && typeof integration === "object") {

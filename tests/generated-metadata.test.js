@@ -16,16 +16,29 @@ test("profile fixture emits parseable structured metadata", (t) => {
   assert.ok(findEntity(documents, "ProfilePage"));
   assert.ok(findEntity(documents, "Person"));
   assert.ok(findEntity(documents, "ItemList"));
+  assert.equal(findEntity(documents, "ProfilePage").dateModified, undefined);
+  assert.doesNotMatch(fixture.read("_site/sitemap.xml"), /<lastmod>/);
+  assert.match(fixture.read("_site/llms.txt"), /- File generated: /);
+  assert.doesNotMatch(
+    fixture.read("_site/llms.txt"),
+    /- Content last modified: /
+  );
 });
 
 test("enriched profile fixture covers optional semantic entities", (t) => {
   const fixture = buildFixture("enriched-profile", (site) => {
+    site.seo.date_modified = "2026-01-20T10:30:00.000Z";
     site.featured_videos = [
       {
         youtube_id: "abc123",
         title: "Example Video",
         description: "An example video description.",
         upload_date: "2026-01-15",
+      },
+      {
+        youtube_id: "def456",
+        title: "Undated Example Video",
+        description: "A video without a known upload date.",
       },
     ];
     site.integrations.faq = {
@@ -53,18 +66,35 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
 
   const documents = parseJsonLd(fixture.read("_site/index.html"));
   const person = findEntity(documents, "Person");
+  const videos = findEntities(documents, "VideoObject");
 
   assert.ok(findEntity(documents, "FAQPage"));
   assert.ok(findEntity(documents, "WebPage"));
-  assert.ok(findEntity(documents, "VideoObject"));
+  assert.equal(
+    findEntity(documents, "ProfilePage").dateModified,
+    "2026-01-20T10:30:00.000Z"
+  );
+  assert.equal(videos.length, 2);
+  assert.equal(videos[0].uploadDate, "2026-01-15");
+  assert.equal(videos[1].uploadDate, undefined);
   assert.equal(person.review.length, 2);
   assert.equal(person.aggregateRating.ratingValue, "5");
+  assert.match(
+    fixture.read("_site/sitemap.xml"),
+    /<lastmod>2026-01-20T10:30:00.000Z<\/lastmod>/
+  );
+  assert.match(
+    fixture.read("_site/llms.txt"),
+    /- Content last modified: 2026-01-20T10:30:00.000Z/
+  );
 });
 
 test("shop fixture emits parseable metadata with a shop canonical", (t) => {
   const fixture = buildFixture("shop", (site) => {
+    site.seo.date_modified = "2026-01-20T10:30:00.000Z";
     site.shop.enabled = true;
     site.shop.path = "shop";
+    site.shop.date_modified = "2026-01-18T09:00:00.000Z";
   });
   t.after(() => fixture.cleanup());
 
@@ -78,6 +108,10 @@ test("shop fixture emits parseable metadata with a shop canonical", (t) => {
   assert.ok(findEntity(documents, "ProfilePage"));
   assert.ok(findEntity(documents, "Person"));
   assert.ok(findEntity(documents, "ItemList"));
+  assert.match(
+    fixture.read("_site/sitemap.xml"),
+    /<lastmod>2026-01-18T09:00:00.000Z<\/lastmod>/
+  );
 });
 
 function parseJsonLd(html) {
@@ -95,17 +129,23 @@ function parseJsonLd(html) {
 }
 
 function findEntity(documents, type) {
+  return findEntities(documents, type)[0] || null;
+}
+
+function findEntities(documents, type) {
+  const entities = [];
+
   for (const document of documents) {
     if (document["@type"] === type) {
-      return document;
+      entities.push(document);
     }
 
     for (const entity of document["@graph"] || []) {
       if (entity["@type"] === type) {
-        return entity;
+        entities.push(entity);
       }
     }
   }
 
-  return null;
+  return entities;
 }

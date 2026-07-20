@@ -38,6 +38,7 @@ Homebase metadata must:
 - describe content visible to visitors;
 - use real publication and modification dates;
 - omit unknown facts instead of manufacturing fallback values;
+- distinguish `generatedAt` from `publishedAt` and `modifiedAt`;
 - preserve stable entity identifiers across pages;
 - connect related entities explicitly;
 - serialize configurable text and URLs as valid JSON;
