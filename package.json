@@ -7,7 +7,8 @@
   "scripts": {
     "build": "eleventy --input=src --output=_site",
     "start": "eleventy --input=src --output=_site --serve",
-    "clean": "npx rimraf _site"
+    "clean": "npx rimraf _site",
+    "test": "node --test tests/generated-metadata.test.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
