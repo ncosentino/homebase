@@ -103,6 +103,7 @@ seo:
   llms_audience: "Software engineers and developers at all levels interested in C#, .NET, software architecture, and engineering career growth. Also targets engineering managers and technical leaders."
 
   date_created: "2024-01-01T00:00:00.000Z"
+  date_modified: "2026-07-19T17:46:21.000Z"
 
   person:
     # Wikidata entity ID — highest-trust sameAs signal for Google Knowledge Graph.
@@ -472,6 +473,7 @@ shop:
   title: "Shop"                             # Tab label and page <title> prefix
   path: "shop"                              # URL path — change to "store", "products", etc.
   description: "Products, courses, and services from Dev Leader."
+  date_modified: "2026-07-19T17:46:21.000Z"
   og_image: ""                              # Optional: override site og_image for the shop page
   layout: "grid"                            # "grid" | "list"
   currency: "USD"                           # Default currency for all items

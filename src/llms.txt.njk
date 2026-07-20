@@ -64,8 +64,11 @@ A: {{ item.answer }}
 ## Social Profiles
 {% for social in site.socials %}{%- if social.show_icon != false %}- {{ social.icon }}: {{ social.url }}
 {% endif %}{%- endfor %}
-## Content Freshness
-- Last updated: {{ buildMeta.iso }}
+## Content Metadata
+{% if site.seo.date_modified %}
+- Content last modified: {{ site.seo.date_modified }}
+{% endif %}
+- File generated: {{ buildMeta.generatedAt }}
 {%- if site.shop.enabled and site.shop.collections %}
 
 ## Shop
@@ -81,4 +84,3 @@ A: {{ item.answer }}
 {%- endfor %}
 {%- endfor %}
 {%- endif %}
-

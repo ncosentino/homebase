@@ -29,7 +29,9 @@
 <meta property="og:image:type" content="image/png" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:site_name" content="{{ site.seo.site_name if site.seo.site_name else site.seo.title }}" />
-<meta property="og:updated_time" content="{{ buildMeta.unix }}" />
+{%- if site.shop.date_modified %}
+<meta property="og:updated_time" content="{{ site.shop.date_modified }}" />
+{%- endif %}
 {%- else %}
 <meta property="og:type" content="profile" />
 <meta property="og:title" content="{{ site.seo.title }}" />
@@ -41,7 +43,9 @@
 <meta property="og:image:type" content="{{ "image/png" if site.seo.og_image_auto else "image/jpeg" }}" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:site_name" content="{{ site.seo.site_name if site.seo.site_name else site.seo.title }}" />
-<meta property="og:updated_time" content="{{ buildMeta.unix }}" />
+{%- if site.seo.date_modified %}
+<meta property="og:updated_time" content="{{ site.seo.date_modified }}" />
+{%- endif %}
 <meta property="profile:username" content="{{ site.profile.username }}" />
 {%- if site.seo.manifest and site.seo.manifest.enabled %}
 <link rel="manifest" href="/manifest.json" />
@@ -84,15 +88,17 @@
       "description": "{{ site.seo.description }}",
       "image": "{{ _ogImg }}",
       "thumbnailUrl": "{{ _ogImg }}",
-      "significantLink": "{{ site.seo.canonical }}"
+      "significantLink": "{{ site.seo.canonical }}",
+      "mainEntity": { "@id": "{{ site.seo.canonical }}#person" }
       {%- if site.seo.keywords %},
       "keywords": "{{ site.seo.keywords | join(', ') }}"
       {%- endif %}
       {%- if site.seo.date_created %},
       "dateCreated": "{{ site.seo.date_created }}"
-      {%- endif %},
-      "dateModified": "{{ buildMeta.iso }}",
-      "mainEntity": { "@id": "{{ site.seo.canonical }}#person" }
+      {%- endif %}
+      {%- if site.seo.date_modified %},
+      "dateModified": "{{ site.seo.date_modified }}"
+      {%- endif %}
       {%- if recentContent and recentContent.length %},
       "hasPart": [
         {%- for article in recentContent %}
@@ -415,10 +421,12 @@
   "name": "{{ video.title | jsonEscape }}",
   "description": "{{ (video.description if video.description else video.title) | jsonEscape }}",
   "thumbnailUrl": "https://i.ytimg.com/vi/{{ video.youtube_id }}/hqdefault.jpg",
-  "uploadDate": "{{ video.upload_date if video.upload_date else (video.published if video.published else buildMeta.iso) }}",
   "contentUrl": "https://www.youtube.com/watch?v={{ video.youtube_id }}",
   "embedUrl": "https://www.youtube.com/embed/{{ video.youtube_id }}",
   "creator": { "@id": "{{ site.seo.canonical }}#person" }
+  {%- if video.upload_date or video.published %},
+  "uploadDate": "{{ video.upload_date if video.upload_date else video.published }}"
+  {%- endif %}
 }
 </script>
 {%- endif %}
