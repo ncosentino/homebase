@@ -7,6 +7,9 @@
     {%- for item in _tm.items %}
     <blockquote class="hb-testimonial">
       <p class="hb-testimonial-quote">{{ item.quote }}</p>
+      {%- if item.rating is number and item.rating >= 1 and item.rating <= 5 %}
+      <p class="hb-testimonial-rating" aria-label="{{ item.rating }} out of 5 stars">{{ item.rating }}/5</p>
+      {%- endif %}
       <footer class="hb-testimonial-author">
         {%- if item.url %}
         <a href="{{ item.url }}" target="_blank" rel="noopener"

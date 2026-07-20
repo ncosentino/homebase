@@ -982,7 +982,7 @@ integrations:
     #     handle: "@janed"
     #     platform: twitter
     #     url: "https://x.com/janed/status/..."
-    #     rating: 5   # optional (1-5, defaults to 5); used in Review JSON-LD schema
+    #     rating: 5   # optional numeric value (1-5); omitted reviews remain unrated
 
   # ── Live Code / Demo Embeds ──────────────────────────────────────────────
   # Embed interactive code demos from CodePen, GitHub Gist, StackBlitz, or Replit.

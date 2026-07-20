@@ -90,16 +90,19 @@ shop:
 
 ## Item Types and JSON-LD
 
-The `type` field on each item drives which structured-data schema is emitted — which in turn influences how search engines display your content in rich results.
+The `type` field on each item drives which structured-data entity is emitted.
+The entities preserve the meaning of visible offerings independently from any
+consumer-specific presentation.
 
-| `type` value | JSON-LD `@type` | Google Rich Result |
+| `type` value | JSON-LD `@type` | Consumer-specific status |
 |---|---|---|
-| `course` | `Course` + `CourseInstance` + `Offer` | Course rich result (title, provider, price, mode) |
-| `service` | `Service` + `Offer` | Service listing |
-| `consultation` | `Service` + `Offer` | Service listing |
-| `ebook`, `merch`, `download`, `link` *(default)* | `Product` + `Offer` | Product rich result (price, availability, image) |
+| `course` | `Course` + `CourseInstance` + `Offer` | Google phased out Course Info presentation in 2025; the semantic entities remain valid |
+| `service` | `Service` + `Offer` | No dedicated Google Service rich result; useful to compatible consumers |
+| `consultation` | `Service` + `Offer` | No dedicated Google Service rich result; useful to compatible consumers |
+| `ebook`, `merch`, `download`, `link` *(default)* | `Product` + `Offer` | Google product features require visible policy-compliant data and may require additional fields |
 
-All items are wrapped in a top-level `ItemList` schema so Google can display the collection as a list entry.
+All items are wrapped in `ItemList` to preserve their visible order and
+relationship to the shop collection. No list presentation is guaranteed.
 
 !!! note "Open enum"
     `type` is an open string — you can use any value. Unknown types fall back to `Product + Offer` and show a generic badge icon on the card.
@@ -138,7 +141,8 @@ items:
 | omitted / `null` | No price shown |
 | `original_price: 197` and `price: 97` | ~~`$197`~~ `$97` |
 
-Set `shop.show_prices: false` to hide all prices globally.
+Set `shop.show_prices: false` to hide prices from cards, analytics attributes,
+and structured offers while retaining the configured values for later use.
 
 ---
 
@@ -196,7 +200,7 @@ When the shop is enabled, Homebase emits:
 - **Canonical URL**: `{seo.canonical}/{shop.path}/`
 - **Open Graph**: Full `og:title`, `og:description`, `og:url`, `og:image` (uses `shop.og_image` if set, otherwise falls back to `seo.og_image`)
 - **Twitter Card**: summary card with shop title, description, and image
-- **JSON-LD**: `ItemList` wrapping typed `Product`/`Course`/`Service` + `Offer` nodes per item
+- **JSON-LD**: Connected `WebSite`, `CollectionPage`, `Person`, breadcrumb, and `ItemList` graph wrapping typed `Product`/`Course`/`Service` + `Offer` nodes
 - **Sitemap**: `/{shop.path}/` entry uses `shop.date_modified` for `lastmod` when configured
 - **llms.txt**: Shop collections section listing all item titles, types, and URLs
 

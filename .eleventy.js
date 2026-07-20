@@ -1,6 +1,12 @@
 const yaml = require("js-yaml");
 const fs = require("fs");
 const path = require("path");
+const {
+  buildStructuredData,
+  flattenLinks,
+  flattenShopItems,
+  serializeJsonLd,
+} = require("./scripts/structured-data");
 
 module.exports = function (eleventyConfig) {
   // Generate OG image before each build when seo.og_image_auto: true
@@ -64,26 +70,10 @@ module.exports = function (eleventyConfig) {
     return String(n);
   });
 
-  // flatLinks filter — flattens sections[].links[] into a single array with 1-based positions.
-  // Deduplicates by URL (first occurrence wins) to satisfy JSON-LD ItemList uniqueness requirement.
-  // Used to build ItemList JSON-LD without nested loop namespace issues.
-  eleventyConfig.addFilter("flatLinks", function (sections) {
-    if (!sections) return [];
-    const result = [];
-    const seen = new Set();
-    let pos = 0;
-    for (const section of sections) {
-      for (const link of (section.links || [])) {
-        if (!link || !link.title || !link.url) continue;
-        const cleanUrl = link.url.split("?")[0].replace(/\/$/, "");
-        if (seen.has(cleanUrl)) continue;
-        seen.add(cleanUrl);
-        pos++;
-        result.push({ position: pos, title: link.title, url: link.url });
-      }
-    }
-    return result;
-  });
+  eleventyConfig.addFilter("flatLinks", flattenLinks);
+  eleventyConfig.addFilter("shopItems", flattenShopItems);
+  eleventyConfig.addFilter("structuredData", buildStructuredData);
+  eleventyConfig.addFilter("serializeJsonLd", serializeJsonLd);
 
   // jsonEscape filter — escapes a string for safe embedding inside a JSON string literal.
   // Does NOT add surrounding quotes.
@@ -122,22 +112,6 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("md", function (content) {
     if (!content) return "";
     return markdownIt.renderInline(String(content));
-  });
-
-  // shopItems filter — flattens shop.collections[].items[] into a single array with 1-based
-  // positions and collection_id. Used to build ItemList JSON-LD on the shop page.
-  eleventyConfig.addFilter("shopItems", function (collections) {
-    if (!collections) return [];
-    const result = [];
-    let pos = 0;
-    for (const col of collections) {
-      for (const item of (col.items || [])) {
-        if (!item || !item.title) continue;
-        pos++;
-        result.push({ ...item, position: pos, collection_id: col.id });
-      }
-    }
-    return result;
   });
 
   // Inline file shortcode — for inlining CSS into <style> tags if desired

@@ -46,13 +46,31 @@ Homebase metadata must:
 
 ## Validation
 
-Homebase validates structured metadata at multiple levels:
+Homebase automates structural validation:
 
 1. Every generated JSON-LD block must parse as JSON.
 2. Fixture builds cover profile, integration, video, review, and shop output.
-3. Schema.org validation checks general vocabulary usage.
-4. Consumer-specific tools check only the features that consumer documents.
+
+Release verification uses external tools separately:
+
+1. Schema.org Validator reviews general vocabulary and property relationships.
+2. Consumer-specific tools check only the features that consumer documents.
 
 Passing a consumer-specific validator is not a guarantee of presentation, and
 failing to qualify for a presentation feature does not invalidate otherwise
 accurate Schema.org metadata.
+
+## Page graph model
+
+Homebase emits one connected JSON-LD graph per generated HTML page:
+
+- `WebSite` and `Person` use stable site-level identifiers.
+- The home route uses `ProfilePage` as its primary page entity.
+- The shop route uses a page-scoped `CollectionPage`.
+- Page-specific item lists and breadcrumbs use identifiers based on their
+  canonical route.
+- Optional FAQ, video, review, and product entities reference the stable page
+  and creator entities.
+
+Complete objects are serialized in JavaScript rather than assembled as JSON
+fragments in templates.

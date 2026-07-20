@@ -320,6 +320,13 @@
 .hb-testimonial-quote::before { content: '\201C'; }
 .hb-testimonial-quote::after  { content: '\201D'; }
 
+.hb-testimonial-rating {
+  margin: -4px 0 8px;
+  color: var(--color-accent, #4b8fdb);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .hb-testimonial-author {
   display: flex;
   align-items: center;

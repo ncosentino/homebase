@@ -13,9 +13,14 @@ test("profile fixture emits parseable structured metadata", (t) => {
     html,
     /<link rel="canonical" href="https:\/\/example\.com"\s*\/>/
   );
+  assert.ok(findEntity(documents, "WebSite"));
   assert.ok(findEntity(documents, "ProfilePage"));
   assert.ok(findEntity(documents, "Person"));
   assert.ok(findEntity(documents, "ItemList"));
+  assert.equal(
+    findEntity(documents, "ProfilePage").speakable["@type"],
+    "SpeakableSpecification"
+  );
   assert.equal(findEntity(documents, "ProfilePage").dateModified, undefined);
   assert.doesNotMatch(fixture.read("_site/sitemap.xml"), /<lastmod>/);
   assert.match(fixture.read("_site/llms.txt"), /- File generated: /);
@@ -48,7 +53,7 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
       items: [
         {
           question: "What does this creator publish?",
-          answer: "Useful example content.",
+          answer: "Useful </script> example content & guidance.",
         },
       ],
     };
@@ -59,17 +64,18 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
       items: [
         { quote: "Excellent work.", author: "Alex", rating: 5 },
         { quote: "Very useful.", author: "Jordan", rating: 4 },
+        { quote: "Clear and practical.", author: "Casey" },
       ],
     };
   });
   t.after(() => fixture.cleanup());
 
-  const documents = parseJsonLd(fixture.read("_site/index.html"));
-  const person = findEntity(documents, "Person");
+  const html = fixture.read("_site/index.html");
+  const documents = parseJsonLd(html);
   const videos = findEntities(documents, "VideoObject");
-
+  const reviews = findEntities(documents, "Review");
+  const aggregateRating = findEntity(documents, "AggregateRating");
   assert.ok(findEntity(documents, "FAQPage"));
-  assert.ok(findEntity(documents, "WebPage"));
   assert.equal(
     findEntity(documents, "ProfilePage").dateModified,
     "2026-01-20T10:30:00.000Z"
@@ -77,8 +83,22 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
   assert.equal(videos.length, 2);
   assert.equal(videos[0].uploadDate, "2026-01-15");
   assert.equal(videos[1].uploadDate, undefined);
-  assert.equal(person.review.length, 2);
-  assert.equal(person.aggregateRating.ratingValue, "5");
+  assert.equal(reviews.length, 3);
+  assert.equal(reviews[2].reviewRating, undefined);
+  assert.equal(reviews[0].itemReviewed["@id"], "https://example.com#person");
+  assert.equal(aggregateRating.ratingValue, 4.5);
+  assert.equal(aggregateRating.ratingCount, 2);
+  assert.equal(aggregateRating.reviewCount, 3);
+  assert.equal(
+    aggregateRating.itemReviewed["@id"],
+    "https://example.com#person"
+  );
+  assert.equal(
+    findEntity(documents, "FAQPage").mainEntity[0].acceptedAnswer.text,
+    "Useful </script> example content & guidance."
+  );
+  assert.match(html, /aria-label="5 out of 5 stars">5\/5<\/p>/);
+  assert.match(html, /aria-label="4 out of 5 stars">4\/5<\/p>/);
   assert.match(
     fixture.read("_site/sitemap.xml"),
     /<lastmod>2026-01-20T10:30:00.000Z<\/lastmod>/
@@ -95,6 +115,18 @@ test("shop fixture emits parseable metadata with a shop canonical", (t) => {
     site.shop.enabled = true;
     site.shop.path = "shop";
     site.shop.date_modified = "2026-01-18T09:00:00.000Z";
+    site.integrations.testimonials = {
+      enabled: true,
+      position: "after_links",
+      heading: "Testimonials",
+      items: [
+        {
+          quote: "Visible only on the profile.",
+          author: "Alex",
+          rating: 5,
+        },
+      ],
+    };
   });
   t.after(() => fixture.cleanup());
 
@@ -105,13 +137,100 @@ test("shop fixture emits parseable metadata with a shop canonical", (t) => {
     html,
     /<link rel="canonical" href="https:\/\/example\.com\/shop\/"\s*\/>/
   );
-  assert.ok(findEntity(documents, "ProfilePage"));
+  const collectionPage = findEntity(documents, "CollectionPage");
+
+  assert.ok(findEntity(documents, "WebSite"));
+  assert.ok(collectionPage);
   assert.ok(findEntity(documents, "Person"));
+  assert.equal(findEntity(documents, "Review"), null);
+  assert.equal(findEntity(documents, "AggregateRating"), null);
   assert.ok(findEntity(documents, "ItemList"));
+  assert.equal(collectionPage.url, "https://example.com/shop/");
+  assert.equal(collectionPage.mainEntity["@id"], "https://example.com/shop/#items");
+  assert.equal(
+    collectionPage.breadcrumb["@id"],
+    "https://example.com/shop/#breadcrumb"
+  );
+  assert.equal(findEntity(documents, "ProfilePage"), null);
+  for (const type of ["Course", "Service", "Product", "Book"]) {
+    assert.ok(
+      findNestedEntities(documents, type).length > 0,
+      `expected a ${type} shop entity`
+    );
+  }
+  assert.equal(
+    typeof findNestedEntities(documents, "Offer").find(
+      (offer) => offer.price !== undefined
+    ).price,
+    "number"
+  );
   assert.match(
     fixture.read("_site/sitemap.xml"),
     /<lastmod>2026-01-18T09:00:00.000Z<\/lastmod>/
   );
+});
+
+test("unrated testimonials remain reviews without an aggregate rating", (t) => {
+  const fixture = buildFixture("unrated-testimonials", (site) => {
+    site.integrations.testimonials = {
+      enabled: true,
+      position: "after_links",
+      heading: "Testimonials",
+      items: [
+        { quote: "Thoughtful guidance.", author: "Alex" },
+        { quote: "Strong communication.", author: "Jordan" },
+        {
+          quote: "Boolean ratings are not numeric.",
+          author: "Casey",
+          rating: true,
+        },
+      ],
+    };
+  });
+  t.after(() => fixture.cleanup());
+
+  const documents = parseJsonLd(fixture.read("_site/index.html"));
+  const reviews = findEntities(documents, "Review");
+
+  assert.equal(reviews.length, 3);
+  assert.equal(findEntity(documents, "AggregateRating"), null);
+  assert.equal(reviews[0].reviewRating, undefined);
+  assert.equal(reviews[2].reviewRating, undefined);
+});
+
+test("hidden shop prices are omitted from HTML and structured data", (t) => {
+  const fixture = buildFixture("hidden-shop-prices", (site) => {
+    site.shop.enabled = true;
+    site.shop.path = "shop";
+    site.shop.show_prices = false;
+  });
+  t.after(() => fixture.cleanup());
+
+  const html = fixture.read("_site/shop/index.html");
+  const documents = parseJsonLd(html);
+  const offers = findNestedEntities(documents, "Offer");
+
+  assert.ok(offers.length > 0);
+  assert.ok(offers.every((offer) => offer.price === undefined));
+  assert.doesNotMatch(html, /data-ga-item-price="[0-9]/);
+  assert.doesNotMatch(html, /class="shop-price"/);
+});
+
+test("omitted shop price visibility defaults to visible", (t) => {
+  const fixture = buildFixture("default-shop-prices", (site) => {
+    site.shop.enabled = true;
+    site.shop.path = "shop";
+    delete site.shop.show_prices;
+  });
+  t.after(() => fixture.cleanup());
+
+  const html = fixture.read("_site/shop/index.html");
+  const documents = parseJsonLd(html);
+  const offers = findNestedEntities(documents, "Offer");
+
+  assert.ok(offers.some((offer) => typeof offer.price === "number"));
+  assert.match(html, /data-ga-item-price="[0-9]/);
+  assert.match(html, /class="shop-price"/);
 });
 
 function parseJsonLd(html) {
@@ -148,4 +267,27 @@ function findEntities(documents, type) {
   }
 
   return entities;
+}
+
+function findNestedEntities(value, type, result = []) {
+  if (Array.isArray(value)) {
+    for (const entry of value) {
+      findNestedEntities(entry, type, result);
+    }
+    return result;
+  }
+
+  if (!value || typeof value !== "object") {
+    return result;
+  }
+
+  if (value["@type"] === type) {
+    result.push(value);
+  }
+
+  for (const entry of Object.values(value)) {
+    findNestedEntities(entry, type, result);
+  }
+
+  return result;
 }
