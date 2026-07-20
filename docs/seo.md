@@ -98,7 +98,7 @@ seo:
 | `og:type` | `profile` (hardcoded) |
 | `twitter:card` | `summary_large_image` (hardcoded) |
 | `twitter:image` | Same as `og:image` |
-| Schema.org JSON-LD | `ProfilePage` + `Person` + `ItemList` |
+| Schema.org JSON-LD | Page-aware `WebSite` graph with `ProfilePage` or `CollectionPage`, `Person`, and `ItemList` |
 | `FAQPage` JSON-LD | `integrations.faq.items` (when enabled) |
 | `BreadcrumbList` JSON-LD | Auto-generated for home and shop pages |
 | `Speakable` JSON-LD | Marks profile bio and FAQ answers for voice assistants |
@@ -123,11 +123,21 @@ A `<link rel="me">` tag is emitted for every URL in your `socials` array. This i
 
 ## JSON-LD Schemas
 
-Homebase emits multiple structured data blocks per page. Google and other engines use these to generate rich results and knowledge graph entries.
+Homebase emits one connected JSON-LD graph per page. The graph provides
+consumer-neutral structured semantics; specific presentation features depend
+on each search engine or application.
 
-### ProfilePage + Person + ItemList
+### WebSite + ProfilePage + Person + ItemList
 
-Always present. Describes you as a `Person` with your name, bio, social profiles, and links as `ItemList`. This is the primary schema that can populate a knowledge panel.
+The home page emits one connected graph describing the site, profile page,
+creator identity, links, optional FAQ content, videos, reviews, and breadcrumb.
+Stable `@id` references connect the entities without duplicating their data.
+
+### Shop CollectionPage
+
+The shop route emits a `CollectionPage` whose canonical URL matches the shop
+page. It references the same stable `WebSite` and `Person` entities and uses a
+page-scoped `ItemList` and breadcrumb.
 
 ### FAQPage
 
@@ -146,9 +156,14 @@ Marks the profile bio (`.profile-bio`) and FAQ answers (`.integration-faq-answer
 
 ### VideoObject
 
-Emitted automatically — one `VideoObject` block per video from your `youtube_channels` live feed or `featured_videos` fallback. Includes all fields required for [Google video rich results](https://developers.google.com/search/docs/appearance/structured-data/video): `name`, `description`, `thumbnailUrl`, `uploadDate`, `contentUrl`, and `embedUrl`.
+Emitted automatically as one `VideoObject` entity per video from your
+`youtube_channels` live feed or `featured_videos` fallback.
 
-`thumbnailUrl`, `contentUrl`, and `embedUrl` are auto-derived from the video's `youtube_id`. The `uploadDate` is extracted from the YouTube Atom feed (Option A) or from the `upload_date` field you supply on each `featured_videos` entry (Option B). Falls back to the site build timestamp if neither is available.
+`thumbnailUrl`, `contentUrl`, and `embedUrl` are auto-derived from the video's
+`youtube_id`. The `uploadDate` is extracted from the YouTube Atom feed (Option
+A) or from the `upload_date` field supplied on each `featured_videos` entry
+(Option B). When no accurate date is available, Homebase preserves the video
+entity and omits `uploadDate`.
 
 See [Configuration — Featured Videos](configuration.md#featured-videos) for the `description` and `upload_date` fields.
 
@@ -156,8 +171,8 @@ See [Configuration — Featured Videos](configuration.md#featured-videos) for th
 
 Emitted automatically when `integrations.testimonials.enabled: true` and at least one testimonial item exists. Adds two things to the `Person` entity:
 
-- `aggregateRating` — `ratingValue: "5"`, `reviewCount: N` (count of testimonial items)
-- `review[]` — one `Review` entry per testimonial, using the `quote`, `author`, and optional `rating` fields
+- `review[]` — one `Review` entry per visible testimonial, using its `quote`, `author`, and optional `rating`
+- `aggregateRating` — emitted only when at least one testimonial has a numeric rating, calculated from the visible rated testimonials
 
 This can surface star ratings alongside your name in Google Search results for personal brand pages. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/review-snippet)
 

@@ -196,7 +196,7 @@ When the shop is enabled, Homebase emits:
 - **Canonical URL**: `{seo.canonical}/{shop.path}/`
 - **Open Graph**: Full `og:title`, `og:description`, `og:url`, `og:image` (uses `shop.og_image` if set, otherwise falls back to `seo.og_image`)
 - **Twitter Card**: summary card with shop title, description, and image
-- **JSON-LD**: `ItemList` wrapping typed `Product`/`Course`/`Service` + `Offer` nodes per item
+- **JSON-LD**: Connected `WebSite`, `CollectionPage`, `Person`, breadcrumb, and `ItemList` graph wrapping typed `Product`/`Course`/`Service` + `Offer` nodes
 - **Sitemap**: `/{shop.path}/` entry uses `shop.date_modified` for `lastmod` when configured
 - **llms.txt**: Shop collections section listing all item titles, types, and URLs
 

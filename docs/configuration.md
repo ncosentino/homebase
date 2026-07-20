@@ -110,7 +110,7 @@ featured_videos:
 | `youtube_id` | Yes | The 11-character YouTube video ID. |
 | `title` | Yes | Video title shown on the page and in `VideoObject` schema. |
 | `description` | No | Short description. Google requires this for video rich results. |
-| `upload_date` | No | Publication date in `YYYY-MM-DD` format. Required for `VideoObject` schema. Falls back to the site build timestamp if omitted. |
+| `upload_date` | No | Publication date in `YYYY-MM-DD` format. Included in `VideoObject` when accurate; omitted from structured data when unknown. |
 
 Leave both empty to hide the video section entirely.
 
@@ -551,10 +551,10 @@ integrations:
 | `author` | Yes | Display name of the reviewer. |
 | `handle` | No | Social handle shown below the name. |
 | `url` | No | Link to the original post or source. |
-| `rating` | No | Integer 1–5 star rating. Defaults to `5` if omitted. Used in `Review` + `AggregateRating` JSON-LD. |
+| `rating` | No | Numeric 1–5 star rating. Omitted or invalid ratings remain unrated reviews and do not contribute to `AggregateRating`. |
 
 !!! tip "Rich results eligibility"
-    When testimonials are enabled and at least one item exists, Homebase automatically adds `aggregateRating` and `review[]` to the `Person` JSON-LD entity. This can surface star ratings alongside your name in Google Search results. [Source: Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/review-snippet)
+    When testimonials are enabled, Homebase adds visible testimonials as `review[]` on the `Person` entity. When at least one testimonial has a numeric rating, it also calculates `aggregateRating` from the rated testimonials. Consumer-specific review presentation support is documented in [Structured Data Contract](structured-data.md).
 
 ### Live Code / Demo Embeds
 

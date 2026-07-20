@@ -13,9 +13,14 @@ test("profile fixture emits parseable structured metadata", (t) => {
     html,
     /<link rel="canonical" href="https:\/\/example\.com"\s*\/>/
   );
+  assert.ok(findEntity(documents, "WebSite"));
   assert.ok(findEntity(documents, "ProfilePage"));
   assert.ok(findEntity(documents, "Person"));
   assert.ok(findEntity(documents, "ItemList"));
+  assert.equal(
+    findEntity(documents, "ProfilePage").speakable["@type"],
+    "SpeakableSpecification"
+  );
   assert.equal(findEntity(documents, "ProfilePage").dateModified, undefined);
   assert.doesNotMatch(fixture.read("_site/sitemap.xml"), /<lastmod>/);
   assert.match(fixture.read("_site/llms.txt"), /- File generated: /);
@@ -48,7 +53,7 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
       items: [
         {
           question: "What does this creator publish?",
-          answer: "Useful example content.",
+          answer: "Useful </script> example content & guidance.",
         },
       ],
     };
@@ -59,6 +64,7 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
       items: [
         { quote: "Excellent work.", author: "Alex", rating: 5 },
         { quote: "Very useful.", author: "Jordan", rating: 4 },
+        { quote: "Clear and practical.", author: "Casey" },
       ],
     };
   });
@@ -67,9 +73,7 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
   const documents = parseJsonLd(fixture.read("_site/index.html"));
   const person = findEntity(documents, "Person");
   const videos = findEntities(documents, "VideoObject");
-
   assert.ok(findEntity(documents, "FAQPage"));
-  assert.ok(findEntity(documents, "WebPage"));
   assert.equal(
     findEntity(documents, "ProfilePage").dateModified,
     "2026-01-20T10:30:00.000Z"
@@ -77,8 +81,15 @@ test("enriched profile fixture covers optional semantic entities", (t) => {
   assert.equal(videos.length, 2);
   assert.equal(videos[0].uploadDate, "2026-01-15");
   assert.equal(videos[1].uploadDate, undefined);
-  assert.equal(person.review.length, 2);
-  assert.equal(person.aggregateRating.ratingValue, "5");
+  assert.equal(person.review.length, 3);
+  assert.equal(person.review[2].reviewRating, undefined);
+  assert.equal(person.aggregateRating.ratingValue, 4.5);
+  assert.equal(person.aggregateRating.ratingCount, 2);
+  assert.equal(person.aggregateRating.reviewCount, 3);
+  assert.equal(
+    findEntity(documents, "FAQPage").mainEntity[0].acceptedAnswer.text,
+    "Useful </script> example content & guidance."
+  );
   assert.match(
     fixture.read("_site/sitemap.xml"),
     /<lastmod>2026-01-20T10:30:00.000Z<\/lastmod>/
@@ -95,6 +106,18 @@ test("shop fixture emits parseable metadata with a shop canonical", (t) => {
     site.shop.enabled = true;
     site.shop.path = "shop";
     site.shop.date_modified = "2026-01-18T09:00:00.000Z";
+    site.integrations.testimonials = {
+      enabled: true,
+      position: "after_links",
+      heading: "Testimonials",
+      items: [
+        {
+          quote: "Visible only on the profile.",
+          author: "Alex",
+          rating: 5,
+        },
+      ],
+    };
   });
   t.after(() => fixture.cleanup());
 
@@ -105,13 +128,67 @@ test("shop fixture emits parseable metadata with a shop canonical", (t) => {
     html,
     /<link rel="canonical" href="https:\/\/example\.com\/shop\/"\s*\/>/
   );
-  assert.ok(findEntity(documents, "ProfilePage"));
+  const collectionPage = findEntity(documents, "CollectionPage");
+
+  assert.ok(findEntity(documents, "WebSite"));
+  assert.ok(collectionPage);
   assert.ok(findEntity(documents, "Person"));
+  assert.equal(findEntity(documents, "Person").review, undefined);
+  assert.equal(findEntity(documents, "Person").aggregateRating, undefined);
   assert.ok(findEntity(documents, "ItemList"));
+  assert.equal(collectionPage.url, "https://example.com/shop/");
+  assert.equal(collectionPage.mainEntity["@id"], "https://example.com/shop/#items");
+  assert.equal(
+    collectionPage.breadcrumb["@id"],
+    "https://example.com/shop/#breadcrumb"
+  );
+  assert.equal(findEntity(documents, "ProfilePage"), null);
+  for (const type of ["Course", "Service", "Product", "Book"]) {
+    assert.ok(
+      findNestedEntities(documents, type).length > 0,
+      `expected a ${type} shop entity`
+    );
+  }
+  assert.equal(
+    typeof findNestedEntities(documents, "Offer").find(
+      (offer) => offer.price !== undefined
+    ).price,
+    "number"
+  );
   assert.match(
     fixture.read("_site/sitemap.xml"),
     /<lastmod>2026-01-18T09:00:00.000Z<\/lastmod>/
   );
+});
+
+test("unrated testimonials remain reviews without an aggregate rating", (t) => {
+  const fixture = buildFixture("unrated-testimonials", (site) => {
+    site.integrations.testimonials = {
+      enabled: true,
+      position: "after_links",
+      heading: "Testimonials",
+      items: [
+        { quote: "Thoughtful guidance.", author: "Alex" },
+        { quote: "Strong communication.", author: "Jordan" },
+        {
+          quote: "Boolean ratings are not numeric.",
+          author: "Casey",
+          rating: true,
+        },
+      ],
+    };
+  });
+  t.after(() => fixture.cleanup());
+
+  const person = findEntity(
+    parseJsonLd(fixture.read("_site/index.html")),
+    "Person"
+  );
+
+  assert.equal(person.review.length, 3);
+  assert.equal(person.aggregateRating, undefined);
+  assert.equal(person.review[0].reviewRating, undefined);
+  assert.equal(person.review[2].reviewRating, undefined);
 });
 
 function parseJsonLd(html) {
@@ -148,4 +225,27 @@ function findEntities(documents, type) {
   }
 
   return entities;
+}
+
+function findNestedEntities(value, type, result = []) {
+  if (Array.isArray(value)) {
+    for (const entry of value) {
+      findNestedEntities(entry, type, result);
+    }
+    return result;
+  }
+
+  if (!value || typeof value !== "object") {
+    return result;
+  }
+
+  if (value["@type"] === type) {
+    result.push(value);
+  }
+
+  for (const entry of Object.values(value)) {
+    findNestedEntities(entry, type, result);
+  }
+
+  return result;
 }

@@ -56,3 +56,18 @@ Homebase validates structured metadata at multiple levels:
 Passing a consumer-specific validator is not a guarantee of presentation, and
 failing to qualify for a presentation feature does not invalidate otherwise
 accurate Schema.org metadata.
+
+## Page graph model
+
+Homebase emits one connected JSON-LD graph per generated HTML page:
+
+- `WebSite` and `Person` use stable site-level identifiers.
+- The home route uses `ProfilePage` as its primary page entity.
+- The shop route uses a page-scoped `CollectionPage`.
+- Page-specific item lists and breadcrumbs use identifiers based on their
+  canonical route.
+- Optional FAQ, video, review, and product entities reference the stable page
+  and creator entities.
+
+Complete objects are serialized in JavaScript rather than assembled as JSON
+fragments in templates.
