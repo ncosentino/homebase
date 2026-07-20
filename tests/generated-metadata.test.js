@@ -216,6 +216,23 @@ test("hidden shop prices are omitted from HTML and structured data", (t) => {
   assert.doesNotMatch(html, /class="shop-price"/);
 });
 
+test("omitted shop price visibility defaults to visible", (t) => {
+  const fixture = buildFixture("default-shop-prices", (site) => {
+    site.shop.enabled = true;
+    site.shop.path = "shop";
+    delete site.shop.show_prices;
+  });
+  t.after(() => fixture.cleanup());
+
+  const html = fixture.read("_site/shop/index.html");
+  const documents = parseJsonLd(html);
+  const offers = findNestedEntities(documents, "Offer");
+
+  assert.ok(offers.some((offer) => typeof offer.price === "number"));
+  assert.match(html, /data-ga-item-price="[0-9]/);
+  assert.match(html, /class="shop-price"/);
+});
+
 function parseJsonLd(html) {
   const documents = [];
   const pattern =
