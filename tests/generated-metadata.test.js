@@ -1,5 +1,8 @@
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 const test = require("node:test");
+const yaml = require("js-yaml");
 const { buildFixture } = require("./helpers/build-fixture");
 
 test("profile fixture emits parseable structured metadata", (t) => {
@@ -28,6 +31,25 @@ test("profile fixture emits parseable structured metadata", (t) => {
     fixture.read("_site/llms.txt"),
     /- Content last modified: /
   );
+});
+
+test("live configuration links Eve.NET to its canonical project page", () => {
+  const repositoryRoot = path.resolve(__dirname, "..");
+  const site = yaml.load(
+    fs.readFileSync(path.join(repositoryRoot, "_data", "site.yaml"), "utf8")
+  );
+  const projects = site.sections.find(
+    (section) => section.title === "Open Source Projects"
+  );
+  const eve = projects.links.find((link) => link.title === "Eve.NET");
+
+  assert.deepEqual(eve, {
+    title: "Eve.NET",
+    url: "https://www.devleader.ca/projects/eve-client",
+    github_url: "https://github.com/ncosentino/eve-client",
+    description:
+      "A .NET client for Vercel eve agents with durable sessions, NDJSON streaming, authentication, cancellation, attachments, human input, and structured output. Available on NuGet as NexusLabs.Eve.",
+  });
 });
 
 test("enriched profile fixture covers optional semantic entities", (t) => {
