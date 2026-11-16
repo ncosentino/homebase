@@ -33,6 +33,14 @@ def _schema_script(schema: dict) -> str:
 def on_page_content(html: str, page, config, files) -> str:
     """Inject structured data JSON-LD blocks based on page URL."""
     url = page.url or ''
+    html += _schema_script({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        '@id': page.canonical_url,
+        'url': page.canonical_url,
+        'name': page.title,
+        'description': page.meta['description'],
+    })
 
     if url == 'getting-started/':
         html = _inject_howto_schema(html, page)
